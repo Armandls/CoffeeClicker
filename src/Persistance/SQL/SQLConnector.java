@@ -95,13 +95,15 @@ public class SQLConnector {
      *
      * @param query String representation of the query to execute.
      */
-    public void deleteQuery(String query){
+    public boolean deleteQuery(String query){
         try {
             Statement s = conn.createStatement();
             s.executeUpdate(query);
+            return true;
         } catch (SQLException e) {
             System.err.println(query);
             System.err.println("Problem when deleting --> " + e.getSQLState() + " (" + e.getMessage() + ")");
+            return false;
         }
 
     }
