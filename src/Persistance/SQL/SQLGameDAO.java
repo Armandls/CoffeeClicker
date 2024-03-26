@@ -10,7 +10,7 @@ import java.sql.SQLException;
 public class SQLGameDAO implements GameDAO {
     @Override
     public void addGame(Game game) {
-        String query = "INSERT INTO Course(id_user, nickname, mail, password, id_game) VALUES ('" +
+        String query = "INSERT INTO Game(id_user, nickname, mail, password, id_game) VALUES ('" +
                 game.getIdGame() + "', '" +
                 game.getCurrencyCount() + "', '" +
                 "');";
@@ -34,9 +34,7 @@ public class SQLGameDAO implements GameDAO {
 
     @Override
     public void updateGame(int id_game, int currency_count) {
-        String query = "UPDATE Game SET id_game = '" + id_game + "';";
-        SQLConnector.getInstance().updateQuery(query);
-        query = "UPDATE Game SET currency_count = '" + currency_count + "';";
+        String query = "UPDATE Game SET currency_count = '" + currency_count + "' WHERE id_game = '" + id_game + "';";
         SQLConnector.getInstance().updateQuery(query);
     }
 }
