@@ -1,4 +1,4 @@
-package Persistance;
+package Persistance.Config;
 
 import Business.Config;
 

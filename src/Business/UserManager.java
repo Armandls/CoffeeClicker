@@ -1,7 +1,7 @@
 package Business;
 
 import Business.Entities.User;
-import Persistance.UserDAO;
+import Persistance.DAO.UserDAO;
 
 /*Class to manage the different entities regarding the Game
  *  @User

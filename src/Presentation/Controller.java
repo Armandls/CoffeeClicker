@@ -1,11 +1,9 @@
 package Presentation;
 
-import Business.Entities.User;
 import Business.GameManager;
 import Business.GeneratorManager;
 import Business.ImprovementManager;
 import Business.UserManager;
-import Persistance.UserDAO;
 
 /*Class to manage the interactions between the user interface (UI, the View) and the Manager classes*/
 public class Controller {

@@ -1,8 +1,7 @@
 package Persistance.SQL;
 
 import Business.Entities.Game;
-import Business.Entities.User;
-import Persistance.GameDAO;
+import Persistance.DAO.GameDAO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

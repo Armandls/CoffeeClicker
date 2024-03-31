@@ -1,4 +1,4 @@
-package Persistance;
+package Persistance.DAO;
 
 public interface GameGenDAO {
 }

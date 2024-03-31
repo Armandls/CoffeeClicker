@@ -1,4 +1,4 @@
-package Persistance;
+package Persistance.DAO;
 
 import Business.Entities.Generator.Generator;
 

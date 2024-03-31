@@ -1,8 +1,5 @@
 package Persistance.SQL;
 
-import Business.Config;
-import Persistance.ConfigDAO;
-
 import java.sql.*;
 
 /**

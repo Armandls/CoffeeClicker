@@ -2,9 +2,8 @@ import Business.GameManager;
 import Business.GeneratorManager;
 import Business.ImprovementManager;
 import Business.UserManager;
-import Persistance.GeneratorDAO;
 import Persistance.SQL.SQLUserDAO;
-import Persistance.UserDAO;
+import Persistance.DAO.UserDAO;
 import Presentation.Controller;
 
 public class Main {

@@ -1,7 +1,7 @@
-package Persistance;
+package Persistance.Config;
 
 import Business.Config;
-import com.google.gson.Gson;
+import Persistance.Config.ConfigDAO;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 

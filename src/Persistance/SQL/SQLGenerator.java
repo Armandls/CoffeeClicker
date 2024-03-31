@@ -4,7 +4,7 @@ import Business.Entities.Generator.BasicGenerator;
 import Business.Entities.Generator.Generator;
 import Business.Entities.Generator.HighGenerator;
 import Business.Entities.Generator.MidGenerator;
-import Persistance.GeneratorDAO;
+import Persistance.DAO.GeneratorDAO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
