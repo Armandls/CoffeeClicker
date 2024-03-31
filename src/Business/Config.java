@@ -9,14 +9,32 @@ public class Config {
     private String dataBaseName;
     private String user;
     private String pwd;
-    private String adminPwd;
 
-    public Config(int port, String ip, String dataBaseName, String user, String pwd, String adminPwd) {
+    public Config(int port, String ip, String dataBaseName, String user, String pwd) {
         this.port = port;
         this.ip = ip;
         this.dataBaseName = dataBaseName;
         this.user = user;
         this.pwd = pwd;
-        this.adminPwd = adminPwd;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public String getDataBaseName() {
+        return dataBaseName;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public String getPwd() {
+        return pwd;
     }
 }

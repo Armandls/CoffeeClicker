@@ -1,5 +1,8 @@
 package Persistance.SQL;
 
+import Business.Config;
+import Persistance.ConfigDAO;
+
 import java.sql.*;
 
 /**
@@ -24,6 +27,7 @@ public class SQLConnector {
      */
     public static SQLConnector getInstance(){
         if (instance == null ){
+
             // NOT a good practice to hardcode connection data! Be aware of this for your project delivery ;)
             instance = new SQLConnector("cc3", "cc3", "localhost", 3306, "dpoo-cookieClicker");
             instance.connect();
