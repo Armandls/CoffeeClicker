@@ -1,5 +1,8 @@
 package Persistance.SQL;
 
+import Business.Config;
+import Persistance.Config.ConfigJSON;
+
 import java.sql.*;
 
 /**
@@ -22,15 +25,25 @@ public class SQLConnector {
      *
      * @return The shared SQLConnector instance.
      */
-    public static SQLConnector getInstance(){
-        if (instance == null ){
-
-            // NOT a good practice to hardcode connection data! Be aware of this for your project delivery ;)
-            instance = new SQLConnector("cc3", "cc3", "localhost", 3306, "dpoo-cookieClicker");
-            instance.connect();
+    public static SQLConnector getInstance() {
+        if (instance == null) {
+            try {
+                // Obtener la configuración de la base de datos
+                Config config = ConfigJSON.readConfigFile();
+                if (config != null) {
+                    // Crear una nueva instancia de SQLConnector con la configuración obtenida
+                    instance = new SQLConnector(config.getUser(), config.getPwd(), config.getIp(), config.getPort(), config.getDataBaseName());
+                    instance.connect();
+                } else {
+                    System.err.println("Error: No se pudo obtener la configuración de la base de datos.");
+                }
+            } catch (Exception e) {
+                System.err.println("Error al obtener la configuración de la base de datos: " + e.getMessage());
+            }
         }
         return instance;
     }
+
 
     // Attributes to connect to the database.
     private final String username;

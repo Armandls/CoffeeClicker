@@ -1,16 +1,15 @@
 package Persistance.Config;
 
 import Business.Config;
-import Persistance.Config.ConfigDAO;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.io.FileReader;
 import java.io.IOException;
 
-public class ConfigJSON implements ConfigDAO {
+public class ConfigJSON {
 
-    public Config readConfigFile() {
+    public static Config readConfigFile() {
         try (FileReader reader = new FileReader("files/config.json")) {
             JsonObject jsonObject = JsonParser.parseReader(reader).getAsJsonObject();
             int port = jsonObject.get("port").getAsInt();
