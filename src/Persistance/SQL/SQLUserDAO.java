@@ -10,13 +10,11 @@ public class SQLUserDAO implements UserDAO {
 
     @Override
     public void addUser(User user, int id_game) {
-        String query = "INSERT INTO User(id_user, nickname, mail, password, id_game) VALUES ('" +
+        String query = "INSERT INTO User(id_user, nickname, mail, password) VALUES ('" +
                 user.getIdUser() + "', '" +
                 user.getNickname() + "', '" +
                 user.getEmail() + "', '" +
-                user.getPassword() + "', '" +
-                id_game +
-                "');";
+                user.getPassword() + "');";
 
         SQLConnector.getInstance().insertQuery(query);
     }

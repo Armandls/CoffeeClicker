@@ -5,32 +5,57 @@ import Persistance.DAO.GameDAO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SQLGameDAO implements GameDAO {
     @Override
-    public void addGame(Game game) {
-        String query = "INSERT INTO Game(id_user, nickname, mail, password, id_game) VALUES ('" +
+    public void addGame(Game game,int id_user) {
+        String query = "INSERT INTO Game(id_game, currency_count, id_user) VALUES ('" +
                 game.getIdGame() + "', '" +
                 game.getCurrencyCount() + "', '" +
-                "');";
+                id_user + "');";
         SQLConnector.getInstance().insertQuery(query);
     }
 
     @Override
-    public Game getGameFromUser(int id_user) {
+    public List<Game> getGamesFromUser(int id_user) {
+        ArrayList<Game> games = new ArrayList<>();
         String query = "SELECT g.id_game, g.currency_count FROM Game AS g, User AS u WHERE u.id_game = g.id_game AND " +
                         "u.id_user = " + id_user + ";";
         ResultSet result = SQLConnector.getInstance().selectQuery(query);
 
         try {
-            return new Game(result.getInt(1),
-                    result.getInt(2));
+            while (result.next()) {
+                Game aux = new Game(result.getInt(1),
+                        result.getInt(2));
+                games.add(aux);
+            }
+            return games;
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }
     }
 
+    @Override
+    public List<Integer> getGameStatistics(int id_game) {
+        ArrayList<Integer> currencies = new ArrayList<>();
+        String query = "SELECT s.current_currency FROM Game AS g, Statistics AS s WHERE g.id_game = s.id_game AND " +
+                "g.id_user = " + id_game + " ORDER BY s.game_min ASC" +";";
+        ResultSet result = SQLConnector.getInstance().selectQuery(query);
+
+        try {
+            while (result.next()) {
+                currencies.add(result.getInt(1));
+            }
+            return currencies;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
     @Override
     public void updateGame(int id_game, int currency_count) {
         String query = "UPDATE Game SET currency_count = '" + currency_count + "' WHERE id_game = '" + id_game + "';";
