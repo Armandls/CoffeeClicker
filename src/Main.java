@@ -4,7 +4,7 @@ import Business.ImprovementManager;
 import Business.UserManager;
 import Persistance.SQL.SQLUserDAO;
 import Persistance.DAO.UserDAO;
-import Presentation.Controller;
+import Presentation.MainController;
 
 public class Main {
     public static void main(String[] args) {
@@ -20,7 +20,7 @@ public class Main {
         UserManager userManager = new UserManager(userDAO);
 
         // Create the controller and run it
-        Controller controller = new Controller(gameManager, generatorManager, improvementManager, userManager);
+        MainController controller = new MainController(gameManager, generatorManager, improvementManager, userManager);
         controller.run();
     }
 }
