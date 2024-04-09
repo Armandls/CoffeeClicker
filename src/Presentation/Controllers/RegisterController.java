@@ -40,5 +40,6 @@ public class RegisterController implements ActionListener {
 
     void singUp() {
         //TODO: implement singUp
+        String[] info = registerView.getInfo();
     }
 }

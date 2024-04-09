@@ -46,6 +46,7 @@ public class LoginController implements ActionListener {
 
     void login() {
         //TODO: Implement login
+        loginView.getInfo();
     }
 }
 

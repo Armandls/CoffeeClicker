@@ -3,6 +3,7 @@ package Presentation.Views;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 
 public class RegisterView extends JPanel implements MyView {
 
@@ -99,5 +100,14 @@ public class RegisterView extends JPanel implements MyView {
     public void stop() {
         loginButton.removeActionListener(listener);
         singUpButton.removeActionListener(listener);
+    }
+
+    public String[] getInfo() {
+        return new String[]{
+                "username:" + usernameField.getText(),
+                "email:" + emailField.getText(),
+                "password:" + Arrays.toString(passwordField.getPassword()),
+                "confirmPassword:" + Arrays.toString(confirmPasswordField.getPassword())
+        };
     }
 }

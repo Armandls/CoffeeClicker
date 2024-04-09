@@ -3,6 +3,7 @@ package Presentation.Views;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 
 public class LoginView extends JPanel implements MyView {
 
@@ -101,5 +102,13 @@ public class LoginView extends JPanel implements MyView {
         forgotPassword.removeActionListener(listener);
         loginButton.removeActionListener(listener);
         registerButton.removeActionListener(listener);
+    }
+
+    public String[] getInfo() {
+        return new String[] {
+                "username:"+usernameField.getText(),
+                "password:"+ Arrays.toString(passwordField.getPassword()),
+                "rememberMe:"+rememberMe.isSelected()
+        };
     }
 }
