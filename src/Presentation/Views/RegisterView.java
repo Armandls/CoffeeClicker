@@ -36,26 +36,41 @@ public class RegisterView extends JPanel implements MyView {
         mainPanel.setSize(300, 500);
 
 
-        mainPanel.add(new JLabel("Sing Up"));
+        JPanel singupLabel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        singupLabel.add(new JLabel("Sing Up"));
+        mainPanel.add(singupLabel);
 
-
+        JPanel usernameLabel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        usernameLabel.add(new JLabel("Username:"));
+        mainPanel.add(usernameLabel);
         JPanel usernamePanel = new JPanel();
         usernamePanel.add(usernameField);
         mainPanel.add(usernamePanel);
 
+        JPanel emailLabel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        emailLabel.add(new JLabel("Email:"));
+        mainPanel.add(emailLabel);
         JPanel emailPanel = new JPanel();
         emailPanel.add(emailField);
         mainPanel.add(emailPanel);
 
+        JPanel passwordLabel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        passwordLabel.add(new JLabel("Password:"));
+        mainPanel.add(passwordLabel);
         JPanel passwordPanel = new JPanel();
         passwordPanel.add(passwordField);
         mainPanel.add(passwordPanel);
 
+        JPanel confirmPasswordLabel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        confirmPasswordLabel.add(new JLabel("Confirm Password:"));
+        mainPanel.add(confirmPasswordLabel);
         JPanel confirmPasswordPanel = new JPanel();
         confirmPasswordPanel.add(confirmPasswordField);
         mainPanel.add(confirmPasswordPanel);
 
-        mainPanel.add(singUpButton);
+        JPanel singUpPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        singUpPanel.add(singUpButton);
+        mainPanel.add(singUpPanel);
 
         JPanel registerPanel = new JPanel();
         registerPanel.setLayout(new BoxLayout(registerPanel, BoxLayout.X_AXIS));

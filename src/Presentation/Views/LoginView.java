@@ -1,6 +1,7 @@
 package Presentation.Views;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
@@ -32,29 +33,36 @@ public class LoginView extends JPanel implements MyView {
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setSize(300, 500);
 
+        JPanel loginLabel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        loginLabel.add(new JLabel("Login"));
+        mainPanel.add(loginLabel);
 
-        mainPanel.add(new JLabel("Login"));
-
-
+        JPanel usernameLabel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        usernameLabel.add(new JLabel("Username:"));
+        mainPanel.add(usernameLabel);
         JPanel usernamePanel = new JPanel();
         usernamePanel.add(usernameField);
         mainPanel.add(usernamePanel);
 
+        JPanel passwordLabel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        passwordLabel.add(new JLabel("Password:"));
+        mainPanel.add(passwordLabel);
         JPanel passwordPanel = new JPanel();
         passwordPanel.add(passwordField);
         mainPanel.add(passwordPanel);
-
-
-
 
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
         panel.add(rememberMe);
         panel.add(forgotPassword);
+        panel.setBorder(new EmptyBorder(10, 0, 10, 0));
         mainPanel.add(panel);
 
 
-        mainPanel.add(loginButton);
+        JPanel loginPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        loginPanel.add(loginButton);
+        loginPanel.setBorder(new EmptyBorder(10, 0, 10, 0));
+        mainPanel.add(loginPanel);
 
         JPanel registerPanel = new JPanel();
         registerPanel.setLayout(new BoxLayout(registerPanel, BoxLayout.X_AXIS));
@@ -68,16 +76,14 @@ public class LoginView extends JPanel implements MyView {
 
     void init() {
         usernameField = new JTextField();
-        usernameField.setPreferredSize(new Dimension(200, 20));
+        usernameField.setPreferredSize(new Dimension(250, 20));
 
         passwordField = new JPasswordField();
-        passwordField.setPreferredSize(new Dimension(200, 20));
+        passwordField.setPreferredSize(new Dimension(250, 20));
 
         forgotPassword = new JButton("Forgot password?");
 
-
         loginButton = new JButton("Login");
-
 
         rememberMe = new JRadioButton("Remember me");
 
