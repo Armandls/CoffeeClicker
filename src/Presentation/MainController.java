@@ -4,8 +4,10 @@ import Business.GameManager;
 import Business.GeneratorManager;
 import Business.ImprovementManager;
 import Business.UserManager;
+import Presentation.Controllers.GameController;
 import Presentation.Controllers.LoginController;
 import Presentation.Controllers.RegisterController;
+import Presentation.Views.GameView;
 import Presentation.Views.LoginView;
 import Presentation.Views.MyView;
 import Presentation.Views.RegisterView;
@@ -55,12 +57,19 @@ public class MainController implements FrameController {
         RegisterView registerView = new RegisterView(registerController);
         registerController.setView(registerView);
 
+        GameController gameController = new GameController(this);
+        GameView gameView = new GameView(gameController);
+        gameController.setView(gameView);
+
+        //mainFrame.addPanel(gameView, "game");
         mainFrame.addPanel(loginView, "login");
         mainFrame.addPanel(registerView, "register");
+        mainFrame.addPanel(gameView, "game");
         mainFrame.setVisible(true);
 
         views.put("login", loginView);
         views.put("register", registerView);
+        views.put("game", gameView);
 
         currentView = loginView;
     }

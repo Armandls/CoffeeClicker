@@ -7,6 +7,8 @@ import Presentation.Views.LoginView;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 public class LoginController implements ActionListener {
 
@@ -46,7 +48,10 @@ public class LoginController implements ActionListener {
 
     void login() {
         //TODO: Implement login
-        loginView.getInfo();
+        String[] info = loginView.getInfo();
+        if (info[0].split(":")[1].equalsIgnoreCase("admin")) {
+            mainController.swapPanel("game");
+        }
     }
 }
 
