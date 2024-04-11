@@ -42,4 +42,14 @@ public class SQLUserDAO implements UserDAO {
         String query = "DELETE FROM User WHERE mail = '" + email + "';";
         return SQLConnector.getInstance().deleteQuery(query);
     }
+
+    @Override
+    public void updateUser(User user) {
+        String query = "UPDATE User SET " +
+                "nickname = '" + user.getNickname() + "', " +
+                "password = '" + user.getPassword() + "' " +
+                "WHERE mail = '" + user.getEmail() + "';";
+
+        SQLConnector.getInstance().updateQuery(query);
+    }
 }

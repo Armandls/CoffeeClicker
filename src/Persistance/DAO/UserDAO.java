@@ -8,4 +8,5 @@ public interface UserDAO {
     User getUser(String email);
 
     boolean deleteUser(String email);
+    void updateUser(User user);
 }

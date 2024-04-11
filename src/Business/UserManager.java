@@ -25,4 +25,5 @@ public class UserManager {
     public void deleteUser(String email) {
         userDAO.deleteUser(email);
     }
+    public void updateUser(User user) {userDAO.updateUser(user);}
 }
