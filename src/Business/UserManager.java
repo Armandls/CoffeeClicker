@@ -14,7 +14,15 @@ public class UserManager {
         this.userDAO = userDAO;
     }
 
-    public void addUser(User user, int id_game) {
-        userDAO.addUser(user, id_game);
+    public void addUser(User user) {
+        userDAO.addUser(user);
+    }
+
+    public User getUser(String email) {
+        return userDAO.getUser(email);
+    }
+
+    public void deleteUser(String email) {
+        userDAO.deleteUser(email);
     }
 }
