@@ -35,10 +35,14 @@ public class MainController implements FrameController {
 
     @Override
     public void swapPanel(String panelName) {
+        if (currentView != null) {
+            currentView.stop();
+        }
         mainFrame.showPanel(panelName);
-        currentView.stop();
         currentView = views.get(panelName);
-        currentView.start();
+        if (currentView != null) {
+            currentView.start();
+        }
     }
 
     public void run() {

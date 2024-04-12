@@ -135,4 +135,11 @@ public class RegisterView extends JPanel implements MyView {
     public void userAlreadyExists() {
         JOptionPane.showMessageDialog(this, "Mail is already being used. Please use another mail address or log in if you already have an account.", "Mail Error", JOptionPane.ERROR_MESSAGE);
     }
+
+    public void clearForm() {
+        usernameField.setText("");
+        emailField.setText("");
+        passwordField.setText("");
+        confirmPasswordField.setText("");
+    }
 }
