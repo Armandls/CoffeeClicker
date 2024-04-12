@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
+import javax.swing.JOptionPane;
+
 
 public class RegisterView extends JPanel implements MyView {
 
@@ -124,5 +126,13 @@ public class RegisterView extends JPanel implements MyView {
                 "password:" + Arrays.toString(passwordField.getPassword()),
                 "confirmPassword:" + Arrays.toString(confirmPasswordField.getPassword())
         };
+    }
+
+    public void passwordDoesntMatch() {
+        JOptionPane.showMessageDialog(this, "Passwords do not match. Please try again.", "Password Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void userAlreadyExists() {
+        JOptionPane.showMessageDialog(this, "Mail is already being used. Please use another mail address or log in if you already have an account.", "Mail Error", JOptionPane.ERROR_MESSAGE);
     }
 }
