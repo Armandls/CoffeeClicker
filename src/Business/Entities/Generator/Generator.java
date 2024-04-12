@@ -1,20 +1,21 @@
 package Business.Entities.Generator;
-/*Abstract class to represent the shared attributes of a Generator*/
+
+import Business.Entities.Improvement.Improvement;
+
 public abstract class Generator {
     private int id_generator;
-    private int n_boosts;
+    private int n_gens;
     private int n_currencies;
     private int id_game;
-    private int n_gens;
+    private Improvement improvement;
     private String imageUrl;
 
-    // Constructor
-    public Generator(int id_generator, int n_boosts, int n_currencies, int id_game, int n_gens, String imageUrl) {
+    public Generator(int id_generator, int n_currencies, int id_game, int n_gens, Improvement improvement, String imageUrl) {
         this.id_generator = id_generator;
-        this.n_boosts = n_boosts;
         this.n_currencies = n_currencies;
         this.id_game = id_game;
         this.n_gens = n_gens;
+        this.improvement = improvement;
         this.imageUrl = imageUrl;
     }
 
@@ -29,18 +30,21 @@ public abstract class Generator {
     public int getIdGame() {
         return id_game;
     }
+
     public int getNGens() {
         return n_gens;
     }
+
     public String getImageUrl() {
         return imageUrl;
     }
-    public int getNBoosts() {
-        return n_boosts;
+
+    public Improvement getImprovement() {
+        return improvement;
     }
 
-    public void setNBoosts(int n_boosts) {
-        this.n_boosts = n_boosts;
+    public void setImprovement(Improvement improvement) {
+        this.improvement = improvement;
     }
 
     public int getNCurrencies() {
@@ -50,5 +54,4 @@ public abstract class Generator {
     public void setNCurrencies(int n_currencies) {
         this.n_currencies = n_currencies;
     }
-
 }
