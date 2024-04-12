@@ -158,18 +158,6 @@ public class SQLConnector {
         return rs;
     }
 
-    public int getGeneratedKeys() {
-        ResultSet rs = null;
-        try {
-            Statement s = conn.createStatement();
-            rs = s.getGeneratedKeys();
-            return rs.getInt(1);
-        } catch (SQLException e) {
-            System.err.println();
-            System.err.println("Problem when selecting data --> " + e.getSQLState() + " (" + e.getMessage() + ")");
-        }
-        return -1;
-    }
 
 
     /**
