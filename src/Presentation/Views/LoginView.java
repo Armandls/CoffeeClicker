@@ -117,4 +117,26 @@ public class LoginView extends JPanel implements MyView {
                 "rememberMe:"+rememberMe.isSelected()
         };
     }
+
+    public void passwordDoesntMatch() {
+        JOptionPane.showMessageDialog(this, "Passwords do not match. Please try again.", "Password Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void userDoesntExist() {
+        JOptionPane.showMessageDialog(this, "Mail is not registered. Please sign up with this mail address or check if you have entered the correct one.", "Mail Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void enterValidEmail() {
+        JOptionPane.showMessageDialog(this, "Please enter a valid email address. Email address must contain '@gmail.com'.", "Mail Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void enterValidPassword() {
+        JOptionPane.showMessageDialog(this, "Please enter a valid password. Password must contain at least 7 characters.", "Password Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+
+    public void clearForm() {
+        usernameField.setText("");
+        passwordField.setText("");
+    }
 }

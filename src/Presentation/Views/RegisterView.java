@@ -120,11 +120,16 @@ public class RegisterView extends JPanel implements MyView {
     }
 
     public String[] getInfo() {
+        String username = usernameField.getText().trim();
+        String email = emailField.getText().trim();
+        String password = new String(passwordField.getPassword()).trim();
+        String confirmPassword = new String(confirmPasswordField.getPassword()).trim();
+
         return new String[]{
-                "username:" + usernameField.getText(),
-                "email:" + emailField.getText(),
-                "password:" + Arrays.toString(passwordField.getPassword()),
-                "confirmPassword:" + Arrays.toString(confirmPasswordField.getPassword())
+                username,
+                email,
+                password,
+                confirmPassword
         };
     }
 
@@ -134,6 +139,14 @@ public class RegisterView extends JPanel implements MyView {
 
     public void userAlreadyExists() {
         JOptionPane.showMessageDialog(this, "Mail is already being used. Please use another mail address or log in if you already have an account.", "Mail Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void enterValidEmail() {
+        JOptionPane.showMessageDialog(this, "Please enter a valid email address. Email address must contain '@gmail.com'.", "Mail Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void enterValidPassword() {
+        JOptionPane.showMessageDialog(this, "Please enter a valid password. Password must contain at least 7 characters.", "Password Error", JOptionPane.ERROR_MESSAGE);
     }
 
     public void clearForm() {

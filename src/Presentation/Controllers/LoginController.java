@@ -46,40 +46,66 @@ public class LoginController implements ActionListener {
         }
     }
 
+    private void finishSignUp(boolean wasSuccessful) {
+        if (wasSuccessful) {
+            mainController.swapPanel("game");
+        } else {
+            loginView.clearForm();
+        }
+    }
+
     public void setView(LoginView view) {
         this.loginView = view;
     }
 
     void login() {
-        //TODO: Implement login
         String[] info = loginView.getInfo();
 
-        //Dades introduides usuari.
-        String userLoginMail = info[0].split(":")[1].trim();
-        String userLoginPass = info[1].split(":")[1].trim().replaceAll(" ", "").replaceAll(",","").replace("[", "").replace("]","");
-        String userLoginRem =  info[2].split(":")[1].trim();
-
-        //Cerca d'informació
-        String[] userInfo = userManager.getUserInfo(userLoginMail);
-        if (userInfo != null) {
-            if (userInfo[2].equals(userLoginPass)) {
-                //Cas en el que s'ha loguejat correctament
-                mainController.swapPanel("game");
-            }
-            else {
-                //Cas en que la contrassenya no s'ha introduit correctament
-                System.out.println("Contrasenya incorrecta");
-            }
+        // Comprovar que els camps no estiguin buits
+        if (info[0].equals( "username:")) {
+            loginView.enterValidEmail();
+            finishSignUp(false);
         }
         else {
-            //Cas en el que no s'ha trobat l'usuari en la base de dades amb l'email proporcionat.
-            System.out.println("Usuari no trobat");
+            if (info[1].split(":")[1].trim().length() < 7) {
+                loginView.enterValidPassword();
+                finishSignUp(false);
+            }
+            else {
+                //Dades introduides usuari.
+                String userLoginMail = info[0].split(":")[1].trim();
+                String userLoginPass = info[1].split(":")[1].trim().replaceAll(" ", "").replaceAll(",","").replace("[", "").replace("]","");
+                String userLoginRem =  info[2].split(":")[1].trim();
+
+                if (!info[0].contains("@gmail.com")) {
+                    loginView.enterValidEmail();
+                    finishSignUp(false);
+                }
+                else {
+                    if (userManager.getUser(userLoginMail) != null) {
+                        if (userManager.checkPassword(userLoginPass, userLoginMail)) {
+                            //Cas en el que s'ha loguejat correctament
+                            finishSignUp(true);
+                        }
+                        else {
+                            //Cas en que la contrassenya no s'ha introduit correctament
+                            loginView.passwordDoesntMatch();
+                            finishSignUp(false);
+                        }
+                    }
+                    else {
+                        //Cas en el que no s'ha trobat l'usuari en la base de dades amb l'email proporcionat.
+                        loginView.userDoesntExist();
+                        finishSignUp(false);
+                    }
+                /*
+                if (info[0].split(":")[1].equalsIgnoreCase("admin")) {
+                    mainController.swapPanel("game");
+                }
+                */
+                }
+            }
         }
-        /*
-        if (info[0].split(":")[1].equalsIgnoreCase("admin")) {
-            mainController.swapPanel("game");
-        }
-        */
     }
 }
 
