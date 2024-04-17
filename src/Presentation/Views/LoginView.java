@@ -1,6 +1,7 @@
 package Presentation.Views;
 
 import Business.UserManager;
+import Presentation.Fonts.MinecraftFont;
 import Presentation.JImagePanel;
 import Presentation.R;
 
@@ -10,6 +11,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class LoginView extends JLayeredPane implements MyView {
 
@@ -48,7 +50,10 @@ public class LoginView extends JLayeredPane implements MyView {
 
         JPanel loginLabel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         loginLabel.setOpaque(false);
-        loginLabel.add(new JLabel("Login"));
+        JLabel label = new JLabel("Login");
+        label.setFont(Objects.requireNonNull(MinecraftFont.getFont()).deriveFont(Font.PLAIN, 60));
+
+        loginLabel.add(label);
         mainPanel.add(loginLabel);
 
         JPanel usernameLabel = new JPanel(new FlowLayout(FlowLayout.LEFT));

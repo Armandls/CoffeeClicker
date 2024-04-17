@@ -49,6 +49,7 @@ public class GameController implements ActionListener {
             case "profileClose":
                 System.out.println("profileClose");
                 gameView.start();
+            
                 gameView.hideProfile();
                 break;
             case "configClose":
