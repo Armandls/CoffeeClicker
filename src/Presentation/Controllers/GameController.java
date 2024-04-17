@@ -42,6 +42,25 @@ public class GameController implements ActionListener {
                 System.out.println("click");
                 gameView.increase();
                 break;
+            case "profileClose":
+                System.out.println("profileClose");
+                gameView.start();
+                gameView.hideProfile();
+                break;
+            case "configClose":
+                System.out.println("configClose");
+                gameView.start();
+                gameView.hideConfig();
+                break;
+            case "deleteAccount":
+                System.out.println("Delete Account");
+                deleteAccount();
+                break;
+            case "logout":
+                System.out.println("Logout");
+                logout();
+                frame.swapPanel("login");
+                break;
         }
     }
 
