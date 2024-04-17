@@ -16,7 +16,6 @@ public class LoginController implements ActionListener {
     private FrameController mainController;
     private UserManager userManager;
     private LoginView loginView;
-
     private String email = "";
 
     public LoginController(FrameController mainController, UserManager userManager) {
