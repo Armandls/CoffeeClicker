@@ -13,7 +13,7 @@ public class MinecraftFont extends Font {
     public static Font getFont() {
         try {
             Font ret = Font.createFont(Font.TRUETYPE_FONT, new File(System.getProperty("user.dir") + "/files/Resources/Fonts/Minecraftchmc-dBlX.ttf"));
-            return ret.deriveFont(Font.PLAIN, 12);
+            return ret.deriveFont(Font.BOLD, 20);
         } catch (IOException | FontFormatException e) {
             e.printStackTrace();
             return null;

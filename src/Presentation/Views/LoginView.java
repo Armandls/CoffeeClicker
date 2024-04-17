@@ -58,7 +58,9 @@ public class LoginView extends JLayeredPane implements MyView {
 
         JPanel usernameLabel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         usernameLabel.setOpaque(false);
-        usernameLabel.add(new JLabel("E-mail:"));
+        JLabel emailLabel = new JLabel("E-mail:");
+        emailLabel.setFont(MinecraftFont.getFont());
+        usernameLabel.add(emailLabel);
         mainPanel.add(usernameLabel);
 
         JPanel usernamePanel = new JPanel();
@@ -68,7 +70,9 @@ public class LoginView extends JLayeredPane implements MyView {
 
         JPanel passwordLabel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         passwordLabel.setOpaque(false);
-        passwordLabel.add(new JLabel("Password:"));
+        JLabel pl = new JLabel("Password:");
+        pl.setFont(MinecraftFont.getFont());
+        passwordLabel.add(pl);
         mainPanel.add(passwordLabel);
         JPanel passwordPanel = new JPanel();
         passwordPanel.setOpaque(false);
@@ -93,7 +97,9 @@ public class LoginView extends JLayeredPane implements MyView {
         JPanel registerPanel = new JPanel();
         registerPanel.setOpaque(false);
         registerPanel.setLayout(new BoxLayout(registerPanel, BoxLayout.X_AXIS));
-        registerPanel.add(new JLabel("Don't have an account?"));
+        JLabel dha = new JLabel("Don't have an account?");
+        dha.setFont(MinecraftFont.getFont());
+        registerPanel.add(dha);
         registerPanel.add(registerButton);
         mainPanel.add(registerPanel);
         gridBagPanel.add(mainPanel, c);
@@ -137,13 +143,17 @@ public class LoginView extends JLayeredPane implements MyView {
         passwordField.setPreferredSize(new Dimension(250, 20));
 
         forgotPassword = new JButton("Forgot password?");
+        forgotPassword.setFont(MinecraftFont.getFont());
 
         loginButton = new JButton("Login");
+        loginButton.setFont(MinecraftFont.getFont());
 
         rememberMe = new JRadioButton("Remember me");
+        rememberMe.setFont(MinecraftFont.getFont());
         rememberMe.setOpaque(false);
 
         registerButton = new JButton("Register");
+        registerButton.setFont(MinecraftFont.getFont());
         start();
     }
 
