@@ -25,6 +25,11 @@ public class MainFrame extends JFrame {
         //cardLayout.show(cardPanel, ");
     }
 
+    void addPanel(JLayeredPane panel, String name) {
+        cardPanel.add(name, panel);
+        //cardLayout.show(cardPanel, ");
+    }
+
     void showPanel(String panelName) {
         cardLayout.show(cardPanel, panelName);
     }

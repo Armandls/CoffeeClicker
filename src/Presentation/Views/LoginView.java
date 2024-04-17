@@ -1,12 +1,16 @@
 package Presentation.Views;
 
+import Presentation.JImagePanel;
+import Presentation.R;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.Arrays;
 
-public class LoginView extends JPanel implements MyView {
+public class LoginView extends JLayeredPane implements MyView {
 
     private ActionListener listener;
     private JTextField usernameField;
@@ -18,7 +22,16 @@ public class LoginView extends JPanel implements MyView {
 
     public LoginView(ActionListener listener) {
 
-        setLayout(new GridBagLayout());
+        setLayout(new OverlayLayout(this));
+        this.listener = listener;
+        init();
+        mount();
+    }
+
+    void mount() {
+        //creating a panel for the form
+        JPanel gridBagPanel = new JPanel(new GridBagLayout());
+        gridBagPanel.setOpaque(false);
         GridBagConstraints c = new GridBagConstraints();
         c.gridy = 0;
         c.gridheight = 1;
@@ -26,32 +39,38 @@ public class LoginView extends JPanel implements MyView {
         c.fill = GridBagConstraints.NONE;
         c.anchor = GridBagConstraints.CENTER;
 
-        this.listener = listener;
-        init();
-
+        //main panel for the layout
         JPanel mainPanel = new JPanel();
+        mainPanel.setOpaque(false);
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setSize(300, 500);
 
         JPanel loginLabel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        loginLabel.setOpaque(false);
         loginLabel.add(new JLabel("Login"));
         mainPanel.add(loginLabel);
 
         JPanel usernameLabel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        usernameLabel.add(new JLabel("Username:"));
+        usernameLabel.setOpaque(false);
+        usernameLabel.add(new JLabel("E-mail:"));
         mainPanel.add(usernameLabel);
+
         JPanel usernamePanel = new JPanel();
+        usernamePanel.setOpaque(false);
         usernamePanel.add(usernameField);
         mainPanel.add(usernamePanel);
 
         JPanel passwordLabel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        passwordLabel.setOpaque(false);
         passwordLabel.add(new JLabel("Password:"));
         mainPanel.add(passwordLabel);
         JPanel passwordPanel = new JPanel();
+        passwordPanel.setOpaque(false);
         passwordPanel.add(passwordField);
         mainPanel.add(passwordPanel);
 
         JPanel panel = new JPanel();
+        panel.setOpaque(false);
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
         panel.add(rememberMe);
         panel.add(forgotPassword);
@@ -60,20 +79,50 @@ public class LoginView extends JPanel implements MyView {
 
 
         JPanel loginPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        loginPanel.setOpaque(false);
         loginPanel.add(loginButton);
         loginPanel.setBorder(new EmptyBorder(10, 0, 10, 0));
         mainPanel.add(loginPanel);
 
         JPanel registerPanel = new JPanel();
+        registerPanel.setOpaque(false);
         registerPanel.setLayout(new BoxLayout(registerPanel, BoxLayout.X_AXIS));
         registerPanel.add(new JLabel("Don't have an account?"));
         registerPanel.add(registerButton);
         mainPanel.add(registerPanel);
+        gridBagPanel.add(mainPanel, c);
 
-        add(mainPanel, c);
+        JImagePanel background = new JImagePanel();
+        JImagePanel form_background = new JImagePanel();
+
+        //image pannels
+        try {
+            background = new JImagePanel(R.MAIN_BACKGROUND);
+            background.setResolution(JImagePanel.EXTEND_RES);
+            setLayer(background, 0);
+        } catch (IOException ignored) {
+
+        }
+
+        try {
+            form_background = new JImagePanel(R.FORM_BACKGROUND);
+            setLayer(form_background, 1);
+        } catch (IOException ignored) {
+
+        }
+
+
+
+        //setting layers
+
+        setLayer(gridBagPanel, 2);
+
+        //adding panels
+        add(background);
+        add(form_background);
+        add(gridBagPanel);
 
     }
-
     void init() {
         usernameField = new JTextField();
         usernameField.setPreferredSize(new Dimension(250, 20));
@@ -86,6 +135,7 @@ public class LoginView extends JPanel implements MyView {
         loginButton = new JButton("Login");
 
         rememberMe = new JRadioButton("Remember me");
+        rememberMe.setOpaque(false);
 
         registerButton = new JButton("Register");
         start();
