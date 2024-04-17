@@ -190,4 +190,9 @@ public class LoginView extends JLayeredPane implements MyView {
         usernameField.setText("");
         passwordField.setText("");
     }
+
+    @Override
+    public void clear() {
+
+    }
 }

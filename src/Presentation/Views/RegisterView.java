@@ -155,4 +155,9 @@ public class RegisterView extends JPanel implements MyView {
         passwordField.setText("");
         confirmPasswordField.setText("");
     }
+
+    @Override
+    public void clear() {
+
+    }
 }

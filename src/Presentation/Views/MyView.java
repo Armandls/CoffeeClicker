@@ -7,4 +7,6 @@ public interface MyView {
     void start();
 
     void stop();
+
+    void clear();
 }
