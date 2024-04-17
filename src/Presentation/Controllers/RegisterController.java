@@ -17,9 +17,11 @@ public class RegisterController implements ActionListener {
 
     private RegisterView registerView;
     private FrameController mainController;
+    private UserManager userManager;
 
-    public RegisterController(FrameController mainController) {
+    public RegisterController(FrameController mainController, UserManager userManager) {
         this.mainController = mainController;
+        this.userManager = userManager;
     }
 
     @Override
@@ -56,7 +58,6 @@ public class RegisterController implements ActionListener {
     }
 
     public void signUp() {
-        UserManager userManager = new UserManager(new SQLUserDAO());
         String[] info = registerView.getInfo();
 
         if (info[1].isEmpty()) {

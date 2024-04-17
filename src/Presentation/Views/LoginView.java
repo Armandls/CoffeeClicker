@@ -1,5 +1,6 @@
 package Presentation.Views;
 
+import Business.UserManager;
 import Presentation.JImagePanel;
 import Presentation.R;
 

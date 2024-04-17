@@ -15,7 +15,6 @@ public class LoginController implements ActionListener {
 
     private FrameController mainController;
     private UserManager userManager;
-
     private LoginView loginView;
 
     public LoginController(FrameController mainController) {
