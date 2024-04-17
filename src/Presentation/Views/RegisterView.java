@@ -99,7 +99,7 @@ public class RegisterView extends JPanel implements MyView {
 
         loginButton = new JButton("Login");
 
-        singUpButton = new JButton("Sing Up");
+        singUpButton = new JButton("Sign Up");
 
         start();
     }
