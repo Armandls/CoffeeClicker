@@ -1,5 +1,7 @@
 package Presentation.Views;
 
+import Presentation.Controllers.GameController;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -13,6 +15,8 @@ public class GameView extends JPanel implements MyView {
     private JButton clickButton;
     private int num;
     private JLabel counter;
+    private ProfileView profileView;
+    private ConfigView configView;
 
     public GameView(ActionListener listener) {
         this.listener = listener;
@@ -35,13 +39,23 @@ public class GameView extends JPanel implements MyView {
         clickButton = new JButton("Click");
         clickButton.setActionCommand("click");
 
-        /*textArea.setAlignmentX(TextArea.RIGHT_ALIGNMENT);
-        textArea.setText("Credit Counter");*/
         counter = new JLabel("Credit Counter: " + num);
+
+        profileView = new ProfileView(listener);
+        profileView.setVisible(false);
+
+        configView = new ConfigView(listener);
+
         start();
     }
 
     private void mount() {
+        JLayeredPane layeredPane = new JLayeredPane();
+        layeredPane.setLayout(new OverlayLayout(layeredPane));
+
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout());
+
         JPanel topPanel = new JPanel(new GridLayout(1, 3));
         JPanel leftTopPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JPanel rightTopPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -55,16 +69,54 @@ public class GameView extends JPanel implements MyView {
         topPanel.add(leftTopPanel);
         topPanel.add(centerTopPanel);
         topPanel.add(rightTopPanel);
-        add(topPanel, BorderLayout.NORTH);
+        mainPanel.add(topPanel, BorderLayout.NORTH);
 
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         bottomPanel.add(phoneButton);
-        add(bottomPanel, BorderLayout.SOUTH);
-        add(clickButton, BorderLayout.CENTER);
+        mainPanel.add(bottomPanel, BorderLayout.SOUTH);
+        mainPanel.add(clickButton, BorderLayout.CENTER);
+
+        JPanel panel = new JPanel(new GridLayout(1, 2));
+        JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        leftPanel.setBackground(new Color(0, 0, 0, 0));
+        leftPanel.setOpaque(false);
+        JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        rightPanel.setOpaque(false);
+
+        panel.setBackground(new Color(0, 0, 0, 0));
+        rightPanel.add(profileView);
+        leftPanel.add(configView);
+        panel.add(leftPanel);
+        panel.add(rightPanel);
+        panel.setOpaque(false);
+
+        layeredPane.setLayer(mainPanel, 0);
+        layeredPane.setLayer(panel, 1);
+
+        layeredPane.add(panel);
+        layeredPane.add(mainPanel);
+
+        add(layeredPane, BorderLayout.CENTER);
     }
 
     public void increase() {
         counter.setText("Credit Counter: " + num++);
+    }
+
+    public void showProfile() {
+        profileView.setVisible(true);
+    }
+
+    public void showConfig() {
+        configView.setVisible(true);
+    }
+
+    public void hideConfig() {
+        configView.setVisible(false);
+    }
+
+    public void hideProfile() {
+        profileView.setVisible(false);
     }
 
     @Override
@@ -81,5 +133,10 @@ public class GameView extends JPanel implements MyView {
         profileButton.removeActionListener(listener);
         phoneButton.removeActionListener(listener);
         clickButton.removeActionListener(listener);
+    }
+
+    @Override
+    public void clear() {
+        //unimplemented
     }
 }
