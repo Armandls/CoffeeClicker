@@ -28,10 +28,12 @@ public class GameController implements ActionListener {
         switch(e.getActionCommand()) {
             case "profile":
                 System.out.println("profile");
+                gameView.showProfile();
                 break;
 
             case "config":
                 System.out.println("config");
+                gameView.showConfig();
                 break;
 
             case "phone":
