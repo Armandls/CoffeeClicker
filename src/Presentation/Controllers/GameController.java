@@ -1,4 +1,5 @@
 package Presentation.Controllers;
+import Business.UserManager;
 import Presentation.FrameController;
 import Presentation.Views.GameView;
 import Presentation.Views.LoginView;
@@ -15,8 +16,11 @@ public class GameController implements ActionListener {
 
     private GameView gameView;
 
-    public GameController(FrameController frame) {
+    private UserManager userManager;
+
+    public GameController(FrameController frame, UserManager userManager) {
         this.frame = frame;
+        this.userManager = userManager;
     }
 
     public void setView(GameView view) {
@@ -60,6 +64,7 @@ public class GameController implements ActionListener {
             case "deleteAccount":
                 System.out.println("Delete Account");
                 deleteAccount();
+                frame.swapPanel("login");
                 break;
             case "logout":
                 System.out.println("Logout");
@@ -74,6 +79,6 @@ public class GameController implements ActionListener {
     }
 
     void deleteAccount() {
-        //Todo
+        userManager.deleteUser("loco@gmail.com");
     }
 }
