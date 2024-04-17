@@ -61,7 +61,7 @@ public class MainController implements FrameController {
         RegisterView registerView = new RegisterView(registerController);
         registerController.setView(registerView);
 
-        GameController gameController = new GameController(this);
+        GameController gameController = new GameController(this, userManager);
         GameView gameView = new GameView(gameController);
         gameController.setView(gameView);
 

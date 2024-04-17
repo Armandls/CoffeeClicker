@@ -17,10 +17,11 @@ public class LoginController implements ActionListener {
     private UserManager userManager;
     private LoginView loginView;
 
+    private String email = "";
+
     public LoginController(FrameController mainController, UserManager userManager) {
         this.mainController = mainController;
         this.userManager = userManager;
-
     }
 
     @Override
@@ -47,6 +48,7 @@ public class LoginController implements ActionListener {
 
     private void finishSignUp(boolean wasSuccessful) {
         if (wasSuccessful) {
+            loginView.clearForm();
             mainController.swapPanel("game");
         } else {
             loginView.clearForm();
