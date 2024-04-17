@@ -64,5 +64,11 @@ public class GameController implements ActionListener {
         }
     }
 
+    void logout() {
+        //Todo
+    }
 
+    void deleteAccount() {
+        //Todo
+    }
 }

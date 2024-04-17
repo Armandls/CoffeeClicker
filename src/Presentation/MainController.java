@@ -53,11 +53,11 @@ public class MainController implements FrameController {
         mainFrame = new MainFrame();
         views = new Hashtable<>();
 
-        LoginController loginController = new LoginController(this);
+        LoginController loginController = new LoginController(this, userManager);
         LoginView loginView = new LoginView(loginController);
         loginController.setView(loginView);
 
-        RegisterController registerController = new RegisterController(this);
+        RegisterController registerController = new RegisterController(this, userManager);
         RegisterView registerView = new RegisterView(registerController);
         registerController.setView(registerView);
 

@@ -17,9 +17,9 @@ public class LoginController implements ActionListener {
     private UserManager userManager;
     private LoginView loginView;
 
-    public LoginController(FrameController mainController) {
+    public LoginController(FrameController mainController, UserManager userManager) {
         this.mainController = mainController;
-        this.userManager = new UserManager();
+        this.userManager = userManager;
 
     }
 
