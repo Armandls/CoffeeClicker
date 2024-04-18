@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Arrays;
 import javax.swing.JOptionPane;
+import javax.swing.border.EmptyBorder;
 
 
 public class RegisterView extends JLayeredPane implements MyView {
@@ -52,6 +53,9 @@ public class RegisterView extends JLayeredPane implements MyView {
         JLabel signUpLabel = new JLabel("Sing Up");
         signUpLabel.setFont(MinecraftFont.getFont().deriveFont(Font.PLAIN, 60));
         singupLabelPanel.add(signUpLabel);
+
+        singupLabelPanel.setBorder(new EmptyBorder(0, 0, 40, 0));
+
         mainPanel.add(singupLabelPanel);
 
         JPanel usernameLabelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -101,6 +105,7 @@ public class RegisterView extends JLayeredPane implements MyView {
         JPanel singUpPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         singUpPanel.setOpaque(false);
         singUpPanel.add(singUpButton);
+        singUpPanel.setBorder(new EmptyBorder(0, 0, 25, 0));
         mainPanel.add(singUpPanel);
 
         JPanel registerPanel = new JPanel();
@@ -110,6 +115,8 @@ public class RegisterView extends JLayeredPane implements MyView {
         alreadyHaveAccount.setFont(MinecraftFont.getFont());
         registerPanel.add(alreadyHaveAccount);
         registerPanel.add(loginButton);
+        registerPanel.setBorder(new EmptyBorder(30, 0, 20, 0));
+
         mainPanel.add(registerPanel);
 
         gridBagPanel.add(mainPanel, c);
