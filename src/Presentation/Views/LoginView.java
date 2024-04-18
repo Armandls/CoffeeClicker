@@ -138,11 +138,12 @@ public class LoginView extends JLayeredPane implements MyView {
 
     }
     void init() {
-        JImagePanel background = new JImagePanel();
-        JImagePanel form_background = new JImagePanel();
+        background = new JImagePanel();
+        form_background = new JImagePanel();
 
         usernameField = new JTextField();
         usernameField.setPreferredSize(new Dimension(250, 20));
+        usernameField.setFont(MinecraftFont.getFont().deriveFont(Font.PLAIN, 20));
 
         passwordField = new JPasswordField();
         passwordField.setPreferredSize(new Dimension(250, 20));
