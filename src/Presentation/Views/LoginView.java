@@ -22,6 +22,8 @@ public class LoginView extends JLayeredPane implements MyView {
     private JButton loginButton;
     private JRadioButton rememberMe;
     private JButton registerButton;
+    private JImagePanel background;
+    private JImagePanel form_background;
 
     public LoginView(ActionListener listener) {
 
@@ -52,8 +54,8 @@ public class LoginView extends JLayeredPane implements MyView {
         loginLabel.setOpaque(false);
         JLabel label = new JLabel("Login");
         label.setFont(Objects.requireNonNull(MinecraftFont.getFont()).deriveFont(Font.PLAIN, 60));
-
         loginLabel.add(label);
+        loginLabel.setBorder(new EmptyBorder(20, 0, 50, 0));
         mainPanel.add(loginLabel);
 
         JPanel usernameLabel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -66,6 +68,7 @@ public class LoginView extends JLayeredPane implements MyView {
         JPanel usernamePanel = new JPanel();
         usernamePanel.setOpaque(false);
         usernamePanel.add(usernameField);
+        usernamePanel.setBorder(new EmptyBorder(0, 0, 20, 0));
         mainPanel.add(usernamePanel);
 
         JPanel passwordLabel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -77,6 +80,7 @@ public class LoginView extends JLayeredPane implements MyView {
         JPanel passwordPanel = new JPanel();
         passwordPanel.setOpaque(false);
         passwordPanel.add(passwordField);
+        passwordPanel.setBorder(new EmptyBorder(0, 0, 20, 0));
         mainPanel.add(passwordPanel);
 
         JPanel panel = new JPanel();
@@ -91,7 +95,7 @@ public class LoginView extends JLayeredPane implements MyView {
         JPanel loginPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         loginPanel.setOpaque(false);
         loginPanel.add(loginButton);
-        loginPanel.setBorder(new EmptyBorder(10, 0, 10, 0));
+        loginPanel.setBorder(new EmptyBorder(10, 0, 50, 0));
         mainPanel.add(loginPanel);
 
         JPanel registerPanel = new JPanel();
@@ -101,11 +105,11 @@ public class LoginView extends JLayeredPane implements MyView {
         dha.setFont(MinecraftFont.getFont());
         registerPanel.add(dha);
         registerPanel.add(registerButton);
+        registerPanel.setBorder(new EmptyBorder(15, 0, 40, 0));
         mainPanel.add(registerPanel);
         gridBagPanel.add(mainPanel, c);
 
-        JImagePanel background = new JImagePanel();
-        JImagePanel form_background = new JImagePanel();
+
 
         //image pannels
         try {
@@ -123,8 +127,6 @@ public class LoginView extends JLayeredPane implements MyView {
 
         }
 
-
-
         //setting layers
 
         setLayer(gridBagPanel, 2);
@@ -136,6 +138,9 @@ public class LoginView extends JLayeredPane implements MyView {
 
     }
     void init() {
+        JImagePanel background = new JImagePanel();
+        JImagePanel form_background = new JImagePanel();
+
         usernameField = new JTextField();
         usernameField.setPreferredSize(new Dimension(250, 20));
 

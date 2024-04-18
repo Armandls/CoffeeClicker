@@ -155,12 +155,10 @@ public class RegisterView extends JLayeredPane implements MyView {
 
         passwordField = new JPasswordField();
         passwordField.setPreferredSize(new Dimension(200, 20));
-
         //passwordField.setFont(MinecraftFont.getFont().deriveFont(Font.PLAIN, 18));
 
         confirmPasswordField = new JPasswordField();
         confirmPasswordField.setPreferredSize(new Dimension(200, 20));
-
         //confirmPasswordField.setFont(MinecraftFont.getFont().deriveFont(Font.PLAIN, 18));
 
         loginButton = new JButton("Login");
