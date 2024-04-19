@@ -2,6 +2,7 @@ package Persistance.SQL;
 
 import Business.Config;
 import Persistance.Config.ConfigJSON;
+import Persistance.Exception.ConnectionErrorException;
 
 import java.sql.*;
 
@@ -25,7 +26,7 @@ public class SQLConnector {
      *
      * @return The shared SQLConnector instance.
      */
-    public static SQLConnector getInstance() {
+    public static SQLConnector getInstance() throws ConnectionErrorException{
         if (instance == null) {
             try {
                 // Obtener la configuración de la base de datos
@@ -35,10 +36,10 @@ public class SQLConnector {
                     instance = new SQLConnector(config.getUser(), config.getPwd(), config.getIp(), config.getPort(), config.getDataBaseName());
                     instance.connect();
                 } else {
-                    System.err.println("Error: No se pudo obtener la configuración de la base de datos.");
+                    throw new ConnectionErrorException("Error: No se pudo obtener la configuración de la base de datos.");
                 }
             } catch (Exception e) {
-                System.err.println("Error al obtener la configuración de la base de datos: " + e.getMessage());
+                throw new ConnectionErrorException("Error al obtener la configuración de la base de datos: " + e.getMessage());
             }
         }
         return instance;
@@ -63,11 +64,11 @@ public class SQLConnector {
      * Method that starts the inner connection to the database. Ideally, users would disconnect after
      * using the shared instance.
      */
-    public void connect() {
+    public void connect() throws ConnectionErrorException{
         try {
             conn = DriverManager.getConnection(url, username, password);
         } catch(SQLException e) {
-            System.err.println("Couldn't connect to --> " + url + " (" + e.getMessage() + ")");
+            throw new ConnectionErrorException("Couldn't connect to --> " + url + " (" + e.getMessage() + ")");
         }
     }
 

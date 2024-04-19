@@ -1,7 +1,13 @@
 package Business;
 
 import Business.Entities.User;
+import Business.Exception.BusinessException;
+import Business.Exception.DataDoesntMatchException;
+import Business.Exception.UserException.*;
 import Persistance.DAO.UserDAO;
+import Persistance.Exception.ConnectionErrorException;
+import Persistance.Exception.NotFoundException;
+import Persistance.Exception.PersistenceException;
 import Persistance.SQL.SQLUserDAO;
 
 /*Class to manage the different entities regarding the Game
@@ -10,6 +16,7 @@ import Persistance.SQL.SQLUserDAO;
 public class UserManager {
 
     private UserDAO userDAO;
+    private User user;
 
     public UserManager(UserDAO userDAO) {
         this.userDAO = userDAO;
@@ -55,8 +62,17 @@ public class UserManager {
      * @param email és el valor que utilitzem per cercar l'usuari a la base de dades.
      * @return User: l'usuari que es vol buscar.
      */
-    public User getUser(String email) {
-        return userDAO.getUser(email);
+    public User getUser(String email) throws BusinessException{
+        try {
+            return userDAO.getUser(email);
+        }
+        catch (NotFoundException e) {
+            throw new DataDoesntMatchException(e.getMessage());
+        }
+        catch (PersistenceException e) {
+            throw new BusinessException(e.getMessage());
+        }
+
     }
 
 
@@ -83,8 +99,37 @@ public class UserManager {
      * @param email és el correu electrònic de l'usuari.
      * @return boolean: true si la contrasenya és correcta, false en cas contrari.
      */
-    public boolean checkPassword(String password, String email) {
-        User user = userDAO.getUser(email);
+    public boolean checkPassword(String password, String email) throws BusinessException{
+        User user = null;
+        try {
+            user = userDAO.getUser(email);
+        } catch (PersistenceException e) {
+            throw new BusinessException(e.getMessage());
+        }
         return user.getPassword().equals(password);
+    }
+
+    private boolean checkPassword(String checkedPassword, User user) {
+        return user.getPassword().equals(checkedPassword);
+    }
+
+    public void loginUser(String userLoginMail, String userLoginPassword) throws UserException {
+        if (!userLoginMail.contains("@gmail.com")) {
+            throw new InvalidLoginEmailException("Invalid email format. The email must contain <@gmail.com>.");
+        }
+        User user;
+        try {
+            user = userDAO.getUser(userLoginMail);
+        } catch (NotFoundException e) {
+            throw new UserNotFoundException("User with email <" + userLoginMail + "> was not found in the database.");
+        } catch (PersistenceException e) {
+            throw new UserDatabaseError(e.getMessage());
+        }
+        if (checkPassword(userLoginPassword, user)) {
+            this.user = new User(user.getNickname(), user.getEmail(), user.getPassword());
+        }
+        else {
+            throw new InvalidPasswordException("The password introduced for user with email <" + userLoginMail + "> does not match.");
+        }
     }
 }

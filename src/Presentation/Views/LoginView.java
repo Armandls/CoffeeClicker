@@ -198,6 +198,10 @@ public class LoginView extends JLayeredPane implements MyView {
         JOptionPane.showMessageDialog(this, "Mail is not registered. Please sign up with this mail address or check if you have entered the correct one.", "Mail Error", JOptionPane.ERROR_MESSAGE);
     }
 
+    public void adviceMessage(String message, String title) {
+        JOptionPane.showMessageDialog(this, message, title, JOptionPane.ERROR_MESSAGE);
+    }
+
     public void enterValidEmail() {
         JOptionPane.showMessageDialog(this, "Please enter a valid email address. Email address must contain '@gmail.com'.", "Mail Error", JOptionPane.ERROR_MESSAGE);
     }
