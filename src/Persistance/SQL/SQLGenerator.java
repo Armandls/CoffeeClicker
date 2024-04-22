@@ -9,6 +9,9 @@ import Business.Entities.Improvement.HighImprovement;
 import Business.Entities.Improvement.Improvement;
 import Business.Entities.Improvement.MidImprovement;
 import Persistance.DAO.GeneratorDAO;
+import Persistance.Exception.ConnectionErrorException;
+import Persistance.Exception.NotFoundException;
+import Persistance.Exception.PersistenceException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,7 +20,7 @@ import java.util.List;
 
 public class SQLGenerator implements GeneratorDAO {
     @Override
-    public void addGenerator(Generator generator) {
+    public void addGenerator(Generator generator) throws ConnectionErrorException {
         //1- Inserim a la taula "Improvement" la millora associada al generador passat per paràmetres
         String improvementQuery = "INSERT INTO improvements(id_improvement, improvement_level, photo, improvement_type) VALUES ('" +
                 generator.getImprovement().getIdImprovement() + "', '" +
@@ -52,13 +55,18 @@ public class SQLGenerator implements GeneratorDAO {
         SQLConnector.getInstance().insertQuery(generatorQuery);
     }
     @Override
-    public void updateGenerator(Generator generator) {
+    public void updateGenerator(Generator generator) throws ConnectionErrorException {
         // Actualitzem valors millora
         String improvementQuery = "UPDATE improvements SET " +
                 "improvement_level = '" + generator.getImprovement().getLevel() + "', " +
                 "photo = '" + generator.getImprovement().getImageUrl() + "' " +
                 "WHERE id_improvement = '" + generator.getImprovement().getIdImprovement() + "';";
-        SQLConnector.getInstance().updateQuery(improvementQuery);
+        try {
+            SQLConnector.getInstance().updateQuery(improvementQuery);
+
+        } catch (ConnectionErrorException e) {
+            throw new ConnectionErrorException("Error updating generator with id <" + generator.getIdGenerator() + ">. " + e.getMessage());
+        }
 
         // Actualitzem valors generator
         String generatorQuery = "UPDATE generator SET " +
@@ -68,20 +76,28 @@ public class SQLGenerator implements GeneratorDAO {
                 "n_gens = '" + generator.getNGens() + "', " +
                 "improvement = '" + generator.getImprovement().getIdImprovement() + "' " + // Include improvement
                 "WHERE id_generator = '" + generator.getIdGenerator() + "';";
-        SQLConnector.getInstance().updateQuery(generatorQuery);
+        try {
+            SQLConnector.getInstance().updateQuery(generatorQuery);
+        } catch (ConnectionErrorException e) {
+            throw new ConnectionErrorException("Error updating generator with id <" + generator.getIdGenerator() + ">. " + e.getMessage());
+        }
     }
 
 
     @Override
-    public boolean deleteGenerator(int id_generator) {
+    public boolean deleteGenerator(int id_generator) throws ConnectionErrorException {
         // Delete cascade elimina millora associada al generador
         String query = "DELETE FROM generator WHERE id_generator = '" + id_generator + "';";
-        return SQLConnector.getInstance().deleteQuery(query);
+        try  {
+            return SQLConnector.getInstance().deleteQuery(query);
+        } catch (ConnectionErrorException e) {
+            throw new ConnectionErrorException("Error deleting generator with id <" + id_generator + ">" + e.getMessage());
+        }
     }
 
 
     @Override
-    public List<Generator> getGeneratorsFromGame(int id_game) {
+    public List<Generator> getGeneratorsFromGame(int id_game) throws PersistenceException{
         List<Generator> generators = new ArrayList<>();
 
         String query = "SELECT g.id_generator, g.type AS generator_type, g.n_currencies, g.n_gens, g.photo AS generator_photo, g.improvement, " +
@@ -92,6 +108,9 @@ public class SQLGenerator implements GeneratorDAO {
         ResultSet result = SQLConnector.getInstance().selectQuery(query);
 
         try {
+            if (!result.next()) {
+                throw new NotFoundException("Generators not found for game with id " + id_game);
+            }
             while (result.next()) {
                 // Atributs generator
                 int id_generator = result.getInt("id_generator");
@@ -136,7 +155,7 @@ public class SQLGenerator implements GeneratorDAO {
                 if (generator != null) generators.add(generator);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ConnectionErrorException(e.getMessage());
         }
 
         return generators;
