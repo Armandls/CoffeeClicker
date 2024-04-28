@@ -13,11 +13,15 @@ public class SQLUserDAO implements UserDAO {
 
     @Override
     public void addUser(User user) throws ConnectionErrorException {
-        String query = "INSERT INTO User(nickname, mail, password) VALUES ('" +
-                user.getNickname() + "', '" +
-                user.getEmail() + "', '" +
-                user.getPassword() + "');";
-        SQLConnector.getInstance().insertQuery(query);
+        try {
+            String query = "INSERT INTO User(nickname, mail, password) VALUES ('" +
+                    user.getNickname() + "', '" +
+                    user.getEmail() + "', '" +
+                    user.getPassword() + "');";
+            SQLConnector.getInstance().insertQuery(query);
+        } catch (ConnectionErrorException e) {
+            throw new ConnectionErrorException("Error adding user with email <" + user.getEmail() + ">. " + e.getMessage());
+        }
 
     }
 

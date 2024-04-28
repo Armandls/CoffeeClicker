@@ -3,6 +3,7 @@ package Business;
 import Business.Entities.User;
 import Business.Exception.BusinessException;
 import Business.Exception.DataDoesntMatchException;
+import Business.Exception.UserException.UserAlreadyExistsException;
 import Business.Exception.UserException.*;
 import Persistance.DAO.UserDAO;
 import Persistance.Exception.ConnectionErrorException;
@@ -52,7 +53,7 @@ public class UserManager {
      * Funció que afegeix un usuari a la base de dades.
      * @param user és l'usuari que es vol afegir a la base de dades.
      */
-    public void addUser(User user) {
+    public void addUser(User user) throws ConnectionErrorException {
         userDAO.addUser(user);
     }
 
@@ -78,10 +79,17 @@ public class UserManager {
 
     /**
      * Funció que elimina un usuari de la base de dades.
-     * @param email és el valor que utilitzem per cercar l'usuari a la base de dades.
+     * @throws ConnectionErrorException si hi ha un error de connexió amb la base de dades.
      */
-    public void deleteUser(String email) {
-        userDAO.deleteUser(email);
+    public void deleteUser() throws ConnectionErrorException {
+        userDAO.deleteUser(user.getEmail());
+        restartValuesUser();
+    }
+
+    public void restartValuesUser() {
+        user.setNickname("null");
+        user.setEmail("null");
+        user.setPassword("null");
     }
 
 
@@ -89,34 +97,32 @@ public class UserManager {
      * Funció que actualitza un usuari de la base de dades.
      * @param user és l'usuari que es vol actualitzar a la base de dades.
      */
-    public void updateUser(User user) {userDAO.updateUser(user);}
+    public void updateUser(User user) throws ConnectionErrorException {
+        userDAO.updateUser(user);
+    }
 
 
 
     /**
      * Funció que comprova si la contrasenya introduida per l'usuari en el login form és correcta.
-     * @param password és la contrasenya que l'usuari ha introduit.
-     * @param email és el correu electrònic de l'usuari.
+     * @param checkedPassword és la contrasenya que l'usuari ha introduit.
+     * @param user és l'usuari que s'ha loguejat.
      * @return boolean: true si la contrasenya és correcta, false en cas contrari.
      */
-    public boolean checkPassword(String password, String email) throws BusinessException{
-        User user = null;
-        try {
-            user = userDAO.getUser(email);
-        } catch (PersistenceException e) {
-            throw new BusinessException(e.getMessage());
-        }
-        return user.getPassword().equals(password);
-    }
-
     private boolean checkPassword(String checkedPassword, User user) {
         return user.getPassword().equals(checkedPassword);
     }
 
+    private boolean checkRepeatPassword(String checkedPassword, String userPassword) {
+        return userPassword.equals(checkedPassword);
+    }
+
     public void loginUser(String userLoginMail, String userLoginPassword) throws UserException {
+
         if (!userLoginMail.contains("@gmail.com")) {
             throw new InvalidLoginEmailException("Invalid email format. The email must contain <@gmail.com>.");
         }
+
         User user;
         try {
             user = userDAO.getUser(userLoginMail);
@@ -125,11 +131,32 @@ public class UserManager {
         } catch (PersistenceException e) {
             throw new UserDatabaseError(e.getMessage());
         }
+
         if (checkPassword(userLoginPassword, user)) {
             this.user = new User(user.getNickname(), user.getEmail(), user.getPassword());
         }
         else {
             throw new InvalidPasswordException("The password introduced for user with email <" + userLoginMail + "> does not match.");
+        }
+    }
+
+    public void registerUser(String username, String userMail, String userPassword, String repeatPassword) throws BusinessException, ConnectionErrorException {
+
+        if (!userMail.contains("@gmail.com")) {
+            throw new InvalidLoginEmailException("Invalid email format. The email must contain <@gmail.com>.");
+        }
+
+        try {
+            User user = userDAO.getUser(userMail);
+            throw new UserAlreadyExistsException("User with email <" + userMail + "> already exists in the database.");
+        } catch (ConnectionErrorException e) {
+            throw new BusinessException("Error connecting to the database.");
+        } catch (PersistenceException e) {
+            if (!checkRepeatPassword(userPassword, repeatPassword)) {
+                throw new InvalidPasswordException("The password introduced for user with email <" + userMail + "> does not match.");
+            } else {
+                addUser(new User(username, userMail, userPassword));
+            }
         }
     }
 }

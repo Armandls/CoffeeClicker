@@ -78,11 +78,13 @@ public class LoginController implements ActionListener {
                 String userLoginRem =  info[2].split(":")[1].trim();
                     try {
                         userManager.loginUser(userLoginMail, userLoginPass);
+                        finishSignUp(true);
                     } catch (InvalidLoginEmailException e) {
                         loginView.adviceMessage(e.getMessage(), "Wrong Email Format");
                         finishSignUp(false);
                     } catch (UserNotFoundException e) {
-                        loginView.adviceMessage(e.getMessage() + "Please enter a valid email.", "Invalid email");
+                        loginView.adviceMessage(e.getMessage() + " Please enter a valid email.", "Invalid email");
+                        finishSignUp(false);
                     } catch (InvalidPasswordException e) {
                         loginView.adviceMessage(e.getMessage() + "Please enter a valid password", "Invalid password");
                     } catch (UserException e) {
