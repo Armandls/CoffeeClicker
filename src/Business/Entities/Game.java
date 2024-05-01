@@ -17,6 +17,9 @@ public class Game {
     public int getCurrencyCount() {
         return currency_count;
     }
+    public void substractCurrency(int amount) {
+        currency_count -= amount;
+    }
     public boolean isFinished() {
         return finished;
     }

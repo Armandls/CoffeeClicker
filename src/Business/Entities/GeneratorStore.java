@@ -42,6 +42,7 @@ public class GeneratorStore {
         for (Generator generator : generators) {
             if (generator.getClass() == gen.getClass()) {
                 if (game.getCurrencyCount() > generator.getGeneratorPrice()){
+                    game.substractCurrency(generator.getGeneratorPrice());
                     generator.addGenerator();
                 }
                 else {

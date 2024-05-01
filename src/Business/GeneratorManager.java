@@ -6,6 +6,7 @@ import Business.Entities.GeneratorStore;
 import Business.Exception.BusinessException;
 import Business.Exception.GeneratorException.GeneratorException;
 import Business.Exception.GeneratorException.NoGeneratorException;
+import Business.Exception.GeneratorException.NotEnoughCurrencyException;
 import Persistance.DAO.GeneratorDAO;
 import Persistance.Exception.NotFoundException;
 import Persistance.Exception.PersistenceException;
@@ -26,7 +27,7 @@ public class GeneratorManager {
     public GeneratorManager(GameManager gameManager) throws BusinessException{
         generatorDAO = new SQLGenerator();
         this.gameManager = gameManager;
-        this.generatorStore = new GeneratorStore(getGenerators());
+        this.generatorStore = new GeneratorStore(getGenerators());  //Aqui faltaria passar-li la partida.
     }
     public GeneratorManager(){};
 
@@ -40,6 +41,14 @@ public class GeneratorManager {
             throw new BusinessException(e.getMessage());
         }
         return generators;
+    }
+
+    public void buyGenerator(String type) throws NotEnoughCurrencyException {
+        generatorStore.buyGenerator(type);
+    }
+
+    public List<Generator> getStoreGenerators() {
+        return generatorStore.getStoreGenerators();
     }
 
 
