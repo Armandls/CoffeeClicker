@@ -13,9 +13,10 @@ public class StoresView extends JPanel {
     private JButton generatorsButton;
     private JButton upgradesButton;
     private CardLayout cardLayout;
+    private JPanel storePanel;
     private JImagePanel background;
-    private GeneratorsView generatorsPanel;
-    private JPanel upgradesPanel;
+    private GeneratorsView generatorsView;
+    private ImprovementsView improvementsView;
     private ActionListener listener;
 
     public StoresView(ActionListener listener) throws IOException {
@@ -23,18 +24,29 @@ public class StoresView extends JPanel {
         setSize(800, 600);
         setLayout(new OverlayLayout(this));
         setOpaque(false);
-        init(listener);
+        init();
         mount();
     }
 
-    private void init(ActionListener listener) throws IOException {
+    private void init() throws IOException {
         cardLayout = new CardLayout();
         background = new JImagePanel(R.STORES_BACKGROUND);
         background.setResolution(JImagePanel.EXTEND_RES_HEIGHT);
         background.setVisible(true);
+
         generatorsButton = new JButton("Generators");
+        generatorsButton.addActionListener(listener);
+        generatorsButton.setActionCommand("generators");
+
         upgradesButton = new JButton("Upgrades");
-        generatorsPanel = new GeneratorsView(listener);
+        upgradesButton.addActionListener(listener);
+        upgradesButton.setActionCommand("upgrades");
+
+        this.generatorsView = new GeneratorsView(this.listener);
+        this.improvementsView = new ImprovementsView(this.listener);
+
+        this.storePanel = new JPanel();             //panell que conté les views de les dues botigues
+        storePanel.setLayout(this.cardLayout);
 
     }
 
@@ -57,9 +69,9 @@ public class StoresView extends JPanel {
         buttonsPanel.add(upgradesButton);
         panel.add(buttonsPanel);
 
-        JPanel storePanel = new JPanel(); //panell que conté les views de les dues botigues
-        storePanel.setLayout(new BorderLayout());
-        storePanel.add(new GeneratorsView(this.listener));
+
+        storePanel.add("generators", this.generatorsView);
+        storePanel.add("upgrades", this.improvementsView);
 
         panel.add(storePanel);
         mainPanel.setBorder(new EmptyBorder(49, 5, 0, 0));
@@ -72,5 +84,9 @@ public class StoresView extends JPanel {
         layeredPane.add(background);
 
         add(layeredPane);
+    }
+
+    public void swapPanel(String panel) {
+        cardLayout.show(storePanel, panel);
     }
 }

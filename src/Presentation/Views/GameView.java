@@ -1,6 +1,7 @@
 package Presentation.Views;
 
 import Presentation.Controllers.GameController;
+import Presentation.Controllers.StoresController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,9 +21,10 @@ public class GameView extends JPanel implements MyView {
     private ConfigView configView;
     private StoresView storesView;
 
-    public GameView(ActionListener listener) throws IOException {
+    public GameView(ActionListener listener, StoresView storesView) throws IOException {
         this.listener = listener;
         setLayout(new BorderLayout());
+        this.storesView = storesView;
         init();
         mount();
     }
@@ -47,7 +49,6 @@ public class GameView extends JPanel implements MyView {
         profileView.setVisible(false);
 
         configView = new ConfigView(listener);
-        storesView = new StoresView(listener);
         start();
     }
 

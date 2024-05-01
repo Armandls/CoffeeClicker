@@ -7,10 +7,8 @@ import Business.UserManager;
 import Presentation.Controllers.GameController;
 import Presentation.Controllers.LoginController;
 import Presentation.Controllers.RegisterController;
-import Presentation.Views.GameView;
-import Presentation.Views.LoginView;
-import Presentation.Views.MyView;
-import Presentation.Views.RegisterView;
+import Presentation.Controllers.StoresController;
+import Presentation.Views.*;
 
 import java.io.IOException;
 import java.util.Hashtable;
@@ -56,9 +54,15 @@ public class MainController implements FrameController {
         RegisterView registerView = new RegisterView(registerController);
         registerController.setView(registerView);
 
+        StoresController storesController = new StoresController();
+        StoresView storesView = new StoresView(storesController);
+        storesController.addView(storesView);
+
         GameController gameController = new GameController(this, userManager);
-        GameView gameView = new GameView(gameController);
+        GameView gameView = new GameView(gameController, storesView);
         gameController.setView(gameView);
+
+
 
         //mainFrame.addPanel(gameView, "game");
         mainFrame.addPanel(loginView, "login");

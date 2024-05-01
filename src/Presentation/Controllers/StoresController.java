@@ -18,9 +18,11 @@ public class StoresController implements ActionListener {
                 break;
             case "upgrades":
                 System.out.println("upgrades");
+                view.swapPanel("upgrades");
                 break;
             case "generators":
                 System.out.println("generators");
+                view.swapPanel("generators");
                 break;
             case "buy1":
                 System.out.println("buy1");
@@ -31,10 +33,20 @@ public class StoresController implements ActionListener {
             case "buy3":
                 System.out.println("buy3");
                 break;
+            case "buyI1":
+                System.out.println("buyI1");
+                break;
+            case "buyI2":
+                System.out.println("buyI2");
+                break;
+            case "buyI3":
+                System.out.println("buyI3");
+                break;
         }
     }
 
     public void addView(StoresView view) {
         this.view = view;
+        view.swapPanel("generators");
     }
 }
