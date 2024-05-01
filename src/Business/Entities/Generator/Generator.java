@@ -19,6 +19,15 @@ public abstract class Generator {
         this.imageUrl = imageUrl;
     }
 
+
+
+    //Creació de generador buit per obtenir la instancia del generador i saber quin tipus de fill es
+    public Generator(){}
+
+    public void increaseCurrency(float increaseVal) {
+        n_currencies += increaseVal;
+    }
+
     public int getIdGenerator() {
         return id_generator;
     }
@@ -53,5 +62,10 @@ public abstract class Generator {
 
     public void setNCurrencies(int n_currencies) {
         this.n_currencies = n_currencies;
+    }
+
+    public int getGeneratorPrice() {return 0;}
+    public void addGenerator() {
+        n_gens++;
     }
 }

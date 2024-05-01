@@ -1,3 +1,4 @@
+import Business.Exception.BusinessException;
 import Business.GameManager;
 import Business.GeneratorManager;
 import Business.ImprovementManager;
@@ -10,13 +11,20 @@ import Presentation.MainController;
 
 public class Main {
     public static void main(String[] args) {
+        GeneratorManager generatorManager = new GeneratorManager();;
         // Create the different DAOs
         UserDAO userDAO = new SQLUserDAO();
 
         
         // Create the different managers and the controller's instance
         GameManager gameManager = new GameManager(new SQLGameDAO());
-        GeneratorManager generatorManager = new GeneratorManager();
+        try {
+            generatorManager = new GeneratorManager(new GameManager(new SQLGameDAO()));
+        } catch (BusinessException e) {
+            //Gestionar la excepció que seria d'una mala conexio amb la base de dades.
+
+
+        }
         ImprovementManager improvementManager = new ImprovementManager();
         UserManager userManager = new UserManager(userDAO);
 
