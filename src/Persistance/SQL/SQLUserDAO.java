@@ -2,6 +2,9 @@ package Persistance.SQL;
 
 import Business.Entities.User;
 import Persistance.DAO.UserDAO;
+import Persistance.Exception.ConnectionErrorException;
+import Persistance.Exception.NotFoundException;
+import Persistance.Exception.PersistenceException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,16 +12,21 @@ import java.sql.SQLException;
 public class SQLUserDAO implements UserDAO {
 
     @Override
-    public void addUser(User user) {
-        String query = "INSERT INTO User(nickname, mail, password) VALUES ('" +
-                user.getNickname() + "', '" +
-                user.getEmail() + "', '" +
-                user.getPassword() + "');";
-        SQLConnector.getInstance().insertQuery(query);
+    public void addUser(User user) throws ConnectionErrorException {
+        try {
+            String query = "INSERT INTO User(nickname, mail, password) VALUES ('" +
+                    user.getNickname() + "', '" +
+                    user.getEmail() + "', '" +
+                    user.getPassword() + "');";
+            SQLConnector.getInstance().insertQuery(query);
+        } catch (ConnectionErrorException e) {
+            throw new ConnectionErrorException("Error adding user with email <" + user.getEmail() + ">. " + e.getMessage());
+        }
+
     }
 
     @Override
-    public User getUser(String email) {
+    public User getUser(String email) throws PersistenceException {
         String query = "SELECT u.nickname, u.mail, u.password FROM User AS u WHERE u.mail = \"" + email + "\" ;";
         ResultSet result = SQLConnector.getInstance().selectQuery(query);
 
@@ -29,27 +37,34 @@ public class SQLUserDAO implements UserDAO {
                         result.getString(3));
             }
             else {
-                return null;
+                throw new NotFoundException("User with email: <" + email + "> was not found in the database.");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
+            throw new ConnectionErrorException(e.getMessage());
         }
     }
 
     @Override
-    public boolean deleteUser(String email) {
+    public void deleteUser(String email) throws ConnectionErrorException {
         String query = "DELETE FROM User WHERE mail = '" + email + "';";
-        return SQLConnector.getInstance().deleteQuery(query);
+        try  {
+            SQLConnector.getInstance().deleteQuery(query);
+        } catch (ConnectionErrorException e) {
+            throw new ConnectionErrorException("Error deleting user with email <" + email + ">" + e.getMessage());
+        }
     }
 
     @Override
-    public void updateUser(User user) {
+    public void updateUser(User user) throws ConnectionErrorException{
         String query = "UPDATE User SET " +
                 "nickname = '" + user.getNickname() + "', " +
                 "password = '" + user.getPassword() + "' " +
                 "WHERE mail = '" + user.getEmail() + "';";
 
-        SQLConnector.getInstance().updateQuery(query);
+        try {
+            SQLConnector.getInstance().updateQuery(query);
+        } catch (ConnectionErrorException e) {
+            throw new ConnectionErrorException("Error updating user with email <" + user.getEmail() + ">. " + e.getMessage());
+        }
     }
 }

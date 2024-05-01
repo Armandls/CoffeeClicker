@@ -1,5 +1,6 @@
 package Presentation.Controllers;
 import Business.UserManager;
+import Persistance.Exception.ConnectionErrorException;
 import Presentation.FrameController;
 import Presentation.Views.GameView;
 import Presentation.Views.LoginView;
@@ -63,7 +64,11 @@ public class GameController implements ActionListener {
                 break;
             case "deleteAccount":
                 System.out.println("Delete Account");
-                deleteAccount();
+                try {
+                    deleteAccount();
+                } catch (ConnectionErrorException ex) {
+                    throw new RuntimeException(ex);
+                }
                 frame.swapPanel("login");
                 break;
             case "logout":
@@ -75,10 +80,10 @@ public class GameController implements ActionListener {
     }
 
     void logout() {
-        //Todo
+        userManager.restartValuesUser();
     }
 
-    void deleteAccount() {
-        userManager.deleteUser("loco@gmail.com");
+    void deleteAccount() throws ConnectionErrorException {
+        userManager.deleteUser();
     }
 }

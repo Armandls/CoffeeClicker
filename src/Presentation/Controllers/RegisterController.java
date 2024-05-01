@@ -1,8 +1,14 @@
 package Presentation.Controllers;
 
 import Business.Entities.User;
+import Business.Exception.BusinessException;
+import Business.Exception.UserException.InvalidLoginEmailException;
+import Business.Exception.UserException.InvalidPasswordException;
+import Business.Exception.UserException.UserAlreadyExistsException;
+import Business.Exception.UserException.UserException;
 import Business.UserManager;
 import Persistance.DAO.UserDAO;
+import Persistance.Exception.ConnectionErrorException;
 import Persistance.SQL.SQLUserDAO;
 import Presentation.FrameController;
 import Presentation.MainController;
@@ -29,8 +35,11 @@ public class RegisterController implements ActionListener {
         switch (e.getActionCommand()) {
             case "singUp":
                 System.out.println("Sign Up");
-                signUp();
-                //finishSignUp();
+                try {
+                    signUp();
+                } catch (ConnectionErrorException ex) {
+                    throw new RuntimeException(ex);
+                }
                 break;
             case "login":
                 System.out.println("Login");
@@ -41,9 +50,6 @@ public class RegisterController implements ActionListener {
                 break;
         }
     }
-
-    /*private void finishSignUp() {
-    }*/
 
     public void setView(RegisterView view) {
         this.registerView = view;
@@ -57,42 +63,41 @@ public class RegisterController implements ActionListener {
         }
     }
 
-    public void signUp() {
+    public void signUp() throws ConnectionErrorException{
         String[] info = registerView.getInfo();
 
         if (info[1].isEmpty()) {
             registerView.enterValidEmail();
             finishSignUp(false);
-        } else {
+        }
+        else {
             if (info[2].length() < 7) {
                 registerView.enterValidPassword();
                 finishSignUp(false);
-            } else {
+            }
+            else {
                 String username = info[0];
                 String email = info[1];
                 String password = info[2];
                 String confirmPassword = info[3];
 
-                if (!email.contains("@gmail.com")) {
-                    registerView.enterValidEmail();
+                try {
+                    userManager.registerUser(username, email, password, confirmPassword);
+                    finishSignUp(true);
+                } catch (InvalidLoginEmailException e) {
+                    registerView.adviceMessage(e.getMessage(), "Wrong Email Format");
                     finishSignUp(false);
-                }
-                else {
-                    if (userManager.getUser(email) == null) {
-                        if (password.equals(confirmPassword)) {
-                            //Cas en el que s'ha loguejat correctament
-                            userManager.addUser(new User(username, email, password));
-                            finishSignUp(true);
-                        } else {
-                            //Cas en que la contrassenya sigui diferent a la de confirmació.
-                            registerView.passwordDoesntMatch();
-                            finishSignUp(false);
-                        }
-                    } else {
-                        //Cas en el que s'ha trobat l'usuari en la base de dades amb l'email proporcionat.
-                        registerView.userAlreadyExists();
-                        finishSignUp(false);
-                    }
+                } catch (InvalidPasswordException e) {
+                    registerView.adviceMessage(e.getMessage(), "Invalid Password");
+                    finishSignUp(false);
+                } catch (UserAlreadyExistsException e) {
+                    registerView.adviceMessage(e.getMessage(), "User Already Exists");
+                    finishSignUp(false);
+                } catch (UserException e) {
+                    registerView.adviceMessage(e.getMessage(), "Database Error");
+                    finishSignUp(false);
+                } catch (BusinessException e) {
+                    throw new RuntimeException(e);
                 }
             }
         }

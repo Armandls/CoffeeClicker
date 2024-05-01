@@ -2,6 +2,7 @@ package Persistance.SQL;
 
 import Business.Entities.Game;
 import Persistance.DAO.GameDAO;
+import Persistance.Exception.PersistenceException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,7 +11,7 @@ import java.util.List;
 
 public class SQLGameDAO implements GameDAO {
     @Override
-    public void addGame(Game game,int id_user) {
+    public void addGame(Game game,int id_user) throws PersistenceException {
         String query = "INSERT INTO Game(id_game, currency_count, id_user) VALUES ('" +
                 game.getIdGame() + "', '" +
                 game.getCurrencyCount() + "', '" +
@@ -19,7 +20,7 @@ public class SQLGameDAO implements GameDAO {
     }
 
     @Override
-    public List<Game> getGamesFromUser(int id_user) {
+    public List<Game> getGamesFromUser(int id_user) throws PersistenceException{
         ArrayList<Game> games = new ArrayList<>();
         String query = "SELECT g.id_game, g.currency_count FROM Game AS g, User AS u WHERE u.id_game = g.id_game AND " +
                         "u.id_user = " + id_user + ";";
@@ -39,7 +40,8 @@ public class SQLGameDAO implements GameDAO {
     }
 
     @Override
-    public List<Integer> getGameStatistics(int id_game) {
+    public List<Integer> getGameStatistics(int id_game) throws PersistenceException{
+
         ArrayList<Integer> currencies = new ArrayList<>();
         String query = "SELECT s.current_currency FROM Game AS g, Statistics AS s WHERE g.id_game = s.id_game AND " +
                 "g.id_user = " + id_game + " ORDER BY s.game_min ASC" +";";
@@ -51,13 +53,12 @@ public class SQLGameDAO implements GameDAO {
             }
             return currencies;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
+            throw new PersistenceException(e.getMessage());
         }
 
     }
     @Override
-    public void updateGame(int id_game, int currency_count) {
+    public void updateGame(int id_game, int currency_count) throws PersistenceException{
         String query = "UPDATE Game SET currency_count = '" + currency_count + "' WHERE id_game = '" + id_game + "';";
         SQLConnector.getInstance().updateQuery(query);
     }

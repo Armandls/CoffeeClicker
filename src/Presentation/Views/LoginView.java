@@ -189,13 +189,8 @@ public class LoginView extends JLayeredPane implements MyView {
                 "rememberMe:"+rememberMe.isSelected()
         };
     }
-
-    public void passwordDoesntMatch() {
-        JOptionPane.showMessageDialog(this, "Passwords do not match. Please try again.", "Password Error", JOptionPane.ERROR_MESSAGE);
-    }
-
-    public void userDoesntExist() {
-        JOptionPane.showMessageDialog(this, "Mail is not registered. Please sign up with this mail address or check if you have entered the correct one.", "Mail Error", JOptionPane.ERROR_MESSAGE);
+    public void adviceMessage(String message, String title) {
+        JOptionPane.showMessageDialog(this, message, title, JOptionPane.ERROR_MESSAGE);
     }
 
     public void enterValidEmail() {

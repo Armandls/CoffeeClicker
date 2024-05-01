@@ -1,15 +1,15 @@
 package Presentation.Controllers;
 
+import Business.Exception.UserException.InvalidLoginEmailException;
+import Business.Exception.UserException.InvalidPasswordException;
+import Business.Exception.UserException.UserException;
+import Business.Exception.UserException.UserNotFoundException;
 import Business.UserManager;
 import Presentation.FrameController;
-import Presentation.MainController;
 import Presentation.Views.LoginView;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 public class LoginController implements ActionListener {
 
@@ -76,34 +76,26 @@ public class LoginController implements ActionListener {
                 String userLoginMail = info[0].split(":")[1].trim();
                 String userLoginPass = info[1].split(":")[1].trim().replaceAll(" ", "").replaceAll(",","").replace("[", "").replace("]","");
                 String userLoginRem =  info[2].split(":")[1].trim();
-
-                if (!info[0].contains("@gmail.com")) {
-                    loginView.enterValidEmail();
-                    finishSignUp(false);
-                }
-                else {
-                    if (userManager.getUser(userLoginMail) != null) {
-                        if (userManager.checkPassword(userLoginPass, userLoginMail)) {
-                            //Cas en el que s'ha loguejat correctament
-                            finishSignUp(true);
-                        }
-                        else {
-                            //Cas en que la contrassenya no s'ha introduit correctament
-                            loginView.passwordDoesntMatch();
-                            finishSignUp(false);
-                        }
-                    }
-                    else {
-                        //Cas en el que no s'ha trobat l'usuari en la base de dades amb l'email proporcionat.
-                        loginView.userDoesntExist();
+                    try {
+                        userManager.loginUser(userLoginMail, userLoginPass);
+                        finishSignUp(true);
+                    } catch (InvalidLoginEmailException e) {
+                        loginView.adviceMessage(e.getMessage(), "Wrong Email Format");
                         finishSignUp(false);
+                    } catch (UserNotFoundException e) {
+                        loginView.adviceMessage(e.getMessage() + " Please enter a valid email.", "Invalid email");
+                        finishSignUp(false);
+                    } catch (InvalidPasswordException e) {
+                        loginView.adviceMessage(e.getMessage() + "Please enter a valid password", "Invalid password");
+                    } catch (UserException e) {
+                        loginView.adviceMessage(e.getMessage(), "Database Error");
                     }
+
                 /*
                 if (info[0].split(":")[1].equalsIgnoreCase("admin")) {
                     mainController.swapPanel("game");
                 }
                 */
-                }
             }
         }
     }
