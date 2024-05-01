@@ -16,9 +16,9 @@ public class GameManager {
     public GameManager (GameDAO gameDAO) {
         this.gameDAO = gameDAO;
     }
-    public void addGame(Game game, int id_user) throws PersistenceException {
+    public void addGame(Game game, String mail_user) throws PersistenceException {
         try {
-            gameDAO.addGame(game, id_user);
+            gameDAO.addGame(game, mail_user);
         }catch (PersistenceException exception) {
             throw new PersistenceException("ERROR: Couldn't add game to the database.");
         }
