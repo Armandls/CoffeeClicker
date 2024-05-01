@@ -97,9 +97,6 @@ public class GameView extends JPanel implements MyView {
         panel.add(rightPanel);
         panel.setOpaque(false);
 
-
-
-
         layeredPane.setLayer(mainPanel, 0);
         layeredPane.setLayer(panel, 1);
 
@@ -129,8 +126,8 @@ public class GameView extends JPanel implements MyView {
         profileView.setVisible(false);
     }
 
-    public void showStores() {
-        storesView.setVisible(true);
+    public void toggleStore() {
+        storesView.setVisible(!storesView.isVisible());
     }
 
     @Override
