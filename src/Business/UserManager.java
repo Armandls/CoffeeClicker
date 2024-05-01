@@ -76,6 +76,14 @@ public class UserManager {
 
     }
 
+    /**
+     * Funció que retorna l'usuari amb la sessió iniciada.
+     * @return User: l'usuari que actualment té la sessió iniciada.
+     */
+    public User getCurrentUser() {
+        return user;
+    }
+
 
     /**
      * Funció que elimina un usuari de la base de dades.
@@ -100,6 +108,7 @@ public class UserManager {
     public void updateUser(User user) throws ConnectionErrorException {
         userDAO.updateUser(user);
     }
+
 
 
 

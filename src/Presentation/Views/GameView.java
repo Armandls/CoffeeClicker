@@ -18,15 +18,15 @@ public class GameView extends JPanel implements MyView {
     private ProfileView profileView;
     private ConfigView configView;
 
-    public GameView(ActionListener listener) {
+    public GameView(ActionListener listener, int num) {
         this.listener = listener;
+        this.num = num;
         setLayout(new BorderLayout());
         init();
         mount();
     }
 
     private void init() {
-        num = 0;
         configButton = new JButton("Config");
         configButton.setActionCommand("config");
 

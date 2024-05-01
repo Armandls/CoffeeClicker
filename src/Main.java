@@ -2,6 +2,8 @@ import Business.GameManager;
 import Business.GeneratorManager;
 import Business.ImprovementManager;
 import Business.UserManager;
+import Persistance.DAO.GameDAO;
+import Persistance.SQL.SQLGameDAO;
 import Persistance.SQL.SQLUserDAO;
 import Persistance.DAO.UserDAO;
 import Presentation.MainController;
@@ -13,7 +15,7 @@ public class Main {
 
         
         // Create the different managers and the controller's instance
-        GameManager gameManager = new GameManager();
+        GameManager gameManager = new GameManager(new SQLGameDAO());
         GeneratorManager generatorManager = new GeneratorManager();
         ImprovementManager improvementManager = new ImprovementManager();
         UserManager userManager = new UserManager(userDAO);

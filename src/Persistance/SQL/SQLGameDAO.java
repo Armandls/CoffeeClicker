@@ -29,7 +29,25 @@ public class SQLGameDAO implements GameDAO {
         try {
             while (result.next()) {
                 Game aux = new Game(result.getInt(1),
-                        result.getInt(2));
+                        result.getInt(2), result.getBoolean(3));
+                games.add(aux);
+            }
+            return games;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    @Override
+    public List<Game> getUnfinishedGamesFromUser(String mail_user) throws PersistenceException{
+        ArrayList<Game> games = new ArrayList<>();
+        String query = "SELECT g.id_game, g.currency_count FROM Game AS g, User AS u WHERE g.user = u.mail AND " +
+                "u.mail = " + mail_user + " AND g.finished = 0;";
+        ResultSet result = SQLConnector.getInstance().selectQuery(query);
+        try {
+            while (result.next()) {
+                Game aux = new Game(result.getInt(1),
+                        result.getInt(2), result.getBoolean(3));
                 games.add(aux);
             }
             return games;

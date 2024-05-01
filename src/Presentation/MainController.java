@@ -5,12 +5,10 @@ import Business.GeneratorManager;
 import Business.ImprovementManager;
 import Business.UserManager;
 import Presentation.Controllers.GameController;
+import Presentation.Controllers.HomeController;
 import Presentation.Controllers.LoginController;
 import Presentation.Controllers.RegisterController;
-import Presentation.Views.GameView;
-import Presentation.Views.LoginView;
-import Presentation.Views.MyView;
-import Presentation.Views.RegisterView;
+import Presentation.Views.*;
 
 import java.util.Hashtable;
 
@@ -56,19 +54,25 @@ public class MainController implements FrameController {
         registerController.setView(registerView);
 
         GameController gameController = new GameController(this, userManager);
-        GameView gameView = new GameView(gameController);
+        GameView gameView = new GameView(gameController, 0);
         gameController.setView(gameView);
 
-        //mainFrame.addPanel(gameView, "game");
+        HomeController homeController = new HomeController(this, userManager, gameManager);
+        HomeView homeView = new HomeView(homeController);
+        homeController.setView(homeView);
+
+
         mainFrame.addPanel(loginView, "login");
         mainFrame.addPanel(registerView, "register");
         mainFrame.addPanel(gameView, "game");
+        mainFrame.addPanel(homeView, "home");
         mainFrame.setVisible(true);
 
         views.put("login", loginView);
         views.put("register", registerView);
         views.put("game", gameView);
+        views.put("home", homeView);
 
-        currentView = loginView;
+        currentView = homeView;
     }
 }
