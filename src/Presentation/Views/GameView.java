@@ -5,6 +5,7 @@ import Presentation.Controllers.GameController;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class GameView extends JPanel implements MyView {
 
@@ -17,15 +18,16 @@ public class GameView extends JPanel implements MyView {
     private JLabel counter;
     private ProfileView profileView;
     private ConfigView configView;
+    private StoresView storesView;
 
-    public GameView(ActionListener listener) {
+    public GameView(ActionListener listener) throws IOException {
         this.listener = listener;
         setLayout(new BorderLayout());
         init();
         mount();
     }
 
-    private void init() {
+    private void init() throws IOException {
         num = 0;
         configButton = new JButton("Config");
         configButton.setActionCommand("config");
@@ -45,7 +47,7 @@ public class GameView extends JPanel implements MyView {
         profileView.setVisible(false);
 
         configView = new ConfigView(listener);
-
+        storesView = new StoresView(listener);
         start();
     }
 
@@ -87,8 +89,16 @@ public class GameView extends JPanel implements MyView {
         rightPanel.add(profileView);
         leftPanel.add(configView);
         panel.add(leftPanel);
+
+        storesView.setVisible(false);
+        storesView.setOpaque(false);
+        panel.add(storesView);
+
         panel.add(rightPanel);
         panel.setOpaque(false);
+
+
+
 
         layeredPane.setLayer(mainPanel, 0);
         layeredPane.setLayer(panel, 1);
@@ -117,6 +127,10 @@ public class GameView extends JPanel implements MyView {
 
     public void hideProfile() {
         profileView.setVisible(false);
+    }
+
+    public void showStores() {
+        storesView.setVisible(true);
     }
 
     @Override

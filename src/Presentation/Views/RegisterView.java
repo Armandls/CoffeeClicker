@@ -8,7 +8,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.Arrays;
 import javax.swing.JOptionPane;
 import javax.swing.border.EmptyBorder;
 
@@ -127,7 +126,7 @@ public class RegisterView extends JLayeredPane implements MyView {
         //image pannels
         try {
             background = new JImagePanel(R.MAIN_BACKGROUND);
-            background.setResolution(JImagePanel.EXTEND_RES);
+            background.setResolution(JImagePanel.EXTEND_RES_WIDTH);
             setLayer(background, 0);
         } catch (IOException ignored) {
 
