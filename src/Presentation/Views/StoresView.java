@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-public class StoresView extends JLayeredPane implements MyView {
+public class StoresView extends JPanel {
     private JButton generatorsButton;
     private JButton upgradesButton;
     private CardLayout cardLayout;
@@ -22,7 +22,7 @@ public class StoresView extends JLayeredPane implements MyView {
         this.listener = listener;
         setSize(800, 600);
         setLayout(new OverlayLayout(this));
-
+        setOpaque(false);
         init(listener);
         mount();
     }
@@ -31,6 +31,7 @@ public class StoresView extends JLayeredPane implements MyView {
         cardLayout = new CardLayout();
         background = new JImagePanel(R.STORES_BACKGROUND);
         background.setResolution(JImagePanel.EXTEND_RES_HEIGHT);
+        background.setVisible(true);
         generatorsButton = new JButton("Generators");
         upgradesButton = new JButton("Upgrades");
         generatorsPanel = new GeneratorsView(listener);
@@ -39,7 +40,8 @@ public class StoresView extends JLayeredPane implements MyView {
 
     private void mount() throws IOException {
 
-
+        JLayeredPane layeredPane = new JLayeredPane();
+        layeredPane.setLayout(new OverlayLayout(layeredPane));
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new FlowLayout());
         mainPanel.setOpaque(false);
@@ -59,39 +61,16 @@ public class StoresView extends JLayeredPane implements MyView {
         storePanel.setLayout(new BorderLayout());
         storePanel.add(new GeneratorsView(this.listener));
 
-
-        //storePanel.add("upgrades", new ImprovementsView());
-        //storePanel.add("generators", new GeneratorsView());
-        //cardLayout.show(storePanel, "generators");
-
         panel.add(storePanel);
         mainPanel.setBorder(new EmptyBorder(49, 5, 0, 0));
         mainPanel.add(panel);
 
+        layeredPane.setLayer(mainPanel, 1);
+        layeredPane.setLayer(background, 0);
 
-        setLayer(background, 0);
-        setLayer(mainPanel, 1);
+        layeredPane.add(mainPanel);
+        layeredPane.add(background);
 
-        add(mainPanel);
-        add(background);
-    }
-
-    public void addGenerator() {
-        //generatorsPanel.addGenerator();
-    }
-
-    @Override
-    public void start() {
-
-    }
-
-    @Override
-    public void stop() {
-
-    }
-
-    @Override
-    public void clear() {
-
+        add(layeredPane);
     }
 }

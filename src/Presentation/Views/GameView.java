@@ -91,18 +91,18 @@ public class GameView extends JPanel implements MyView {
         panel.add(leftPanel);
 
         storesView.setVisible(false);
-        storesView.setOpaque(false);
-        panel.add(storesView);
+
 
         panel.add(rightPanel);
         panel.setOpaque(false);
 
         layeredPane.setLayer(mainPanel, 0);
         layeredPane.setLayer(panel, 1);
+        layeredPane.setLayer(storesView, 2);
 
         layeredPane.add(panel);
         layeredPane.add(mainPanel);
-
+        layeredPane.add(storesView);
         add(layeredPane, BorderLayout.CENTER);
     }
 
