@@ -22,7 +22,6 @@ public class SQLUserDAO implements UserDAO {
         } catch (ConnectionErrorException e) {
             throw new ConnectionErrorException("Error adding user with email <" + user.getEmail() + ">. " + e.getMessage());
         }
-
     }
 
     @Override
