@@ -10,6 +10,7 @@ import Presentation.Controllers.LoginController;
 import Presentation.Controllers.RegisterController;
 import Presentation.Views.*;
 
+import java.io.IOException;
 import java.util.Hashtable;
 
 /*Class to manage the interactions between the user interface (UI, the View) and the Manager classes*/
@@ -23,7 +24,7 @@ public class MainController implements FrameController {
     private MyView currentView;
     private Hashtable<String, MyView> views;
 
-    public MainController(GameManager gameManager, GeneratorManager generatorManager, ImprovementManager improvementManager, UserManager userManager) {
+    public MainController(GameManager gameManager, GeneratorManager generatorManager, ImprovementManager improvementManager, UserManager userManager) throws IOException {
         this.gameManager = gameManager;
         this.generatorManager = generatorManager;
         this.improvementManager = improvementManager;
@@ -41,7 +42,7 @@ public class MainController implements FrameController {
 
     }
 
-    void init() {
+    void init() throws IOException {
         mainFrame = new MainFrame();
         views = new Hashtable<>();
 

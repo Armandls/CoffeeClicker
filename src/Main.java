@@ -21,7 +21,11 @@ public class Main {
         UserManager userManager = new UserManager(userDAO);
 
         // Create the controller and run it
-        MainController controller = new MainController(gameManager, generatorManager, improvementManager, userManager);
-        controller.run();
+        try {
+            MainController controller = new MainController(gameManager, generatorManager, improvementManager, userManager);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }

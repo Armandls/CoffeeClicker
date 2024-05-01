@@ -14,8 +14,8 @@ public class JImagePanel extends JPanel {
     private int res;
 
     public static final int DEFAULT_RES = 0;
-    public static final int EXTEND_RES = 1;
-
+    public static final int EXTEND_RES_WIDTH = 1;
+    public static final int EXTEND_RES_HEIGHT = 2;
     public JImagePanel() {
         super();
         setOpaque(false);
@@ -92,7 +92,31 @@ public class JImagePanel extends JPanel {
                 g.drawImage(image, xOffset, yOffset, newImageWidth, newImageHeight, this);
 
             }
+            else if (res == 2) {
+                int panelWidth = getWidth();
+                int panelHeight = getHeight();
+
+                // Get the image's original width and height
+                int imageWidth = image.getWidth(null);
+                int imageHeight = image.getHeight(null);
+
+                // Calculate the scale to fit the extended image width to the panel size
+                double scaleFactor = (double) panelWidth / imageWidth;
+
+                // Calculate the new image dimensions
+                int newImageWidth = panelWidth;
+                int newImageHeight = (int) (imageHeight * scaleFactor);
+
+                // Calculate the offset for centered positioning
+                int xOffset = 0;
+                int yOffset = (panelHeight - newImageHeight) / 2;
+
+                // Draw the scaled image centered onto the panel
+                g.drawImage(image, xOffset+50, yOffset+60, newImageWidth-100, newImageHeight-100, null);
+
+            }
         }
+
     }
 
     @Override

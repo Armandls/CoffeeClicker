@@ -45,6 +45,7 @@ public class GameController implements ActionListener {
 
             case "phone":
                 System.out.println("phone");
+                gameView.showStores();
                 break;
 
             case "click":
