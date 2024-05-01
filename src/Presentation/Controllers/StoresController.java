@@ -1,8 +1,5 @@
 package Presentation.Controllers;
-
-import Presentation.Views.GeneratorsView;
 import Presentation.Views.StoresView;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -23,24 +20,6 @@ public class StoresController implements ActionListener {
             case "generators":
                 System.out.println("generators");
                 view.swapPanel("generators");
-                break;
-            case "buy1":
-                System.out.println("buy1");
-                break;
-            case "buy2":
-                System.out.println("buy2");
-                break;
-            case "buy3":
-                System.out.println("buy3");
-                break;
-            case "buyI1":
-                System.out.println("buyI1");
-                break;
-            case "buyI2":
-                System.out.println("buyI2");
-                break;
-            case "buyI3":
-                System.out.println("buyI3");
                 break;
         }
     }
