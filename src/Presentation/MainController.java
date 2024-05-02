@@ -25,6 +25,11 @@ public class MainController implements FrameController {
     private MainFrame mainFrame;
     private MyView currentView;
     private Hashtable<String, MyView> views;
+    LoginController loginController;
+    RegisterController registerController;
+    GameController gameController;
+    StoresController storesController;
+    HomeController  homeController;
 
     public MainController(GameManager gameManager, GeneratorManager generatorManager, ImprovementManager improvementManager, UserManager userManager) throws IOException {
         this.gameManager = gameManager;
@@ -40,27 +45,32 @@ public class MainController implements FrameController {
         currentView = views.get(panelName);
     }
 
+    @Override
+    public void initializeGame(int currency, int basicGenerator, int midGenerator, int highGenerator, int lvlBasicImp, int lvlMidImp, int lvlHighImp) {
+        gameController.initializeGame(currency, basicGenerator, midGenerator, highGenerator, lvlBasicImp, lvlMidImp, lvlHighImp);
+    }
+
     void init() throws IOException {
         mainFrame = new MainFrame();
         views = new Hashtable<>();
 
-        LoginController loginController = new LoginController(this, userManager);
+        loginController = new LoginController(this, userManager);
         LoginView loginView = new LoginView(loginController);
         loginController.setView(loginView);
 
-        RegisterController registerController = new RegisterController(this, userManager);
+        registerController = new RegisterController(this, userManager);
         RegisterView registerView = new RegisterView(registerController);
         registerController.setView(registerView);
 
-        StoresController storesController = new StoresController();
+        storesController = new StoresController();
         StoresView storesView = new StoresView(storesController);
         storesController.addView(storesView);
 
-        GameController gameController = new GameController(this, userManager);
+        gameController = new GameController(this, userManager);
         GameView gameView = new GameView(gameController, storesView, 0);
         gameController.setView(gameView);
 
-        HomeController homeController = new HomeController(this, userManager, gameManager);
+        homeController = new HomeController(this, userManager, gameManager);
         HomeView homeView = new HomeView(homeController);
         homeController.setView(homeView);
 
