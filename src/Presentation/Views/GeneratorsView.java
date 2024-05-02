@@ -32,7 +32,6 @@ public class GeneratorsView extends JPanel {
         generatorsPanel.add(new JLabel("Amount"));
         mainPanel.add(generatorsPanel);
         this.scrollPane = new JScrollPane(mainPanel);
-
         add(scrollPane, BorderLayout.CENTER);
     }
 

@@ -109,9 +109,6 @@ public class UserManager {
         userDAO.updateUser(user);
     }
 
-
-
-
     /**
      * Funció que comprova si la contrasenya introduida per l'usuari en el login form és correcta.
      * @param checkedPassword és la contrasenya que l'usuari ha introduit.

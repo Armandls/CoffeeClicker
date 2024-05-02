@@ -66,10 +66,10 @@ public class MainController implements FrameController {
 
 
 
-        mainFrame.addPanel(gameView, "game");
+        //.addPanel(gameView, "game");
         mainFrame.addPanel(loginView, "login");
         mainFrame.addPanel(registerView, "register");
-        //mainFrame.addPanel(gameView, "game");
+        mainFrame.addPanel(gameView, "game");
         mainFrame.addPanel(homeView, "home");
         mainFrame.setVisible(true);
 

@@ -2,6 +2,7 @@ package Presentation.Views;
 
 import Presentation.Fonts.MinecraftFont;
 import Presentation.JImagePanel;
+import Presentation.JTexturedButton;
 import Presentation.R;
 
 import javax.swing.*;
@@ -21,8 +22,8 @@ public class RegisterView extends JLayeredPane implements MyView {
     private JPasswordField passwordField;
 
     private JPasswordField confirmPasswordField;
-    private JButton singUpButton;
-    private JButton loginButton;
+    private JTexturedButton singUpButton;
+    private JTexturedButton loginButton;
 
     public RegisterView(ActionListener listener) {
         setLayout(new OverlayLayout(this));
@@ -167,10 +168,12 @@ public class RegisterView extends JLayeredPane implements MyView {
         confirmPasswordField.setPreferredSize(new Dimension(200, 20));
         //confirmPasswordField.setFont(MinecraftFont.getFont().deriveFont(Font.PLAIN, 18));
 
-        loginButton = new JButton("Login");
+        loginButton = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
+        loginButton.setText("Login");
         loginButton.setFont(MinecraftFont.getFont());
 
-        singUpButton = new JButton("Sign Up");
+        singUpButton = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
+        singUpButton.setText("Sing Up");
         singUpButton.setFont(MinecraftFont.getFont());
 
         start();

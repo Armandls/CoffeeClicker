@@ -1,8 +1,8 @@
 package Presentation.Views;
 
-import Business.UserManager;
 import Presentation.Fonts.MinecraftFont;
 import Presentation.JImagePanel;
+import Presentation.JTexturedButton;
 import Presentation.R;
 
 import javax.swing.*;
@@ -19,9 +19,9 @@ public class LoginView extends JLayeredPane implements MyView {
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JButton forgotPassword;
-    private JButton loginButton;
+    private JTexturedButton loginButton;
     private JRadioButton rememberMe;
-    private JButton registerButton;
+    private JTexturedButton registerButton;
     private JImagePanel background;
     private JImagePanel form_background;
 
@@ -148,16 +148,21 @@ public class LoginView extends JLayeredPane implements MyView {
         passwordField.setPreferredSize(new Dimension(250, 20));
 
         forgotPassword = new JButton("Forgot password?");
+        forgotPassword.setOpaque(false);
+        forgotPassword.setContentAreaFilled(false);
+        forgotPassword.setBorderPainted(false);
         forgotPassword.setFont(MinecraftFont.getFont());
 
-        loginButton = new JButton("Login");
+        loginButton = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
+        loginButton.setText("Login");
         loginButton.setFont(MinecraftFont.getFont());
 
         rememberMe = new JRadioButton("Remember me");
         rememberMe.setFont(MinecraftFont.getFont());
         rememberMe.setOpaque(false);
 
-        registerButton = new JButton("Register");
+        registerButton = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
+        registerButton.setText("Register");
         registerButton.setFont(MinecraftFont.getFont());
         start();
     }
