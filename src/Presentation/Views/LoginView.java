@@ -114,7 +114,7 @@ public class LoginView extends JLayeredPane implements MyView {
         //image pannels
         try {
             background = new JImagePanel(R.MAIN_BACKGROUND);
-            background.setResolution(JImagePanel.EXTEND_RES);
+            background.setResolution(JImagePanel.EXTEND_RES_WIDTH);
             setLayer(background, 0);
         } catch (IOException ignored) {
 
@@ -128,7 +128,6 @@ public class LoginView extends JLayeredPane implements MyView {
         }
 
         //setting layers
-
         setLayer(gridBagPanel, 2);
 
         //adding panels
