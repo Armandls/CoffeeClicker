@@ -21,8 +21,10 @@ public class GameView extends JPanel implements MyView {
     private ConfigView configView;
     private StoresView storesView;
 
-    public GameView(ActionListener listener, StoresView storesView) throws IOException {
+
+    public GameView(ActionListener listener, StoresView storesView, int num) throws IOException {
         this.listener = listener;
+        this.num = num;
         setLayout(new BorderLayout());
         this.storesView = storesView;
         init();
@@ -49,6 +51,7 @@ public class GameView extends JPanel implements MyView {
         profileView.setVisible(false);
 
         configView = new ConfigView(listener);
+        storesView = new StoresView(listener);
         start();
     }
 
@@ -92,7 +95,8 @@ public class GameView extends JPanel implements MyView {
         panel.add(leftPanel);
 
         storesView.setVisible(false);
-
+        storesView.setOpaque(false);
+        panel.add(storesView);
 
         panel.add(rightPanel);
         panel.setOpaque(false);

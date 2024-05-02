@@ -5,8 +5,10 @@ import Business.GeneratorManager;
 import Business.ImprovementManager;
 import Business.UserManager;
 import Presentation.Controllers.GameController;
+import Presentation.Controllers.HomeController;
 import Presentation.Controllers.LoginController;
 import Presentation.Controllers.RegisterController;
+import Presentation.Views.*;
 import Presentation.Controllers.StoresController;
 import Presentation.Views.*;
 
@@ -59,20 +61,24 @@ public class MainController implements FrameController {
         storesController.addView(storesView);
 
         GameController gameController = new GameController(this, userManager);
-        GameView gameView = new GameView(gameController, storesView);
+        GameView gameView = new GameView(gameController, storesView, 0);
         gameController.setView(gameView);
 
+        HomeController homeController = new HomeController(this, userManager, gameManager);
+        HomeView homeView = new HomeView(homeController);
+        homeController.setView(homeView);
 
 
-        //mainFrame.addPanel(gameView, "game");
         mainFrame.addPanel(loginView, "login");
         mainFrame.addPanel(registerView, "register");
         mainFrame.addPanel(gameView, "game");
+        mainFrame.addPanel(homeView, "home");
         mainFrame.setVisible(true);
 
         views.put("login", loginView);
         views.put("register", registerView);
         views.put("game", gameView);
+        views.put("home", homeView);
 
         currentView = loginView;
     }
