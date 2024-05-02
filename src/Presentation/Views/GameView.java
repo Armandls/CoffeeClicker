@@ -2,6 +2,8 @@ package Presentation.Views;
 
 import Presentation.Controllers.GameController;
 import Presentation.Controllers.StoresController;
+import Presentation.JImagePanel;
+import Presentation.R;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,11 +41,17 @@ public class GameView extends JPanel implements MyView {
         profileButton = new JButton("Profile");
         profileButton.setActionCommand("profile");
 
-        phoneButton = new JButton("Phone");
+        phoneButton = new JButton();
+        phoneButton.setOpaque(false);
+        phoneButton.setContentAreaFilled(false);
+        phoneButton.setBorderPainted(false);
         phoneButton.setActionCommand("phone");
 
-        clickButton = new JButton("Click");
+        clickButton = new JButton();
         clickButton.setActionCommand("click");
+        clickButton.setOpaque(false);
+        clickButton.setContentAreaFilled(false);
+        clickButton.setBorderPainted(false);
 
         counter = new JLabel("Credit Counter: " + num);
 
@@ -55,12 +63,13 @@ public class GameView extends JPanel implements MyView {
         start();
     }
 
-    private void mount() {
+    private void mount() throws IOException {
         JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setLayout(new OverlayLayout(layeredPane));
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
+        mainPanel.setOpaque(false);
 
         JPanel topPanel = new JPanel(new GridLayout(1, 3));
         JPanel leftTopPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -78,7 +87,25 @@ public class GameView extends JPanel implements MyView {
         mainPanel.add(topPanel, BorderLayout.NORTH);
 
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        bottomPanel.add(phoneButton);
+        bottomPanel.setOpaque(false);
+
+        JLayeredPane phonePanel = new JLayeredPane();
+        phonePanel.setPreferredSize(new Dimension(100, 100));
+        phonePanel.setLayout(new OverlayLayout(phonePanel));
+
+        JImagePanel phone = new JImagePanel(R.STORES_BACKGROUND);
+        phone.setResolution(JImagePanel.EXTEND_RES_WIDTH);
+        JPanel phoneButtonPanel = new JPanel(new BorderLayout());
+        phoneButtonPanel.setOpaque(false);
+        phoneButtonPanel.add(phoneButton, BorderLayout.CENTER);
+
+        phonePanel.setLayer(phone, 0);
+        phonePanel.setLayer(phoneButtonPanel, 1);
+
+        phonePanel.add(phone);
+        phonePanel.add(phoneButtonPanel);
+
+        bottomPanel.add(phonePanel);
         mainPanel.add(bottomPanel, BorderLayout.SOUTH);
         mainPanel.add(clickButton, BorderLayout.CENTER);
 
@@ -101,13 +128,18 @@ public class GameView extends JPanel implements MyView {
         panel.add(rightPanel);
         panel.setOpaque(false);
 
-        layeredPane.setLayer(mainPanel, 0);
-        layeredPane.setLayer(panel, 1);
-        layeredPane.setLayer(storesView, 2);
+        JImagePanel background = new JImagePanel(R.GAME_BACKGROUND);
+        background.setResolution(JImagePanel.EXTEND_RES_WIDTH);
+
+        layeredPane.setLayer(background, 0);
+        layeredPane.setLayer(mainPanel, 1);
+        layeredPane.setLayer(panel, 2);
+        layeredPane.setLayer(storesView, 3);
 
         layeredPane.add(panel);
         layeredPane.add(mainPanel);
         layeredPane.add(storesView);
+        layeredPane.add(background);
         add(layeredPane, BorderLayout.CENTER);
     }
 

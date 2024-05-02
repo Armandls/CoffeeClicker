@@ -40,10 +40,6 @@ public class MainController implements FrameController {
         currentView = views.get(panelName);
     }
 
-    public void run() {
-
-    }
-
     void init() throws IOException {
         mainFrame = new MainFrame();
         views = new Hashtable<>();
@@ -67,6 +63,8 @@ public class MainController implements FrameController {
         HomeController homeController = new HomeController(this, userManager, gameManager);
         HomeView homeView = new HomeView(homeController);
         homeController.setView(homeView);
+
+
 
         mainFrame.addPanel(gameView, "game");
         mainFrame.addPanel(loginView, "login");
