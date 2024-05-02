@@ -48,7 +48,7 @@ public class LoginController implements ActionListener {
     private void finishSignUp(boolean wasSuccessful) {
         if (wasSuccessful) {
             loginView.clearForm();
-            mainController.swapPanel("game");
+            mainController.swapPanel("home");
         } else {
             loginView.clearForm();
         }
