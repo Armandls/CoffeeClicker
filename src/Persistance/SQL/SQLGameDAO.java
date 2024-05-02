@@ -27,24 +27,23 @@ public class SQLGameDAO implements GameDAO {
     @Override
     public List<Game> getGamesFromUser(User user) throws ConnectionErrorException{
         ArrayList<Game> games = new ArrayList<>();
-        String query = "SELECT g.id_game, g.currency_count FROM Game AS g, User AS u WHERE u.id_game = g.id_game AND " +
-                        "u.id_user = " + user.getEmail() + ";";
+        String query = "SELECT g.id_game, g.currency_count FROM Game AS g, User AS u WHERE g.user = u.mail AND " +
+                        "u.mail = " + user.getEmail() + ";";
         ResultSet result = SQLConnector.getInstance().selectQuery(query);
 
         try {
             while (result.next()) {
                 Game aux = new Game(result.getInt(1),
-                        result.getInt(2), result.getBoolean(3));
+                        result.getInt(2), result.getBoolean(3), user.getEmail());
                 games.add(aux);
             }
             return games;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
+            throw new ConnectionErrorException(e.getMessage());
         }
     }
     @Override
-    public List<Game> getUnfinishedGamesFromUser(String mail_user) throws PersistenceException{
+    public List<Game> getUnfinishedGamesFromUser(String mail_user) throws ConnectionErrorException{
         ArrayList<Game> games = new ArrayList<>();
         String query = "SELECT g.id_game, g.currency_count FROM Game AS g, User AS u WHERE g.user = u.mail AND " +
                 "u.mail = " + mail_user + " AND g.finished = 0;";
@@ -52,7 +51,7 @@ public class SQLGameDAO implements GameDAO {
         try {
             while (result.next()) {
                 Game aux = new Game(result.getInt(1),
-                        result.getInt(2), result.getBoolean(3));
+                        result.getInt(2), result.getBoolean(3), mail_user);
                 games.add(aux);
             }
             return games;
@@ -66,7 +65,7 @@ public class SQLGameDAO implements GameDAO {
 
         ArrayList<Integer> currencies = new ArrayList<>();
         String query = "SELECT s.current_currency FROM Game AS g, Statistics AS s WHERE g.id_game = s.id_game AND " +
-                "g.id_user = " + game.getIdGame() + " ORDER BY s.game_min ASC" +";";
+                "s.id_game = " + game.getIdGame() + " ORDER BY s.game_min ASC" +";";
         ResultSet result = SQLConnector.getInstance().selectQuery(query);
 
         try {
