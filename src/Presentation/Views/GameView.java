@@ -8,7 +8,12 @@ import Presentation.R;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
+import java.awt.image.ImageProducer;
 import java.io.IOException;
+import java.sql.SQLOutput;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GameView extends JPanel implements MyView {
 
@@ -22,6 +27,7 @@ public class GameView extends JPanel implements MyView {
     private ProfileView profileView;
     private ConfigView configView;
     private StoresView storesView;
+    private JPanel overPanel;
 
 
     public GameView(ActionListener listener, StoresView storesView, int num) throws IOException {
@@ -34,6 +40,11 @@ public class GameView extends JPanel implements MyView {
     }
 
     private void init() throws IOException {
+        overPanel = new JPanel();
+        overPanel.setLayout(null);
+        overPanel.setOpaque(false);
+        overPanel.setVisible(true);
+
         num = 0;
         configButton = new JButton("Config");
         configButton.setActionCommand("config");
@@ -135,11 +146,13 @@ public class GameView extends JPanel implements MyView {
         layeredPane.setLayer(mainPanel, 1);
         layeredPane.setLayer(panel, 2);
         layeredPane.setLayer(storesView, 3);
+        layeredPane.setLayer(overPanel, 4);
 
         layeredPane.add(panel);
         layeredPane.add(mainPanel);
         layeredPane.add(storesView);
         layeredPane.add(background);
+        layeredPane.add(overPanel);
         add(layeredPane, BorderLayout.CENTER);
     }
 
@@ -187,4 +200,42 @@ public class GameView extends JPanel implements MyView {
     public void clear() {
         //unimplemented
     }
+
+    public void startRedPanelAnimation(Point mousePosition) {
+        // Create red panel
+        try {
+            JImagePanel redPanel = new JImagePanel(R.COIN);
+            redPanel.setOpaque(false);
+
+            redPanel.setSize(50, 50); // Set the size as desired
+            redPanel.setLocation(mousePosition.x - 10, mousePosition.y - 50); // Set its initial position
+            overPanel.add(redPanel); // Add red panel to the view
+
+            // Implement fading animation
+            Timer timer = new Timer();
+            timer.scheduleAtFixedRate(new TimerTask() {
+                private float alpha = 1.0f; // Initial opacity
+
+                @Override
+                public void run() {
+                    alpha -= 0.05f; // Adjust opacity (you can change this value for speed)
+                    if (alpha <= 0.0f) {
+                        // Animation finished, remove red panel from the view
+                        overPanel.remove(redPanel);
+                        overPanel.repaint(); // Refresh the overPanel
+                        overPanel.revalidate(); // Revalidate the overPanel to reflect changes
+                        cancel(); // Stop the timer
+                    } else {
+                        // Set new opacity for the red panel
+                        redPanel.setLocation(redPanel.getLocation().x, redPanel.getLocation().y - 5); // Move the panel up (you can change this value for speed)
+                        redPanel.setAlpha(alpha); // Red color with variable alpha
+                    }
+                }
+            }, 0, 30); // Schedule task to run every 50 milliseconds
+        }catch (Exception ignored) {
+            System.out.println("xd");
+        }
+    }
+
+
 }

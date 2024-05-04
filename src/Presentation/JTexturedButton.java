@@ -8,9 +8,9 @@ public class JTexturedButton extends JButton {
     private Image texture;
     private Image pressedTexture;
 
-    public JTexturedButton() {
 
-    }
+    public JTexturedButton() {}
+
     public JTexturedButton(String texture, String pressedTexture) {
         this.texture = new ImageIcon(System.getProperty("user.dir") + texture).getImage();
         this.pressedTexture = new ImageIcon(System.getProperty("user.dir") + pressedTexture).getImage();

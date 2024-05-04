@@ -8,4 +8,5 @@ public class R {
 
     public static final String BUTTON_DEFAULT = "/files/Resources/Textures/button.png";
     public static final String BUTTON_PRESSED = "/files/Resources/Textures/buttonPressed.png";
+    public static final String COIN = "/files/Resources/Images/coin.png";
 }

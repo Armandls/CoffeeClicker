@@ -6,11 +6,10 @@ import Presentation.Views.GameView;
 import Presentation.Views.LoginView;
 import Presentation.Views.StoresView;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.*;
+import java.awt.event.*;
 import java.io.IOException;
+import java.util.Timer;
 
 public class GameController implements ActionListener {
 
@@ -20,6 +19,7 @@ public class GameController implements ActionListener {
     private GameView gameView;
 
     private UserManager userManager;
+
 
     public GameController(FrameController frame, UserManager userManager) throws IOException {
         this.frame = frame;
@@ -53,6 +53,7 @@ public class GameController implements ActionListener {
             case "click":
                 System.out.println("click");
                 gameView.increase();
+                gameView.startRedPanelAnimation(MouseInfo.getPointerInfo().getLocation()); // Trigger animation when click button is pressed
                 break;
             case "profileClose":
                 System.out.println("profileClose");
