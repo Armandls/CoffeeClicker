@@ -33,11 +33,13 @@ public class JImagePanel extends JPanel {
 
     public JImagePanel(String path) throws IOException {
         this.image = loadImage(path);
+        this.alpha = 1.0f;
         setOpaque(false);
     }
 
     public void setImage(BufferedImage image) {
         this.image = image;
+        this.alpha = 1.0f;
         repaint();
     }
 
@@ -53,30 +55,30 @@ public class JImagePanel extends JPanel {
             Graphics2D g2d = (Graphics2D) g.create();
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha)); // Set alpha composite
             if (res == 0) {
-            // Set the panel to be transparent
-            setOpaque(false);
+                // Set the panel to be transparent
+                setOpaque(false);
 
-            int panelWidth = getWidth();
-            int panelHeight = getHeight();
+                int panelWidth = getWidth();
+                int panelHeight = getHeight();
 
-            // Get the image's original width and height
-            int imageWidth = image.getWidth();
-            int imageHeight = image.getHeight();
+                // Get the image's original width and height
+                int imageWidth = image.getWidth();
+                int imageHeight = image.getHeight();
 
-            // Calculate the scale to fit the image to the panel size
-            double scaleFactor = Math.min((double) panelWidth / imageWidth, (double) panelHeight / imageHeight);
+                // Calculate the scale to fit the image to the panel size
+                double scaleFactor = Math.min((double) panelWidth / imageWidth, (double) panelHeight / imageHeight);
 
-            // Calculate the new image dimensions
-            int newImageWidth = (int) (imageWidth * scaleFactor);
-            int newImageHeight = (int) (imageHeight * scaleFactor);
+                // Calculate the new image dimensions
+                int newImageWidth = (int) (imageWidth * scaleFactor);
+                int newImageHeight = (int) (imageHeight * scaleFactor);
 
-            // Calculate the offset for centered positioning
-            int xOffset = (panelWidth - newImageWidth) / 2;
-            int yOffset = (panelHeight - newImageHeight) / 2;
+                // Calculate the offset for centered positioning
+                int xOffset = (panelWidth - newImageWidth) / 2;
+                int yOffset = (panelHeight - newImageHeight) / 2;
 
-            // Draw the scaled image centered onto the panel
-            g2d.drawImage(image, xOffset, yOffset, newImageWidth, newImageHeight, null);
-        }
+                // Draw the scaled image centered onto the panel
+                g2d.drawImage(image, xOffset, yOffset, newImageWidth, newImageHeight, this);
+            }
             else if (res == 1) {
                 int panelWidth = getWidth();
                 int panelHeight = getHeight();
@@ -97,7 +99,7 @@ public class JImagePanel extends JPanel {
                 int yOffset = (panelHeight - newImageHeight) / 2;
 
                 // Draw the scaled image centered onto the panel
-                g.drawImage(image, xOffset, yOffset, newImageWidth, newImageHeight, null);
+                g.drawImage(image, xOffset, yOffset, newImageWidth, newImageHeight, this);
 
             }
             else if (res == 2) {
