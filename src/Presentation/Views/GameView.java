@@ -3,18 +3,21 @@ package Presentation.Views;
 import Presentation.Controllers.GameController;
 import Presentation.Controllers.StoresController;
 import Presentation.JImagePanel;
+import Presentation.JTexturedButton;
 import Presentation.R;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GameView extends JPanel implements MyView {
 
     private ActionListener listener;
-    private JButton configButton;
-    private JButton profileButton;
+    private JTexturedButton configButton;
+    private JTexturedButton profileButton;
     private JButton phoneButton;
     private JButton clickButton;
     private int num;
@@ -22,6 +25,7 @@ public class GameView extends JPanel implements MyView {
     private ProfileView profileView;
     private ConfigView configView;
     private StoresView storesView;
+    private JPanel overPanel;
 
 
     public GameView(ActionListener listener, StoresView storesView, int num) throws IOException {
@@ -34,12 +38,19 @@ public class GameView extends JPanel implements MyView {
     }
 
     private void init() throws IOException {
-        num = 0;
-        configButton = new JButton("Config");
-        configButton.setActionCommand("config");
+        overPanel = new JPanel();
+        overPanel.setLayout(null);
+        overPanel.setOpaque(false);
+        overPanel.setVisible(true);
 
-        profileButton = new JButton("Profile");
+        num = 0;
+        configButton = new JTexturedButton(R.SETTINGS_BUTTON, R.SETTINGS_BUTTON_PRESSED);
+        configButton.setActionCommand("config");
+        configButton.setPreferredSize(new Dimension(35, 35));
+
+        profileButton = new JTexturedButton(R.GAME_BUTTON, R.GAME_BUTTON_PRESSED);
         profileButton.setActionCommand("profile");
+        profileButton.setPreferredSize(new Dimension(35, 35));
 
         phoneButton = new JButton();
         phoneButton.setOpaque(false);
@@ -72,9 +83,13 @@ public class GameView extends JPanel implements MyView {
         mainPanel.setOpaque(false);
 
         JPanel topPanel = new JPanel(new GridLayout(1, 3));
+        topPanel.setOpaque(false);
         JPanel leftTopPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        leftTopPanel.setOpaque(false);
         JPanel rightTopPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        rightTopPanel.setOpaque(false);
         JPanel centerTopPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        centerTopPanel.setOpaque(false);
 
         leftTopPanel.add(configButton);
 
@@ -135,11 +150,13 @@ public class GameView extends JPanel implements MyView {
         layeredPane.setLayer(mainPanel, 1);
         layeredPane.setLayer(panel, 2);
         layeredPane.setLayer(storesView, 3);
+        layeredPane.setLayer(overPanel, 4);
 
         layeredPane.add(panel);
         layeredPane.add(mainPanel);
         layeredPane.add(storesView);
         layeredPane.add(background);
+        layeredPane.add(overPanel);
         add(layeredPane, BorderLayout.CENTER);
     }
 
@@ -186,5 +203,41 @@ public class GameView extends JPanel implements MyView {
     @Override
     public void clear() {
         //unimplemented
+    }
+
+    public void startRedPanelAnimation(Point mousePosition) {
+        // Create red panel
+        try {
+            JImagePanel redPanel = new JImagePanel(R.COIN);
+            redPanel.setOpaque(false);
+
+            redPanel.setSize(50, 50); // Set the size as desired
+            redPanel.setLocation(mousePosition.x - 10 - this.getLocationOnScreen().x, mousePosition.y - 50 - this.getLocationOnScreen().y); // Set its initial position
+            overPanel.add(redPanel); // Add red panel to the view
+
+            // Implement fading animation
+            Timer timer = new Timer();
+            timer.scheduleAtFixedRate(new TimerTask() {
+                private float alpha = 1.0f; // Initial opacity
+
+                @Override
+                public void run() {
+                    alpha -= 0.05f; // Adjust opacity (you can change this value for speed)
+                    if (alpha <= 0.0f) {
+                        // Animation finished, remove red panel from the view
+                        overPanel.remove(redPanel);
+                        overPanel.repaint(); // Refresh the overPanel
+                        overPanel.revalidate(); // Revalidate the overPanel to reflect changes
+                        cancel(); // Stop the timer
+                    } else {
+                        // Set new opacity for the red panel
+                        redPanel.setLocation(redPanel.getLocation().x, redPanel.getLocation().y - 5); // Move the panel up (you can change this value for speed)
+                        redPanel.setAlpha(alpha); // Red color with variable alpha
+                    }
+                }
+            }, 0, 30);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

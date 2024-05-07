@@ -13,6 +13,8 @@ public class JImagePanel extends JPanel {
 
     private int res;
 
+    private float alpha;
+
     public static final int DEFAULT_RES = 0;
     public static final int EXTEND_RES_WIDTH = 1;
     public static final int EXTEND_RES_HEIGHT = 2;
@@ -24,17 +26,20 @@ public class JImagePanel extends JPanel {
 
     public JImagePanel(BufferedImage image) {
         super();
+        this.alpha = 1.0f;
         this.image = image;
         setOpaque(false);
     }
 
     public JImagePanel(String path) throws IOException {
         this.image = loadImage(path);
+        this.alpha = 1.0f;
         setOpaque(false);
     }
 
     public void setImage(BufferedImage image) {
         this.image = image;
+        this.alpha = 1.0f;
         repaint();
     }
 
@@ -47,7 +52,12 @@ public class JImagePanel extends JPanel {
         super.paintComponent(g);
 
         if (image != null) {
+            Graphics2D g2d = (Graphics2D) g.create();
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha)); // Set alpha composite
             if (res == 0) {
+                // Set the panel to be transparent
+                setOpaque(false);
+
                 int panelWidth = getWidth();
                 int panelHeight = getHeight();
 
@@ -67,7 +77,7 @@ public class JImagePanel extends JPanel {
                 int yOffset = (panelHeight - newImageHeight) / 2;
 
                 // Draw the scaled image centered onto the panel
-                g.drawImage(image, xOffset, yOffset, newImageWidth, newImageHeight, this);
+                g2d.drawImage(image, xOffset, yOffset, newImageWidth, newImageHeight, this);
             }
             else if (res == 1) {
                 int panelWidth = getWidth();
@@ -116,7 +126,11 @@ public class JImagePanel extends JPanel {
 
             }
         }
+    }
 
+    public void setAlpha(float alpha) {
+        this.alpha = alpha;
+        repaint(); // Repaint the panel to reflect the alpha change
     }
 
     @Override

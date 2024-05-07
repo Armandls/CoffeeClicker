@@ -1,6 +1,8 @@
 package Presentation.Views;
 import Presentation.Controllers.StoresController;
+import Presentation.Fonts.MinecraftFont;
 import Presentation.JImagePanel;
+import Presentation.JTexturedButton;
 import Presentation.R;
 
 import javax.swing.*;
@@ -10,8 +12,8 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class StoresView extends JPanel {
-    private JButton generatorsButton;
-    private JButton upgradesButton;
+    private JTexturedButton generatorsButton;
+    private JTexturedButton upgradesButton;
     private CardLayout cardLayout;
     private JPanel storePanel;
     private JImagePanel background;
@@ -34,11 +36,15 @@ public class StoresView extends JPanel {
         background.setResolution(JImagePanel.EXTEND_RES_HEIGHT);
         background.setVisible(true);
 
-        generatorsButton = new JButton("Generators");
+        generatorsButton = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
+        generatorsButton.setText("Generators");
+        generatorsButton.setFont(MinecraftFont.getFont());
         generatorsButton.addActionListener(listener);
         generatorsButton.setActionCommand("generators");
 
-        upgradesButton = new JButton("Upgrades");
+        upgradesButton = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
+        upgradesButton.setText("Upgrades");
+        upgradesButton.setFont(MinecraftFont.getFont());
         upgradesButton.addActionListener(listener);
         upgradesButton.setActionCommand("upgrades");
 
