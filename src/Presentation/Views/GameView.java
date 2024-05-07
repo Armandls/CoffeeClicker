@@ -3,23 +3,21 @@ package Presentation.Views;
 import Presentation.Controllers.GameController;
 import Presentation.Controllers.StoresController;
 import Presentation.JImagePanel;
+import Presentation.JTexturedButton;
 import Presentation.R;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseListener;
-import java.awt.image.ImageProducer;
 import java.io.IOException;
-import java.sql.SQLOutput;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class GameView extends JPanel implements MyView {
 
     private ActionListener listener;
-    private JButton configButton;
-    private JButton profileButton;
+    private JTexturedButton configButton;
+    private JTexturedButton profileButton;
     private JButton phoneButton;
     private JButton clickButton;
     private int num;
@@ -46,11 +44,13 @@ public class GameView extends JPanel implements MyView {
         overPanel.setVisible(true);
 
         num = 0;
-        configButton = new JButton("Config");
+        configButton = new JTexturedButton(R.SETTINGS_BUTTON, R.SETTINGS_BUTTON_PRESSED);
         configButton.setActionCommand("config");
+        configButton.setPreferredSize(new Dimension(35, 35));
 
-        profileButton = new JButton("Profile");
+        profileButton = new JTexturedButton(R.GAME_BUTTON, R.GAME_BUTTON_PRESSED);
         profileButton.setActionCommand("profile");
+        profileButton.setPreferredSize(new Dimension(35, 35));
 
         phoneButton = new JButton();
         phoneButton.setOpaque(false);
@@ -83,9 +83,13 @@ public class GameView extends JPanel implements MyView {
         mainPanel.setOpaque(false);
 
         JPanel topPanel = new JPanel(new GridLayout(1, 3));
+        topPanel.setOpaque(false);
         JPanel leftTopPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        leftTopPanel.setOpaque(false);
         JPanel rightTopPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        rightTopPanel.setOpaque(false);
         JPanel centerTopPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        centerTopPanel.setOpaque(false);
 
         leftTopPanel.add(configButton);
 
@@ -208,7 +212,7 @@ public class GameView extends JPanel implements MyView {
             redPanel.setOpaque(false);
 
             redPanel.setSize(50, 50); // Set the size as desired
-            redPanel.setLocation(mousePosition.x - 10, mousePosition.y - 50); // Set its initial position
+            redPanel.setLocation(mousePosition.x - 10 - this.getLocationOnScreen().x, mousePosition.y - 50 - this.getLocationOnScreen().y); // Set its initial position
             overPanel.add(redPanel); // Add red panel to the view
 
             // Implement fading animation
@@ -231,11 +235,9 @@ public class GameView extends JPanel implements MyView {
                         redPanel.setAlpha(alpha); // Red color with variable alpha
                     }
                 }
-            }, 0, 30); // Schedule task to run every 50 milliseconds
-        }catch (Exception ignored) {
-            System.out.println("xd");
+            }, 0, 30);
+        }catch (Exception e) {
+            e.printStackTrace();
         }
     }
-
-
 }
