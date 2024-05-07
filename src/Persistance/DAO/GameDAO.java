@@ -21,4 +21,5 @@ public interface GameDAO {
     List<Game> getGamesFromUser(User user) throws PersistenceException;
     List<Integer> getGameStatistics(Game game) throws PersistenceException;
     void updateGame(Game game) throws PersistenceException;
+    Game getGame(int gameId) throws PersistenceException;
 }

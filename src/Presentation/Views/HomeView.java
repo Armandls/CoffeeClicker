@@ -11,7 +11,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class HomeView extends JPanel implements MyView {
     private ActionListener listener;
@@ -19,12 +21,13 @@ public class HomeView extends JPanel implements MyView {
     private JButton resumeGame;
     private JImagePanel background;
     private JImagePanel form_background;
+    private JLayeredPane layeredPane;
 
     public HomeView(ActionListener listener) {
         this.listener = listener;
         initComponents();
-        setupLayout();
         setupBackground();
+        setupLayout();
     }
 
     private void initComponents() {
@@ -43,6 +46,25 @@ public class HomeView extends JPanel implements MyView {
         start();
     }
 
+    private void setupBackground() {
+        try {
+            background = new JImagePanel(R.MAIN_BACKGROUND);
+            form_background = new JImagePanel(R.FORM_BACKGROUND);
+            background.setOpaque(false);
+            form_background.setOpaque(false);
+
+            layeredPane = new JLayeredPane();
+            layeredPane.setLayout(new BorderLayout());
+            background.setSize(getSize());
+            form_background.setSize(getSize());
+
+            layeredPane.add(background, 1);
+            layeredPane.add(form_background, 2);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void setupLayout() {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setOpaque(false);
@@ -54,22 +76,11 @@ public class HomeView extends JPanel implements MyView {
         centerPanel.setOpaque(false);
         centerPanel.add(buttonPanel, new GridBagConstraints());
 
-        add(centerPanel, BorderLayout.CENTER);
+        layeredPane.add(centerPanel, 3);
+
+        add(layeredPane, BorderLayout.CENTER);
     }
 
-    private void setupBackground() {
-        try {
-            background = new JImagePanel(R.MAIN_BACKGROUND);
-            form_background = new JImagePanel(R.FORM_BACKGROUND);
-            background.setOpaque(false);
-            form_background.setOpaque(false);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        add(background, BorderLayout.CENTER);
-        add(form_background, BorderLayout.CENTER);
-    }
 
     public void displayGames(Map<Integer, Integer> games) {
         JDialog resumeDialog = new JDialog(JOptionPane.getFrameForComponent(this), "Resume Game", true);
@@ -105,6 +116,7 @@ public class HomeView extends JPanel implements MyView {
     public void addResumeGameButtonListener(ActionListener listener) {
         resumeGame.addActionListener(listener);
     }
+
 
     @Override
     public void start() {

@@ -1,9 +1,11 @@
 package Presentation;
 
+import Business.Exception.BusinessException;
 import Business.GameManager;
 import Business.GeneratorManager;
 import Business.ImprovementManager;
 import Business.UserManager;
+import Persistance.Exception.NotFoundException;
 import Presentation.Controllers.GameController;
 import Presentation.Controllers.HomeController;
 import Presentation.Controllers.LoginController;
@@ -13,7 +15,9 @@ import Presentation.Controllers.StoresController;
 import Presentation.Views.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 
 /*Class to manage the interactions between the user interface (UI, the View) and the Manager classes*/
 public class MainController implements FrameController {
@@ -76,7 +80,7 @@ public class MainController implements FrameController {
 
 
 
-        //.addPanel(gameView, "game");
+        mainFrame.addPanel(gameView, "game");
         mainFrame.addPanel(loginView, "login");
         mainFrame.addPanel(registerView, "register");
         mainFrame.addPanel(gameView, "game");
@@ -89,5 +93,30 @@ public class MainController implements FrameController {
         views.put("home", homeView);
 
         currentView = loginView;
+    }
+
+    public void resumeGame(int gameId) {
+        int n_currencies = 0;
+        int[] n_generators = {0,0,0}; //{n_basic, n_mid, n_high}
+        int[] boosts_lvl = {0,0,0};   //{lvl_basic, lvl_mid, lvl_high}
+        List<String> generator_types;
+        int i = 0;
+
+        try {
+            n_currencies = gameManager.getGameCurrencies(gameId);
+        } catch (NotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            generator_types = generatorManager.getGeneratorsTypes(gameId);
+            for(String s: generator_types){
+                n_generators[i] = generatorManager.getNumberOfGenerators(gameId, s);
+                boosts_lvl[i++] = generatorManager.getLevelOfGenerator(gameId, s);
+            }
+        } catch (BusinessException e) {
+            throw new RuntimeException(e); // no generators exception/persistance exception
+        }
+
+        gameController.initializeGame(n_currencies, n_generators[0], n_generators[1], n_generators[2], boosts_lvl[0],boosts_lvl[1],boosts_lvl[2]);
     }
 }

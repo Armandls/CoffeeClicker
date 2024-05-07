@@ -2,6 +2,7 @@ package Business;
 
 import Business.Entities.Game;
 import Persistance.DAO.GameDAO;
+import Persistance.Exception.NotFoundException;
 import Persistance.Exception.PersistenceException;
 
 import java.util.ArrayList;
@@ -36,5 +37,16 @@ public class GameManager {
         }
 
         return creditsAndIds;
+    }
+
+    public int getGameCurrencies(int gameId) throws NotFoundException{
+        Game game;
+        try{
+            game = gameDAO.getGame(gameId);
+        }
+        catch(PersistenceException e) {
+            throw new NotFoundException("ERROR: Couldn't get the solicited game.");
+        }
+        return game.getCurrencyCount();
     }
 }
