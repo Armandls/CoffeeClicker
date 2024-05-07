@@ -40,7 +40,7 @@ public class HomeController implements ActionListener{
             System.out.println("Resume Game");
             resumeGame();
         } else if (command.startsWith("loadGame-")) {
-            String gameIdStr = command.substring(8);
+            String gameIdStr = command.substring(9);
             int gameId = Integer.parseInt(gameIdStr);
             mainController.resumeGame(gameId);
         }

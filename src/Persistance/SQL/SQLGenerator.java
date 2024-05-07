@@ -108,9 +108,6 @@ public class SQLGenerator implements GeneratorDAO {
         ResultSet result = SQLConnector.getInstance().selectQuery(query);
 
         try {
-            if (!result.next()) {
-                throw new NotFoundException("Generators not found for game with id " + id_game);
-            }
             while (result.next()) {
                 // Atributs generator
                 int id_generator = result.getInt("id_generator");
@@ -153,6 +150,9 @@ public class SQLGenerator implements GeneratorDAO {
                 }
                 if (improvement!= null) generator.setImprovement(improvement);
                 if (generator != null) generators.add(generator);
+            }
+            if (generators.isEmpty()) {
+                throw new NotFoundException("Generators not found for game with id " + id_game);
             }
         } catch (SQLException e) {
             throw new ConnectionErrorException(e.getMessage());

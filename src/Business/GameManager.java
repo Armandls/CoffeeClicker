@@ -6,6 +6,7 @@ import Persistance.Exception.NotFoundException;
 import Persistance.Exception.PersistenceException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +27,7 @@ public class GameManager {
     }
     public Map<Integer, Integer> getUnfinishedGames (String mail_user) throws PersistenceException {
         List<Game> games;
-        Map<Integer, Integer> creditsAndIds = null;
+        Map<Integer, Integer> creditsAndIds = new HashMap<>();;
         try {
             games = gameDAO.getUnfinishedGamesFromUser(mail_user);
         }catch (PersistenceException exception) {

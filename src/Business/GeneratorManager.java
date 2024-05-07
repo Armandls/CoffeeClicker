@@ -27,10 +27,10 @@ public class GeneratorManager {
     GameManager gameManager;
     GeneratorStore generatorStore;
 
-    public GeneratorManager(GameManager gameManager) throws BusinessException{
-        generatorDAO = new SQLGenerator();
+    public GeneratorManager(GameManager gameManager, GeneratorDAO generatorDAO) throws BusinessException{
+        this.generatorDAO = generatorDAO;
         this.gameManager = gameManager;
-        this.generatorStore = new GeneratorStore(getGenerators());  //Aqui faltaria passar-li la partida.
+        //this.generatorStore = new GeneratorStore(getGenerators());  //Aqui faltaria passar-li la partida.
     }
     public GeneratorManager(){};
 
@@ -78,8 +78,8 @@ public class GeneratorManager {
             throw new RuntimeException(e); // Mètode es crida sobre generators previament consultats de la bbdd, per tant excepció mai es llançarà
         }
         for(Generator g: generators) {
-            if (g.getClass().getSimpleName().equals(type)) {
-                int n_gents = g.getNCurrencies();
+            if (g.getClass().getSimpleName().contains(type)) { //simpleName: BasicGenerator, MidGenerator, HighGenerator
+                 n_gens = g.getNGens();
             }
         }
         return n_gens;
@@ -93,18 +93,18 @@ public class GeneratorManager {
      */
     public int getLevelOfGenerator(int gameId, String type) {
         List<Generator> generators = new ArrayList<>();
-        int n_gens = 0;
+        int gen_lvl = 0;
         try {
             generators = generatorDAO.getGeneratorsFromGame(gameId);
         } catch (PersistenceException e) {
             throw new RuntimeException(e); // Mètode es crida sobre generators previament consultats de la bbdd, per tant excepció mai es llançarà
         }
         for(Generator g: generators) {
-            if (g.getClass().getSimpleName().equals(type)) {
-                int n_gents = g.getImprovement().getLevel();
+            if (g.getClass().getSimpleName().contains(type)) { //simpleName: BasicGenerator, MidGenerator, HighGenerator
+                gen_lvl= g.getImprovement().getLevel();
             }
         }
-        return n_gens;
+        return gen_lvl;
     }
     public void buyGenerator(String type) throws NotEnoughCurrencyException {
         generatorStore.buyGenerator(type);

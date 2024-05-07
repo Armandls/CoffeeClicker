@@ -46,8 +46,9 @@ public class SQLGameDAO implements GameDAO {
     @Override
     public List<Game> getUnfinishedGamesFromUser(String mail_user) throws ConnectionErrorException{
         ArrayList<Game> games = new ArrayList<>();
-        String query = "SELECT g.id_game, g.currency_count FROM Game AS g, User AS u WHERE g.user = u.mail AND " +
-                "u.mail = " + mail_user + " AND g.finished = 0;";
+        String query = "SELECT id_game, currency_count, finished FROM Game AS g, User AS u " +
+                "WHERE g.user = u.mail AND u.mail = '" + mail_user + "' AND g.finished = 0";
+
         ResultSet result = SQLConnector.getInstance().selectQuery(query);
         try {
             while (result.next()) {
