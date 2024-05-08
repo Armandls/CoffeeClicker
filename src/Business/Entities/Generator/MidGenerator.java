@@ -12,6 +12,9 @@ public class MidGenerator extends Generator {
     }
     //Creació de generador buit per obtenir la instancia del generador i saber quin tipus de fill es
     public MidGenerator(){super();}
+    public MidGenerator(int id_game, String imageUrl) {
+        super(id_game, imageUrl);
+    }
     @Override
     public int getGeneratorPrice() {
         return (int) Math.round(150 * Math.pow(1.15, super.getNGens()));

@@ -9,6 +9,9 @@ public class HighGenerator extends Generator{
     public HighGenerator(int id_generator, int n_currencies, int id_game, int n_gens, Improvement improvement, String imageUrl) {
         super(id_generator, n_currencies, id_game, n_gens, improvement, imageUrl);
     }
+    public HighGenerator(int id_game, String imageUrl) {
+        super(id_game, imageUrl);
+    }
     public HighGenerator() {super();}
     @Override
     public int getGeneratorPrice() {

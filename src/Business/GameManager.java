@@ -15,8 +15,17 @@ import java.util.Map;
  */
 public class GameManager {
     GameDAO gameDAO;
+    Game game;
     public GameManager (GameDAO gameDAO) {
         this.gameDAO = gameDAO;
+    }
+
+    public int getGameId() {
+        return game.getIdGame();
+    }
+    public int getGameCurrency() {return game.getCurrencyCount();}
+    public void buyGenerator(String type, String imageUrl) {
+
     }
     public void addGame(Game game, String mail_user) throws PersistenceException {
         try {
