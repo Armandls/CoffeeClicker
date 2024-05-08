@@ -2,9 +2,11 @@ package Presentation.Views;
 
 import Presentation.Controllers.GameController;
 import Presentation.Controllers.StoresController;
+import Presentation.Fonts.MinecraftFont;
 import Presentation.JImagePanel;
 import Presentation.JTexturedButton;
 import Presentation.R;
+import org.checkerframework.checker.units.qual.C;
 
 import javax.swing.*;
 import java.awt.*;
@@ -65,6 +67,8 @@ public class GameView extends JPanel implements MyView {
         clickButton.setBorderPainted(false);
 
         counter = new JLabel("Credit Counter: " + num);
+        counter.setFont(MinecraftFont.getFont());
+        counter.setForeground(new Color(24, 176, 0));
 
         profileView = new ProfileView(listener);
         profileView.setVisible(false);
@@ -93,7 +97,25 @@ public class GameView extends JPanel implements MyView {
 
         leftTopPanel.add(configButton);
 
-        centerTopPanel.add(counter);
+        JLayeredPane layeredPane1 = new JLayeredPane();
+        layeredPane1.setPreferredSize(new Dimension(200, 40));
+        layeredPane1.setLayout(new OverlayLayout(layeredPane1));
+        layeredPane1.setOpaque(false);
+
+        JPanel counterPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        counterPanel.setOpaque(false);
+        counterPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
+        counterPanel.add(counter);
+
+        layeredPane1.setLayer(counterPanel, 1);
+        layeredPane1.add(counterPanel);
+        JImagePanel lcd = new JImagePanel(R.LCD);
+        lcd.setResolution(JImagePanel.EXTEND_RES_WIDTH);
+
+        layeredPane1.setLayer(lcd, 0);
+        layeredPane1.add(lcd);
+
+        centerTopPanel.add(layeredPane1);
 
         rightTopPanel.add(profileButton);
         topPanel.add(leftTopPanel);
@@ -239,5 +261,10 @@ public class GameView extends JPanel implements MyView {
         }catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void initialize (int currency, int basicGenerator, int midGenerator, int highGenerator, int lvlBasicImp, int lvlMidImp, int lvlHighImp) {
+        this.num = currency;
+        storesView.initialize(basicGenerator, midGenerator, highGenerator, lvlBasicImp, lvlMidImp, lvlHighImp);
     }
 }

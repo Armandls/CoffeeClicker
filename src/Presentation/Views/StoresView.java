@@ -95,4 +95,13 @@ public class StoresView extends JPanel {
     public void swapPanel(String panel) {
         cardLayout.show(storePanel, panel);
     }
+
+    public void initialize (int basicGenerator, int midGenerator, int highGenerator, int lvlBasicImp, int lvlMidImp, int lvlHighImp) {
+        //this.generatorsView.addGenerator();
+        //this.generatorsView.addGenerator();
+        //this.generatorsView.addGenerator();
+        /*this.improvementsView.addImprovement();
+        this.improvementsView.addImprovement();
+        this.improvementsView.addImprovement();*/
+    }
 }

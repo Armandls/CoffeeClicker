@@ -1,5 +1,7 @@
 package Presentation.Views;
 
+import Presentation.JImagePanel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -39,9 +41,16 @@ public class GeneratorsView extends JPanel {
         this.mainPanel.removeAll();
         scrollPane.revalidate();
     }
-    public void addGenerator(/*Todo quedar de com volem agafar la info*/) {
-        //Todo
-        mainPanel.add(new JButton("Generator"));
+    public void addGenerator(String picture, String name, String price, String amount) {
+        JPanel generatorPanel = new JPanel(new FlowLayout());
+        try {
+            generatorPanel.add(new JImagePanel(picture));
+        } catch (Exception ignored) {
+            //ignore
+        }
+        generatorPanel.add(new JLabel(name));
+        generatorPanel.add(new JLabel(price));
+        generatorPanel.add(new JLabel(amount));
         scrollPane.revalidate();
     }
 }
