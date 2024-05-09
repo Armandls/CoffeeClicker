@@ -4,8 +4,6 @@ import Business.Exception.UserException.InvalidLoginEmailException;
 import Business.Exception.UserException.InvalidPasswordException;
 import Business.Exception.UserException.UserException;
 import Business.Exception.UserException.UserNotFoundException;
-import Business.UserManager;
-import Presentation.FrameController;
 import Presentation.MainController;
 import Presentation.Views.LoginView;
 
@@ -15,13 +13,11 @@ import java.awt.event.ActionListener;
 public class LoginController implements ActionListener {
 
     private MainController mainController;
-    private UserManager userManager;
     private LoginView loginView;
     private String email = "";
 
-    public LoginController(MainController mainController, UserManager userManager) {
+    public LoginController(MainController mainController) {
         this.mainController = mainController;
-        this.userManager = userManager;
     }
 
     @Override
@@ -55,10 +51,6 @@ public class LoginController implements ActionListener {
         }
     }
 
-    public void setView(LoginView view) {
-        this.loginView = view;
-    }
-
     void login() {
         String[] info = loginView.getInfo();
 
@@ -78,7 +70,7 @@ public class LoginController implements ActionListener {
                 String userLoginPass = info[1].split(":")[1].trim().replaceAll(" ", "").replaceAll(",","").replace("[", "").replace("]","");
                 String userLoginRem =  info[2].split(":")[1].trim();
                     try {
-                        userManager.loginUser(userLoginMail, userLoginPass);
+                        mainController.loginUser(userLoginMail, userLoginPass);
                         finishSignUp(true);
                     } catch (InvalidLoginEmailException e) {
                         loginView.adviceMessage(e.getMessage(), "Wrong Email Format");

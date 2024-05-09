@@ -2,6 +2,7 @@ package Presentation.Controllers;
 import Business.UserManager;
 import Persistance.Exception.ConnectionErrorException;
 import Presentation.FrameController;
+import Presentation.MainController;
 import Presentation.Views.GameView;
 import Presentation.Views.LoginView;
 import Presentation.Views.StoresView;
@@ -12,22 +13,12 @@ import java.io.IOException;
 import java.util.Timer;
 
 public class GameController implements ActionListener {
-
-
-    private FrameController frame;
-
     private GameView gameView;
+    private MainController mainController;
 
-    private UserManager userManager;
 
-
-    public GameController(FrameController frame, UserManager userManager) throws IOException {
-        this.frame = frame;
-        this.userManager = userManager;
-    }
-
-    public void setView(GameView view) {
-        this.gameView = view;
+    public GameController(MainController mainController) {
+        this.mainController = mainController;
     }
 
     @Override
@@ -73,22 +64,22 @@ public class GameController implements ActionListener {
                 } catch (ConnectionErrorException ex) {
                     throw new RuntimeException(ex);
                 }
-                frame.swapPanel("login");
+                mainController.swapPanel("login");
                 break;
             case "logout":
                 System.out.println("Logout");
                 logout();
-                frame.swapPanel("login");
+                mainController.swapPanel("login");
                 break;
         }
     }
 
     void logout() {
-        userManager.restartValuesUser();
+        mainController.restartValuesUser();
     }
 
     void deleteAccount() throws ConnectionErrorException {
-        userManager.deleteUser();
+        mainController.deleteUser();
     }
     public void initializeGame (int currency, int basicGenerator, int midGenerator, int highGenerator, int lvlBasicImp, int lvlMidImp, int lvlHighImp){
         this.gameView.initialize(currency, basicGenerator, midGenerator, highGenerator, lvlBasicImp, lvlMidImp, lvlHighImp);

@@ -21,13 +21,10 @@ import java.util.Map;
 public class HomeController implements ActionListener{
     private HomeView homeView;
     private MainController mainController;
-    private UserManager userManager;
-    private GameManager gameManager;
 
-    public HomeController(MainController mainController, UserManager userManager, GameManager gameManager) {
+    public HomeController(MainController mainController) {
         this.mainController = mainController;
-        this.userManager = userManager;
-        this.gameManager = gameManager;
+        setupListeners();
     }
 
     @Override
@@ -45,21 +42,12 @@ public class HomeController implements ActionListener{
             mainController.resumeGame(gameId);
         }
     }
-
-    public void setView(HomeView view) {
-        this.homeView = view;
-        setupListeners();
-    }
     private void setupListeners() {
         this.homeView.addNewGameButtonListener(this);
         this.homeView.addResumeGameButtonListener(e -> resumeGame());
     }
     public void resumeGame() {
-        try {
-            Map<Integer, Integer> games = gameManager.getUnfinishedGames(userManager.getCurrentUser().getEmail());
-            homeView.displayGames(games);
-        } catch (PersistenceException e) {
-            throw new RuntimeException(e);
-        }
+        Map<Integer, Integer> games = mainController.getUnfinishedGames();
+        homeView.displayGames(games);
     }
 }
