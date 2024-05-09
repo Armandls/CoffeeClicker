@@ -1,12 +1,15 @@
 package Presentation.Controllers;
+import Presentation.MainController;
 import Presentation.Views.StoresView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class StoresController implements ActionListener {
+    MainController mainController;
 
-    private StoresView view;
-
+    public StoresController (MainController mainController) {
+        this.mainController = mainController;
+    }
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().contains("generatorsBuy")) {
@@ -22,17 +25,12 @@ public class StoresController implements ActionListener {
                 break;
             case "upgrades":
                 System.out.println("upgrades");
-                view.swapPanel("upgrades");
+                mainController.swapPanel("upgrades");
                 break;
             case "generators":
                 System.out.println("generators");
-                view.swapPanel("generators");
+                mainController.swapPanel("generators");
                 break;
         }
-    }
-
-    public void addView(StoresView view) {
-        this.view = view;
-        view.swapPanel("generators");
     }
 }

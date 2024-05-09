@@ -18,6 +18,7 @@ import Presentation.Views.*;
 import Presentation.Controllers.StoresController;
 import Presentation.Views.*;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -70,7 +71,7 @@ public class MainController implements FrameController {
         RegisterController registerController = new RegisterController(this);
         registerView = new RegisterView(registerController);
 
-        StoresController storesController = new StoresController();
+        StoresController storesController = new StoresController(this);
         storesView = new StoresView(storesController);
 
         GameController gameController = new GameController(this);
@@ -86,10 +87,9 @@ public class MainController implements FrameController {
                 throw new RuntimeException(ex);
             }
         });
-        //mainFrame.addPanel(loginView, "login");
+        mainFrame.addPanel(loginView, "login");
         mainFrame.addPanel(gameView, "game");
         mainFrame.addPanel(registerView, "register");
-        //mainFrame.addPanel(gameView, "game");
         mainFrame.addPanel(homeView, "home");
         mainFrame.setVisible(true);
 
@@ -165,5 +165,76 @@ public class MainController implements FrameController {
         }
 
         gameView.initialize(n_currencies, n_generators[0], n_generators[1], n_generators[2], boosts_lvl[0],boosts_lvl[1],boosts_lvl[2]);
+    }
+
+    public void registerEnterValid(String what) {
+        if (what.equals("email")) {
+            registerView.enterValidEmail();
+        }else {
+            registerView.enterValidPassword();
+        }
+    }
+    public void loginEnterValid(String what) {
+        if (what.equals("email")) {
+            loginView.enterValidEmail();
+        }else {
+            loginView.enterValidPassword();
+        }
+    }
+
+    public String[] getLoginInfo() {
+        return loginView.getInfo();
+    }
+
+    public void clearForm(String what) {
+        switch (what) {
+            case "login":
+                loginView.clearForm();
+                break;
+            case "register":
+                registerView.clearForm();
+                break;
+        }
+    }
+
+    public void adviceMessage(String error, String databaseError, String what) {
+        if (what.equals("login")) {
+            loginView.adviceMessage(error, databaseError);
+        }else {
+            registerView.adviceMessage(error, databaseError);
+        }
+    }
+
+    public void showProfile() {
+        gameView.stop();
+        gameView.showProfile();
+    }
+
+    public void showConfig() {
+        gameView.stop();
+        gameView.showConfig();
+    }
+
+    public void toggleStore() {
+        gameView.toggleStore();
+    }
+
+    public void startRedPanelAnimation(Point location) {
+        gameView.increase();
+        gameView.startRedPanelAnimation(location);
+    }
+
+    public void hideProfile() {
+        gameView.start();
+        gameView.hideProfile();
+    }
+
+    public void hideConfig() {
+        gameView.start();
+        gameView.hideConfig();
+    }
+
+    public String[] getRegisterInfo() {
+        return registerView.getInfo();
     }
 }

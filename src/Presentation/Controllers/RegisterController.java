@@ -7,14 +7,12 @@ import Business.Exception.UserException.UserAlreadyExistsException;
 import Business.Exception.UserException.UserException;
 import Persistance.Exception.ConnectionErrorException;
 import Presentation.MainController;
-import Presentation.Views.RegisterView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class RegisterController implements ActionListener {
 
-    private RegisterView registerView;
     private MainController mainController;
 
     public RegisterController(MainController mainController) {
@@ -45,20 +43,20 @@ public class RegisterController implements ActionListener {
         if (wasSuccessful) {
             mainController.swapPanel("game");
         } else {
-            registerView.clearForm();
+            mainController.clearForm("register");
         }
     }
 
     public void signUp() throws ConnectionErrorException{
-        String[] info = registerView.getInfo();
+        String[] info = mainController.getRegisterInfo();
 
         if (info[1].isEmpty()) {
-            registerView.enterValidEmail();
+            mainController.registerEnterValid("email");
             finishSignUp(false);
         }
         else {
             if (info[2].length() < 7) {
-                registerView.enterValidPassword();
+                mainController.registerEnterValid("password");
                 finishSignUp(false);
             }
             else {
@@ -71,16 +69,16 @@ public class RegisterController implements ActionListener {
                     mainController.registerUser(username, email, password, confirmPassword);
                     finishSignUp(true);
                 } catch (InvalidLoginEmailException e) {
-                    registerView.adviceMessage(e.getMessage(), "Wrong Email Format");
+                    mainController.adviceMessage(e.getMessage(), "Wrong Email Format", "register");
                     finishSignUp(false);
                 } catch (InvalidPasswordException e) {
-                    registerView.adviceMessage(e.getMessage(), "Invalid Password");
+                    mainController.adviceMessage(e.getMessage(), "Invalid Password", "register");
                     finishSignUp(false);
                 } catch (UserAlreadyExistsException e) {
-                    registerView.adviceMessage(e.getMessage(), "User Already Exists");
+                    mainController.adviceMessage(e.getMessage(), "User Already Exists", "register");
                     finishSignUp(false);
                 } catch (UserException e) {
-                    registerView.adviceMessage(e.getMessage(), "Database Error");
+                    mainController.adviceMessage(e.getMessage(), "Database Error", "register");
                     finishSignUp(false);
                 } catch (BusinessException e) {
                     throw new RuntimeException(e);

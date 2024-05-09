@@ -193,10 +193,6 @@ public class LoginView extends JLayeredPane implements MyView {
                 "rememberMe:"+rememberMe.isSelected()
         };
     }
-    public void adviceMessage(String message, String title) {
-        JOptionPane.showMessageDialog(this, message, title, JOptionPane.ERROR_MESSAGE);
-    }
-
     public void enterValidEmail() {
         JOptionPane.showMessageDialog(this, "Please enter a valid email address. Email address must contain '@gmail.com'.", "Mail Error", JOptionPane.ERROR_MESSAGE);
     }
@@ -204,7 +200,9 @@ public class LoginView extends JLayeredPane implements MyView {
     public void enterValidPassword() {
         JOptionPane.showMessageDialog(this, "Please enter a valid password. Password must contain at least 7 characters.", "Password Error", JOptionPane.ERROR_MESSAGE);
     }
-
+    public void adviceMessage(String message, String title) {
+        JOptionPane.showMessageDialog(this, message, title, JOptionPane.ERROR_MESSAGE);
+    }
 
     public void clearForm() {
         usernameField.setText("");

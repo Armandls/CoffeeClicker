@@ -11,10 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class LoginController implements ActionListener {
-
     private MainController mainController;
-    private LoginView loginView;
-    private String email = "";
 
     public LoginController(MainController mainController) {
         this.mainController = mainController;
@@ -44,24 +41,24 @@ public class LoginController implements ActionListener {
 
     private void finishSignUp(boolean wasSuccessful) {
         if (wasSuccessful) {
-            loginView.clearForm();
+            mainController.clearForm("login");
             mainController.swapPanel("home");
         } else {
-            loginView.clearForm();
+            mainController.clearForm("login");
         }
     }
 
     void login() {
-        String[] info = loginView.getInfo();
+        String[] info = mainController.getLoginInfo();
 
         // Comprovar que els camps no estiguin buits
         if (info[0].equals( "username:")) {
-            loginView.enterValidEmail();
+            mainController.loginEnterValid("email");
             finishSignUp(false);
         }
         else {
             if (info[1].split(":")[1].trim().length() < 7) {
-                loginView.enterValidPassword();
+                mainController.loginEnterValid("password");
                 finishSignUp(false);
             }
             else {
@@ -73,15 +70,15 @@ public class LoginController implements ActionListener {
                         mainController.loginUser(userLoginMail, userLoginPass);
                         finishSignUp(true);
                     } catch (InvalidLoginEmailException e) {
-                        loginView.adviceMessage(e.getMessage(), "Wrong Email Format");
+                        mainController.adviceMessage(e.getMessage(), "Wrong Email Format", "login");
                         finishSignUp(false);
                     } catch (UserNotFoundException e) {
-                        loginView.adviceMessage(e.getMessage() + " Please enter a valid email.", "Invalid email");
+                        mainController.adviceMessage(e.getMessage() + " Please enter a valid email.", "Invalid email", "login");
                         finishSignUp(false);
                     } catch (InvalidPasswordException e) {
-                        loginView.adviceMessage(e.getMessage() + "Please enter a valid password", "Invalid password");
+                        mainController.adviceMessage(e.getMessage() + "Please enter a valid password", "Invalid password", "login");
                     } catch (UserException e) {
-                        loginView.adviceMessage(e.getMessage(), "Database Error");
+                        mainController.adviceMessage(e.getMessage(), "Database Error", "login");
                     }
 
                 /*
