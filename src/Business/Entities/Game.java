@@ -16,11 +16,15 @@ public class Game {
     private String user;
     private ArrayList<Generator> gameGenerators;
 
+    public Game() {
+        this.gameGenerators = new ArrayList<>(); // necessari per evitar nullPOinter exception en inicialitzar generators
+    }
+
     public Game(int id_game, int currency_count, boolean finished, String mail_user) {
         this.id_game = id_game;
         this.currency_count = currency_count;
         this.finished = finished;
-        this.user = user;
+        this.user = mail_user;
         this.gameGenerators = new ArrayList<>();
     }
     public int getIdGame() {
@@ -58,5 +62,7 @@ public class Game {
                 throw new GeneratorAddedException("Generator added");
         }
     }
-
+    public void  initGenerator(Generator generator) {
+        gameGenerators.add(generator);
+    }
 }

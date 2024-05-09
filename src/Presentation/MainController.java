@@ -96,13 +96,14 @@ public class MainController implements FrameController {
         currentView = loginView;
     }
 
-    public void resumeGame(int gameId) {
+    public void resumeGame(int gameId, String user) {
         int n_currencies = 0;
         int[] n_generators = {0,0,0}; //{n_basic, n_mid, n_high}
         int[] boosts_lvl = {0,0,0};   //{lvl_basic, lvl_mid, lvl_high}
         List<String> generator_types;
         int i = 0;
 
+        // 1. retreiem dades de la partida que es mostraran a les views
         try {
             n_currencies = gameManager.getGameCurrencies(gameId);
         } catch (NotFoundException e) {
@@ -118,6 +119,12 @@ public class MainController implements FrameController {
             throw new RuntimeException(e); // no generators exception/persistance exception
         }
 
+        //2. Afegim a la classe game els generadors guardats a la partida que es vol restaurar
+        try {
+            gameManager.initGame(gameId, n_currencies, user);
+        } catch (BusinessException e) {
+            throw new RuntimeException(e); // no generators exception/persistance exception
+        }
         gameController.initializeGame(n_currencies, n_generators[0], n_generators[1], n_generators[2], boosts_lvl[0],boosts_lvl[1],boosts_lvl[2]);
     }
 
