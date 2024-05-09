@@ -26,17 +26,18 @@ import java.util.List;
  */
 public class GeneratorManager {
     GeneratorDAO generatorDAO;
-    GameManager gameManager;
     GeneratorStore generatorStore;
 
     String[] genTypes = {"Basic", "Mid", "High"};
 
     public GeneratorManager(GameManager gameManager, GeneratorDAO generatorDAO) throws BusinessException{
         this.generatorDAO = generatorDAO;
-        this.gameManager = gameManager;
+        //this.gameManager = gameManager;
         //this.generatorStore = new GeneratorStore(getGenerators());  //Aqui faltaria passar-li la partida.
     }
-    public GeneratorManager(){};
+    public GeneratorManager(){
+     this.generatorDAO = new SQLGenerator();
+    }
 
     public List<Generator> getGenerators(int gameId) throws BusinessException {
         List<Generator> generators;
@@ -99,7 +100,7 @@ public class GeneratorManager {
     }
 
     public int purchaseNewGenerator(String type, int gameId) {
-        int generatorId = 0;
+        int generatorId = -1;
         try {
             Generator auxGen = getGeneratorFromGame(gameId, type);
             auxGen.addGenerator();
@@ -110,11 +111,11 @@ public class GeneratorManager {
             try {
                 switch (type) {
                     case "Basic":
-                        generatorDAO.addGenerator(new BasicGenerator(gameId, "/pathBasicGen"));
+                        generatorDAO.addGenerator(new BasicGenerator(gameId));
                     case "Mid":
-                        generatorDAO.addGenerator(new MidGenerator(gameId, "/pathMidGen"));
+                        generatorDAO.addGenerator(new MidGenerator(gameId));
                     case "High":
-                        generatorDAO.addGenerator(new HighGenerator(gameId, "/pathHighGen"));
+                        generatorDAO.addGenerator(new HighGenerator(gameId));
                 }
                 generatorId = getGeneratorIdFromGame(type, gameId);
             } catch (ConnectionErrorException ex) {

@@ -117,18 +117,24 @@ public class MainController implements FrameController {
         } catch (BusinessException e) {
             throw new RuntimeException(e); // no generators exception/persistance exception
         }
-
         gameController.initializeGame(n_currencies, n_generators[0], n_generators[1], n_generators[2], boosts_lvl[0],boosts_lvl[1],boosts_lvl[2]);
     }
 
     public void buyGenerator(String type) {
-        int generatorId;
-        if (generatorManager.generatorPurchaseAvailable(gameManager.getGameCurrency(), gameManager.getGameId(), type)) {
-            generatorId = generatorManager.purchaseNewGenerator(type, gameManager.getGameId());
-            //gameManager.buyGenerator();
+        boolean validPurchase;
+        validPurchase = gameManager.buyGenerator(type);
+        if (validPurchase) {
+            getGeneratorInfo();
         }
-        //generatorManager.purchaseNewGenerator(type, gameManager.getGameId());
+        else{
+            //Mostra missatge de que no es te suficient diners per comprar;
+        }
+    }
 
+    public void getGeneratorInfo() {
+        //Pillar info dels generadors per passar.
+
+        //StoresView.loadShop();
     }
 
 

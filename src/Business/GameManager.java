@@ -14,18 +14,24 @@ import java.util.Map;
  *  @Currency, @ImprovementStore, @Game
  */
 public class GameManager {
+    GeneratorManager generatorManager;
     GameDAO gameDAO;
     Game game;
     public GameManager (GameDAO gameDAO) {
         this.gameDAO = gameDAO;
     }
-
     public int getGameId() {
         return game.getIdGame();
     }
     public int getGameCurrency() {return game.getCurrencyCount();}
-    public void buyGenerator(String type, String imageUrl) {
-
+    public boolean buyGenerator(String type) {
+        int generatorId;
+        if (generatorManager.generatorPurchaseAvailable(game.getCurrencyCount(), game.getIdGame(), type)) {
+            generatorId = generatorManager.purchaseNewGenerator(type, game.getIdGame());
+            game.addGeneratorToGame(type, generatorId);
+            return true;
+        }
+        return false;
     }
     public void addGame(Game game, String mail_user) throws PersistenceException {
         try {
