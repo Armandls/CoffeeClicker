@@ -43,7 +43,7 @@ public class SQLGenerator implements GeneratorDAO {
                 generator.getNCurrencies() + "', '" +
                 generator.getIdGame() + "', '" +
                 generator.getNGens() + "', '" +
-                generator.getImageUrl() + "', ";
+                generator.getGeneratorImage() + "', ";
         if (generator instanceof BasicGenerator) {
             generatorQuery += "'Basic'";
         } else if (generator instanceof MidGenerator) {
@@ -72,7 +72,7 @@ public class SQLGenerator implements GeneratorDAO {
         String generatorQuery = "UPDATE generator SET " +
                 "n_currencies = '" + generator.getNCurrencies() + "', " +
                 "id_game = '" + generator.getIdGame() + "', " +
-                "photo = '" + generator.getImageUrl() + "', " +
+                "photo = '" + generator.getGeneratorImage() + "', " +
                 "n_gens = '" + generator.getNGens() + "', " +
                 "improvement = '" + generator.getImprovement().getIdImprovement() + "' " + // Include improvement
                 "WHERE id_generator = '" + generator.getIdGenerator() + "';";
