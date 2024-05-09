@@ -33,7 +33,6 @@ public class GeneratorsView extends JPanel {
     }
 
     private void mount() {
-
         JPanel generatorsPanel = new JPanel(new GridLayout(1, 4));
         generatorsPanel.setBackground(Color.BLACK);
         JPanel emptyPanel = new JPanel();

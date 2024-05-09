@@ -38,7 +38,7 @@ public class Game {
     public boolean isFinished() {
         return finished;
     }
-    public void addGeneratorToGame(String type, String imageUrl) throws GeneratorAddedException{
+    public void addGeneratorToGame(String type, int idGenerator) {
         Generator toAdd;
         for (Generator auxGen : gameGenerators) {
             if (auxGen.getClass().getSimpleName().contains(type)) {
@@ -48,15 +48,20 @@ public class Game {
         }
         switch (type) {
             case "Basic":
-                gameGenerators.add(new BasicGenerator(id_game, imageUrl));
-                throw new GeneratorAddedException("Generator added");
+                toAdd = new BasicGenerator(id_game);
+                break;
             case "Mid":
-                gameGenerators.add(new MidGenerator(id_game, imageUrl));
-                throw new GeneratorAddedException("Generator added");
+                toAdd = new MidGenerator(id_game);
+                break;
             case "High":
-                gameGenerators.add(new HighGenerator(id_game, imageUrl));
-                throw new GeneratorAddedException("Generator added");
+                toAdd = new HighGenerator(id_game);
+                break;
+            default:
+                toAdd = new BasicGenerator(id_game);
+                break;
         }
+        toAdd.setIdGenerator(idGenerator);
+        gameGenerators.add(toAdd);
     }
 
 }

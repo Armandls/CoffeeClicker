@@ -107,12 +107,14 @@ public class MainController implements FrameController {
     }
 
     public void buyGenerator(String type) {
-        int generatorId;
-        if (generatorManager.generatorPurchaseAvailable(gameManager.getGameCurrency(), gameManager.getGameId(), type)) {
-            generatorId = generatorManager.purchaseNewGenerator(type, gameManager.getGameId());
-            //gameManager.buyGenerator();
+        boolean validPurchase;
+        validPurchase = gameManager.buyGenerator(type);
+        if (validPurchase) {
+            getGeneratorInfo();
         }
-        //generatorManager.purchaseNewGenerator(type, gameManager.getGameId());
+        else{
+            //Mostra missatge de que no es te suficient diners per comprar;
+        }
     }
 
     public String getEmail_id () {
@@ -126,6 +128,10 @@ public class MainController implements FrameController {
         userManager.registerUser(username, email, password, confirmPassword);
     }
 
+    public void getGeneratorInfo() {
+        //Pillar info dels generadors per passar.
+
+        //StoresView.loadShop();
     public void restartValuesUser() {
         userManager.restartValuesUser();
     }

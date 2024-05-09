@@ -19,10 +19,9 @@ public abstract class Generator {
         this.imageUrl = imageUrl;
     }
 
-    public Generator(int id_game, String imageUrl) {
+    public Generator(int id_game) {
         this.id_game = id_game;
         this.n_gens = 1;
-        this.imageUrl = imageUrl;
         this.n_currencies = 0;
     }
 
@@ -52,9 +51,9 @@ public abstract class Generator {
         return n_gens;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
+    //public String getImageUrl() {
+        //return imageUrl;
+    //}
 
     public Improvement getImprovement() {
         return improvement;
@@ -76,4 +75,5 @@ public abstract class Generator {
     public void addGenerator() {
         n_gens++;
     }
+    public String getGeneratorImage(){return null;}
 }
