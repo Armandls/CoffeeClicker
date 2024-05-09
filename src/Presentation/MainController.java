@@ -81,10 +81,9 @@ public class MainController implements FrameController {
 
 
 
-        //mainFrame.addPanel(loginView, "login");
+        mainFrame.addPanel(loginView, "login");
         mainFrame.addPanel(gameView, "game");
         mainFrame.addPanel(registerView, "register");
-        //mainFrame.addPanel(gameView, "game");
         mainFrame.addPanel(homeView, "home");
         mainFrame.setVisible(true);
 
@@ -128,8 +127,5 @@ public class MainController implements FrameController {
             //gameManager.buyGenerator();
         }
         //generatorManager.purchaseNewGenerator(type, gameManager.getGameId());
-
     }
-
-
 }

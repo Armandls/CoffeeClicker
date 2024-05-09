@@ -3,6 +3,7 @@ package Presentation.Views;
 import Presentation.Controllers.HomeController;
 import Presentation.Fonts.MinecraftFont;
 import Presentation.JImagePanel;
+import Presentation.JTexturedButton;
 import Presentation.R;
 
 import javax.swing.*;
@@ -17,8 +18,8 @@ import java.util.Random;
 
 public class HomeView extends JPanel implements MyView {
     private ActionListener listener;
-    private JButton newGame;
-    private JButton resumeGame;
+    private JTexturedButton newGame;
+    private JTexturedButton resumeGame;
     private JImagePanel background;
     private JImagePanel form_background;
     private JLayeredPane layeredPane;
@@ -32,8 +33,15 @@ public class HomeView extends JPanel implements MyView {
 
     private void initComponents() {
         setLayout(new BorderLayout());
-        newGame = new JButton("New Game");
-        resumeGame = new JButton("Resume Game");
+        newGame = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
+        newGame.setFont(MinecraftFont.getFont());
+        newGame.setSize(200, 50);
+        newGame.setText("New Game");
+
+        resumeGame = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
+        resumeGame.setFont(MinecraftFont.getFont());
+        newGame.setSize(200, 50);
+        resumeGame.setText("Resume Game");
 
         newGame.setActionCommand("newGame");
         resumeGame.setActionCommand("resumeGame");
@@ -51,12 +59,15 @@ public class HomeView extends JPanel implements MyView {
             form_background.setOpaque(false);
 
             layeredPane = new JLayeredPane();
-            layeredPane.setLayout(new BorderLayout());
-            background.setSize(getSize());
-            form_background.setSize(getSize());
+            layeredPane.setLayout(new OverlayLayout(layeredPane));
 
-            layeredPane.add(background, 1);
-            layeredPane.add(form_background, 2);
+            background.setResolution(JImagePanel.EXTEND_RES_WIDTH);
+            form_background.setSize(getSize());
+            layeredPane.setLayer(background, 0);
+            layeredPane.add(background);
+
+            layeredPane.setLayer(form_background, 1);
+            layeredPane.add(form_background);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -64,16 +75,18 @@ public class HomeView extends JPanel implements MyView {
 
     private void setupLayout() {
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setPreferredSize(new Dimension(200, 150));
         buttonPanel.setOpaque(false);
-        buttonPanel.setLayout(new GridLayout(2, 1, 10, 10));
+        buttonPanel.setLayout(new GridLayout(2, 1, 0, 50));
         buttonPanel.add(newGame);
         buttonPanel.add(resumeGame);
 
         JPanel centerPanel = new JPanel(new GridBagLayout());
         centerPanel.setOpaque(false);
-        centerPanel.add(buttonPanel, new GridBagConstraints());
+        centerPanel.add(buttonPanel);
 
-        layeredPane.add(centerPanel, 3);
+        layeredPane.setLayer(centerPanel, 2);
+        layeredPane.add(centerPanel);
 
         add(layeredPane, BorderLayout.CENTER);
     }
