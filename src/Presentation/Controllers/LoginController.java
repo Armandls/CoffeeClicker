@@ -6,6 +6,7 @@ import Business.Exception.UserException.UserException;
 import Business.Exception.UserException.UserNotFoundException;
 import Business.UserManager;
 import Presentation.FrameController;
+import Presentation.MainController;
 import Presentation.Views.LoginView;
 
 import java.awt.event.ActionEvent;
@@ -13,12 +14,12 @@ import java.awt.event.ActionListener;
 
 public class LoginController implements ActionListener {
 
-    private FrameController mainController;
+    private MainController mainController;
     private UserManager userManager;
     private LoginView loginView;
     private String email = "";
 
-    public LoginController(FrameController mainController, UserManager userManager) {
+    public LoginController(MainController mainController, UserManager userManager) {
         this.mainController = mainController;
         this.userManager = userManager;
     }

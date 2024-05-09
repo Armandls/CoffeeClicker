@@ -11,6 +11,9 @@ public class BasicGenerator extends Generator {
     }
     //Creació de generador buit per obtenir la instancia del generador i saber quin tipus de fill es
     public BasicGenerator(){super();}
+    public BasicGenerator(int id_game, String imageUrl) {
+        super(id_game, imageUrl);
+    }
     @Override
     public int getGeneratorPrice() {
         return (int) Math.round(10 * Math.pow(1.07, super.getNGens()));

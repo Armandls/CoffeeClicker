@@ -1,6 +1,8 @@
 package Presentation.Views;
 import Presentation.Controllers.StoresController;
+import Presentation.Fonts.MinecraftFont;
 import Presentation.JImagePanel;
+import Presentation.JTexturedButton;
 import Presentation.R;
 
 import javax.swing.*;
@@ -10,8 +12,8 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class StoresView extends JPanel {
-    private JButton generatorsButton;
-    private JButton upgradesButton;
+    private JTexturedButton generatorsButton;
+    private JTexturedButton upgradesButton;
     private CardLayout cardLayout;
     private JPanel storePanel;
     private JImagePanel background;
@@ -34,11 +36,15 @@ public class StoresView extends JPanel {
         background.setResolution(JImagePanel.EXTEND_RES_HEIGHT);
         background.setVisible(true);
 
-        generatorsButton = new JButton("Generators");
+        generatorsButton = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
+        generatorsButton.setText("Generators");
+        generatorsButton.setFont(MinecraftFont.getFont());
         generatorsButton.addActionListener(listener);
         generatorsButton.setActionCommand("generators");
 
-        upgradesButton = new JButton("Upgrades");
+        upgradesButton = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
+        upgradesButton.setText("Upgrades");
+        upgradesButton.setFont(MinecraftFont.getFont());
         upgradesButton.addActionListener(listener);
         upgradesButton.setActionCommand("upgrades");
 
@@ -69,7 +75,6 @@ public class StoresView extends JPanel {
         buttonsPanel.add(upgradesButton);
         panel.add(buttonsPanel);
 
-
         storePanel.add("generators", this.generatorsView);
         storePanel.add("upgrades", this.improvementsView);
 
@@ -88,5 +93,15 @@ public class StoresView extends JPanel {
 
     public void swapPanel(String panel) {
         cardLayout.show(storePanel, panel);
+    }
+
+    public void initialize (int basicGenerator, int midGenerator, int highGenerator, int lvlBasicImp, int lvlMidImp, int lvlHighImp) {
+        this.generatorsView.removeGenerators();
+        this.generatorsView.addGenerator(R.REDBULL, "Redbull", "100", String.valueOf(basicGenerator));
+        this.generatorsView.addGenerator(R.ENCHANTED_BOOK, "Notes", "200", String.valueOf(midGenerator));
+        this.generatorsView.addGenerator(R.CEUS, "CEUS", "300", String.valueOf(highGenerator));
+        /*this.improvementsView.addImprovement();
+        this.improvementsView.addImprovement();
+        this.improvementsView.addImprovement();*/
     }
 }

@@ -11,7 +11,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class HomeView extends JPanel implements MyView {
     private ActionListener listener;
@@ -33,14 +35,11 @@ public class HomeView extends JPanel implements MyView {
         newGame = new JButton("New Game");
         resumeGame = new JButton("Resume Game");
 
-        try {
-            Font minecraftFont = MinecraftFont.getFont().deriveFont(24f);
-            newGame.setFont(minecraftFont);
-            resumeGame.setFont(minecraftFont);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        newGame.setActionCommand("newGame");
+        resumeGame.setActionCommand("resumeGame");
 
+        newGame.setFont(MinecraftFont.getFont());
+        resumeGame.setFont(MinecraftFont.getFont());
         start();
     }
 
@@ -79,25 +78,6 @@ public class HomeView extends JPanel implements MyView {
         add(layeredPane, BorderLayout.CENTER);
     }
 
-    public void addNewGameButtonListener(ActionListener listener) {
-        newGame.addActionListener(listener);
-    }
-
-    public void addResumeGameButtonListener(ActionListener listener) {
-        resumeGame.addActionListener(listener);
-    }
-
-    public void start() {
-        newGame.setActionCommand("newGame");
-        resumeGame.setActionCommand("resumeGame");
-    }
-
-    @Override
-    public void stop() {
-    }
-
-    @Override
-    public void clear() {}
 
     public void displayGames(Map<Integer, Integer> games) {
         JDialog resumeDialog = new JDialog(JOptionPane.getFrameForComponent(this), "Resume Game", true);
@@ -123,6 +103,29 @@ public class HomeView extends JPanel implements MyView {
 
         resumeDialog.add(scrollPane);
         resumeDialog.setVisible(true);
+    }
+
+
+    public void addNewGameButtonListener(ActionListener listener) {
+        newGame.addActionListener(listener);
+    }
+
+    public void addResumeGameButtonListener(ActionListener listener) {
+        resumeGame.addActionListener(listener);
+    }
+
+
+    @Override
+    public void start() {
+        newGame.addActionListener(listener);
+        resumeGame.addActionListener(listener);
+    }
+    @Override
+    public void stop() {
+    }
+
+    @Override
+    public void clear() {
     }
 }
 

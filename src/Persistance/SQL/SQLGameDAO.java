@@ -4,6 +4,7 @@ import Business.Entities.Game;
 import Business.Entities.User;
 import Persistance.DAO.GameDAO;
 import Persistance.Exception.ConnectionErrorException;
+import Persistance.Exception.NotFoundException;
 import Persistance.Exception.PersistenceException;
 
 import java.sql.ResultSet;
@@ -45,8 +46,9 @@ public class SQLGameDAO implements GameDAO {
     @Override
     public List<Game> getUnfinishedGamesFromUser(String mail_user) throws ConnectionErrorException{
         ArrayList<Game> games = new ArrayList<>();
-        String query = "SELECT g.id_game, g.currency_count FROM Game AS g, User AS u WHERE g.user = u.mail AND " +
-                "u.mail = " + mail_user + " AND g.finished = 0;";
+        String query = "SELECT id_game, currency_count, finished FROM Game AS g, User AS u " +
+                "WHERE g.user = u.mail AND u.mail = '" + mail_user + "' AND g.finished = 0";
+
         ResultSet result = SQLConnector.getInstance().selectQuery(query);
         try {
             while (result.next()) {
@@ -83,4 +85,24 @@ public class SQLGameDAO implements GameDAO {
         String query = "UPDATE Game SET currency_count = '" + game.getCurrencyCount() + "' WHERE id_game = '" + game.getIdGame() + "';";
         SQLConnector.getInstance().updateQuery(query);
     }
+
+    @Override
+    public Game getGame(int gameId) throws PersistenceException {
+        String query = "SELECT currency_count, finished, user FROM Game WHERE id_game = " + gameId + ";";
+        ResultSet result = SQLConnector.getInstance().selectQuery(query);
+
+        try {
+            if (result.next()) {
+                int currencyCount = result.getInt("currency_count");
+                boolean finished = result.getBoolean("finished");
+                String userEmail = result.getString("user");
+                return new Game(gameId, currencyCount, finished, userEmail);
+            } else {
+                throw new NotFoundException("Game with id: <" + gameId + "> was not found in the database.");
+            }
+        } catch (SQLException e) {
+            throw new ConnectionErrorException(e.getMessage());
+        }
+    }
+
 }

@@ -10,6 +10,7 @@ import Business.UserManager;
 import Persistance.Exception.ConnectionErrorException;
 import Persistance.Exception.PersistenceException;
 import Presentation.FrameController;
+import Presentation.MainController;
 import Presentation.Views.HomeView;
 import Presentation.Views.RegisterView;
 
@@ -19,11 +20,11 @@ import java.util.Map;
 
 public class HomeController implements ActionListener{
     private HomeView homeView;
-    private FrameController mainController;
+    private MainController mainController;
     private UserManager userManager;
     private GameManager gameManager;
 
-    public HomeController(FrameController mainController, UserManager userManager, GameManager gameManager) {
+    public HomeController(MainController mainController, UserManager userManager, GameManager gameManager) {
         this.mainController = mainController;
         this.userManager = userManager;
         this.gameManager = gameManager;
@@ -39,9 +40,9 @@ public class HomeController implements ActionListener{
             System.out.println("Resume Game");
             resumeGame();
         } else if (command.startsWith("loadGame-")) {
-            String gameIdStr = command.substring(8);
+            String gameIdStr = command.substring(9);
             int gameId = Integer.parseInt(gameIdStr);
-            //cambiar a view del game
+            mainController.resumeGame(gameId);
         }
     }
 

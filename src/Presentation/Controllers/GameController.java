@@ -91,6 +91,6 @@ public class GameController implements ActionListener {
         userManager.deleteUser();
     }
     public void initializeGame (int currency, int basicGenerator, int midGenerator, int highGenerator, int lvlBasicImp, int lvlMidImp, int lvlHighImp){
-        //gameView.setInfo();
+        this.gameView.initialize(currency, basicGenerator, midGenerator, highGenerator, lvlBasicImp, lvlMidImp, lvlHighImp);
     }
 }

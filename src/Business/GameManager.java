@@ -2,9 +2,11 @@ package Business;
 
 import Business.Entities.Game;
 import Persistance.DAO.GameDAO;
+import Persistance.Exception.NotFoundException;
 import Persistance.Exception.PersistenceException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,8 +15,17 @@ import java.util.Map;
  */
 public class GameManager {
     GameDAO gameDAO;
+    Game game;
     public GameManager (GameDAO gameDAO) {
         this.gameDAO = gameDAO;
+    }
+
+    public int getGameId() {
+        return game.getIdGame();
+    }
+    public int getGameCurrency() {return game.getCurrencyCount();}
+    public void buyGenerator(String type, String imageUrl) {
+
     }
     public void addGame(Game game, String mail_user) throws PersistenceException {
         try {
@@ -25,7 +36,7 @@ public class GameManager {
     }
     public Map<Integer, Integer> getUnfinishedGames (String mail_user) throws PersistenceException {
         List<Game> games;
-        Map<Integer, Integer> creditsAndIds = null;
+        Map<Integer, Integer> creditsAndIds = new HashMap<>();;
         try {
             games = gameDAO.getUnfinishedGamesFromUser(mail_user);
         }catch (PersistenceException exception) {
@@ -36,5 +47,16 @@ public class GameManager {
         }
 
         return creditsAndIds;
+    }
+
+    public int getGameCurrencies(int gameId) throws NotFoundException{
+        Game game;
+        try{
+            game = gameDAO.getGame(gameId);
+        }
+        catch(PersistenceException e) {
+            throw new NotFoundException("ERROR: Couldn't get the solicited game.");
+        }
+        return game.getCurrencyCount();
     }
 }

@@ -1,25 +1,22 @@
 package Presentation.Views;
 
-import Presentation.Controllers.GameController;
-import Presentation.Controllers.StoresController;
+import Presentation.Fonts.MinecraftFont;
 import Presentation.JImagePanel;
+import Presentation.JTexturedButton;
 import Presentation.R;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseListener;
-import java.awt.image.ImageProducer;
 import java.io.IOException;
-import java.sql.SQLOutput;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class GameView extends JPanel implements MyView {
 
     private ActionListener listener;
-    private JButton configButton;
-    private JButton profileButton;
+    private JTexturedButton configButton;
+    private JTexturedButton profileButton;
     private JButton phoneButton;
     private JButton clickButton;
     private int num;
@@ -46,11 +43,13 @@ public class GameView extends JPanel implements MyView {
         overPanel.setVisible(true);
 
         num = 0;
-        configButton = new JButton("Config");
+        configButton = new JTexturedButton(R.SETTINGS_BUTTON, R.SETTINGS_BUTTON_PRESSED);
         configButton.setActionCommand("config");
+        configButton.setPreferredSize(new Dimension(35, 35));
 
-        profileButton = new JButton("Profile");
+        profileButton = new JTexturedButton(R.GAME_BUTTON, R.GAME_BUTTON_PRESSED);
         profileButton.setActionCommand("profile");
+        profileButton.setPreferredSize(new Dimension(35, 35));
 
         phoneButton = new JButton();
         phoneButton.setOpaque(false);
@@ -65,12 +64,13 @@ public class GameView extends JPanel implements MyView {
         clickButton.setBorderPainted(false);
 
         counter = new JLabel("Credit Counter: " + num);
+        counter.setFont(MinecraftFont.getFont());
+        counter.setForeground(new Color(24, 176, 0));
 
         profileView = new ProfileView(listener);
         profileView.setVisible(false);
 
         configView = new ConfigView(listener);
-        storesView = new StoresView(listener);
         start();
     }
 
@@ -83,13 +83,35 @@ public class GameView extends JPanel implements MyView {
         mainPanel.setOpaque(false);
 
         JPanel topPanel = new JPanel(new GridLayout(1, 3));
+        topPanel.setOpaque(false);
         JPanel leftTopPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        leftTopPanel.setOpaque(false);
         JPanel rightTopPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        rightTopPanel.setOpaque(false);
         JPanel centerTopPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        centerTopPanel.setOpaque(false);
 
         leftTopPanel.add(configButton);
 
-        centerTopPanel.add(counter);
+        JLayeredPane layeredPane1 = new JLayeredPane();
+        layeredPane1.setPreferredSize(new Dimension(200, 40));
+        layeredPane1.setLayout(new OverlayLayout(layeredPane1));
+        layeredPane1.setOpaque(false);
+
+        JPanel counterPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        counterPanel.setOpaque(false);
+        counterPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
+        counterPanel.add(counter);
+
+        layeredPane1.setLayer(counterPanel, 1);
+        layeredPane1.add(counterPanel);
+        JImagePanel lcd = new JImagePanel(R.LCD);
+        lcd.setResolution(JImagePanel.EXTEND_RES_WIDTH);
+
+        layeredPane1.setLayer(lcd, 0);
+        layeredPane1.add(lcd);
+
+        centerTopPanel.add(layeredPane1);
 
         rightTopPanel.add(profileButton);
         topPanel.add(leftTopPanel);
@@ -208,7 +230,7 @@ public class GameView extends JPanel implements MyView {
             redPanel.setOpaque(false);
 
             redPanel.setSize(50, 50); // Set the size as desired
-            redPanel.setLocation(mousePosition.x - 10, mousePosition.y - 50); // Set its initial position
+            redPanel.setLocation(mousePosition.x - 10 - this.getLocationOnScreen().x, mousePosition.y - 50 - this.getLocationOnScreen().y); // Set its initial position
             overPanel.add(redPanel); // Add red panel to the view
 
             // Implement fading animation
@@ -231,11 +253,14 @@ public class GameView extends JPanel implements MyView {
                         redPanel.setAlpha(alpha); // Red color with variable alpha
                     }
                 }
-            }, 0, 30); // Schedule task to run every 50 milliseconds
-        }catch (Exception ignored) {
-            System.out.println("xd");
+            }, 0, 30);
+        }catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-
+    public void initialize (int currency, int basicGenerator, int midGenerator, int highGenerator, int lvlBasicImp, int lvlMidImp, int lvlHighImp) {
+        this.num = currency;
+        storesView.initialize(basicGenerator, midGenerator, highGenerator, lvlBasicImp, lvlMidImp, lvlHighImp);
+    }
 }
