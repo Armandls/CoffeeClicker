@@ -2,11 +2,14 @@ package Presentation;
 
 import Business.Exception.BusinessException;
 import Business.Exception.GeneratorException.GeneratorAddedException;
+import Business.Exception.UserException.UserException;
 import Business.GameManager;
 import Business.GeneratorManager;
 import Business.ImprovementManager;
 import Business.UserManager;
+import Persistance.Exception.ConnectionErrorException;
 import Persistance.Exception.NotFoundException;
+import Persistance.Exception.PersistenceException;
 import Presentation.Controllers.GameController;
 import Presentation.Controllers.HomeController;
 import Presentation.Controllers.LoginController;
@@ -19,6 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 /*Class to manage the interactions between the user interface (UI, the View) and the Manager classes*/
 public class MainController implements FrameController {
@@ -30,11 +34,12 @@ public class MainController implements FrameController {
     private MainFrame mainFrame;
     private MyView currentView;
     private Hashtable<String, MyView> views;
-    LoginController loginController;
-    RegisterController registerController;
-    GameController gameController;
-    StoresController storesController;
-    HomeController  homeController;
+    private LoginView loginView;
+    private RegisterView registerView;
+    private StoresView storesView;
+    private HomeView homeView;
+    private GameView gameView;
+
 
     public MainController(GameManager gameManager, GeneratorManager generatorManager, ImprovementManager improvementManager, UserManager userManager) throws IOException {
         this.gameManager = gameManager;
@@ -52,35 +57,27 @@ public class MainController implements FrameController {
 
     @Override
     public void initializeGame(int currency, int basicGenerator, int midGenerator, int highGenerator, int lvlBasicImp, int lvlMidImp, int lvlHighImp) {
-        gameController.initializeGame(currency, basicGenerator, midGenerator, highGenerator, lvlBasicImp, lvlMidImp, lvlHighImp);
+        gameView.initialize(currency, basicGenerator, midGenerator, highGenerator, lvlBasicImp, lvlMidImp, lvlHighImp);
     }
 
     void init() throws IOException {
         mainFrame = new MainFrame();
         views = new Hashtable<>();
 
-        loginController = new LoginController(this, userManager);
-        LoginView loginView = new LoginView(loginController);
-        loginController.setView(loginView);
+        LoginController loginController = new LoginController(this);
+        loginView = new LoginView(loginController);
 
-        registerController = new RegisterController(this, userManager);
-        RegisterView registerView = new RegisterView(registerController);
-        registerController.setView(registerView);
+        RegisterController registerController = new RegisterController(this);
+        registerView = new RegisterView(registerController);
 
-        storesController = new StoresController();
-        StoresView storesView = new StoresView(storesController);
-        storesController.addView(storesView);
+        StoresController storesController = new StoresController();
+        storesView = new StoresView(storesController);
 
-        gameController = new GameController(this, userManager);
-        GameView gameView = new GameView(gameController, storesView, 0);
-        gameController.setView(gameView);
+        GameController gameController = new GameController(this);
+        gameView = new GameView(gameController, storesView, 0);
 
-        homeController = new HomeController(this, userManager, gameManager);
-        HomeView homeView = new HomeView(homeController);
-        homeController.setView(homeView);
-
-
-
+        HomeController homeController = new HomeController(this);
+        homeView = new HomeView(homeController);
         //mainFrame.addPanel(loginView, "login");
         mainFrame.addPanel(gameView, "game");
         mainFrame.addPanel(registerView, "register");
@@ -117,7 +114,8 @@ public class MainController implements FrameController {
         } catch (BusinessException e) {
             throw new RuntimeException(e); // no generators exception/persistance exception
         }
-        gameController.initializeGame(n_currencies, n_generators[0], n_generators[1], n_generators[2], boosts_lvl[0],boosts_lvl[1],boosts_lvl[2]);
+
+        gameView.initialize(n_currencies, n_generators[0], n_generators[1], n_generators[2], boosts_lvl[0],boosts_lvl[1],boosts_lvl[2]);
     }
 
     public void buyGenerator(String type) {
@@ -131,11 +129,34 @@ public class MainController implements FrameController {
         }
     }
 
+    public String getEmail_id () {
+        return userManager.getCurrentUser().getEmail();
+    }
+
+    public void addGame(int id, int currency_count, boolean finished, String mail_user) throws PersistenceException {
+        //gameManager.addGame(id, currency_count, finished, mail_user);
+    }
+    public void registerUser(String username, String email, String password, String confirmPassword) throws BusinessException, ConnectionErrorException {
+        userManager.registerUser(username, email, password, confirmPassword);
+    }
+
     public void getGeneratorInfo() {
         //Pillar info dels generadors per passar.
 
         //StoresView.loadShop();
+    public void restartValuesUser() {
+        userManager.restartValuesUser();
     }
 
+    public void deleteUser() throws ConnectionErrorException, ConnectionErrorException {
+        userManager.deleteUser();
+    }
 
+    public Map<Integer, Integer> getUnfinishedGames() throws PersistenceException {
+        return gameManager.getUnfinishedGames(getEmail_id());
+    }
+
+    public void loginUser(String userLoginMail, String userLoginPass) throws UserException, UserException {
+        userManager.loginUser(userLoginMail, userLoginPass);
+    }
 }

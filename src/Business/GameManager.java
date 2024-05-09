@@ -33,9 +33,9 @@ public class GameManager {
         }
         return false;
     }
-    public void addGame(Game game, String mail_user) throws PersistenceException {
+    public void addGame(int id, int currency_count, boolean finished, String mail_user) throws PersistenceException {
         try {
-            gameDAO.addGame(game, mail_user);
+            gameDAO.addGame(new Game(id, currency_count, finished, mail_user));
         }catch (PersistenceException exception) {
             throw new PersistenceException("ERROR: Couldn't add game to the database.");
         }

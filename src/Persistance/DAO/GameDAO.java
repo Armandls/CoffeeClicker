@@ -17,7 +17,7 @@ public interface GameDAO {
      * @return Retorna el valor del mail_user que s'ha autogenerat al afegir les dades en la taula de Game en la BBDD.
      * @throws ConnectionErrorException
      */
-    int addGame(Game game, String mail_user) throws ConnectionErrorException;
+    int addGame(Game game) throws ConnectionErrorException;
     List<Game> getGamesFromUser(User user) throws PersistenceException;
     List<Integer> getGameStatistics(Game game) throws PersistenceException;
     void updateGame(Game game) throws PersistenceException;

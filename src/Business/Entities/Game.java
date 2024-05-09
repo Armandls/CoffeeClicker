@@ -13,14 +13,14 @@ public class Game {
     private int id_game;
     private int currency_count;
     private boolean finished;
-    private String user;
+    private String mail_user;
     private ArrayList<Generator> gameGenerators;
 
     public Game(int id_game, int currency_count, boolean finished, String mail_user) {
         this.id_game = id_game;
         this.currency_count = currency_count;
         this.finished = finished;
-        this.user = user;
+        this.mail_user = mail_user;
         this.gameGenerators = new ArrayList<>();
     }
     public int getIdGame() {
@@ -33,7 +33,7 @@ public class Game {
         currency_count -= amount;
     }
     public String getUser() {
-        return user;
+        return mail_user;
     }
     public boolean isFinished() {
         return finished;
