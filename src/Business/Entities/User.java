@@ -26,9 +26,11 @@ public class User {
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
+
     public void setPassword(String password) {
         this.password = password;
     }
+    
     public void setEmail(String email) {
         this.email = email;
     }

@@ -1,22 +1,20 @@
 package Presentation;
 
 import Business.Exception.BusinessException;
-import Business.Exception.GeneratorException.GeneratorAddedException;
 import Business.GameManager;
 import Business.GeneratorManager;
 import Business.ImprovementManager;
 import Business.UserManager;
 import Persistance.Exception.NotFoundException;
+import Persistance.Exception.PersistenceException;
 import Presentation.Controllers.GameController;
 import Presentation.Controllers.HomeController;
 import Presentation.Controllers.LoginController;
 import Presentation.Controllers.RegisterController;
 import Presentation.Views.*;
 import Presentation.Controllers.StoresController;
-import Presentation.Views.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -129,6 +127,14 @@ public class MainController implements FrameController {
         }
         //generatorManager.purchaseNewGenerator(type, gameManager.getGameId());
 
+    }
+
+    public String getEmail_id () {
+        return userManager.getCurrentUser().getEmail();
+    }
+
+    public void addGame(int id, int currency_count, boolean finished, String mail_user) throws PersistenceException {
+        gameManager.addGame(id, currency_count, finished, mail_user);
     }
 
 

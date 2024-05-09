@@ -21,12 +21,10 @@ import java.util.Map;
 public class HomeController implements ActionListener{
     private HomeView homeView;
     private MainController mainController;
-    private UserManager userManager;
     private GameManager gameManager;
 
     public HomeController(MainController mainController, UserManager userManager, GameManager gameManager) {
         this.mainController = mainController;
-        this.userManager = userManager;
         this.gameManager = gameManager;
     }
 
@@ -34,7 +32,7 @@ public class HomeController implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
         if (command.equals("newGame")) {
-            System.out.println("New Game");
+            addGame();
             mainController.swapPanel("game");
         } else if (command.equals("resumeGame")) {
             System.out.println("Resume Game");
@@ -45,6 +43,12 @@ public class HomeController implements ActionListener{
             mainController.resumeGame(gameId);
         }
     }
+
+    public void addGame () throws PersistenceException {
+        String email = mainController.getEmail_id();
+        mainController.addGame(1, 0, false, email);
+    }
+
 
     public void setView(HomeView view) {
         this.homeView = view;

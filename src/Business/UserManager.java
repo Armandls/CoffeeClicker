@@ -85,6 +85,8 @@ public class UserManager {
     }
 
 
+
+
     /**
      * Funció que elimina un usuari de la base de dades.
      * @throws ConnectionErrorException si hi ha un error de connexió amb la base de dades.
