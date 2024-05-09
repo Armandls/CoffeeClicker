@@ -78,6 +78,14 @@ public class MainController implements FrameController {
 
         HomeController homeController = new HomeController(this);
         homeView = new HomeView(homeController);
+        homeView.addNewGameButtonListener(homeController);
+        homeView.addResumeGameButtonListener(e -> {
+            try {
+                resumeGame();
+            } catch (PersistenceException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         //mainFrame.addPanel(loginView, "login");
         mainFrame.addPanel(gameView, "game");
         mainFrame.addPanel(registerView, "register");
@@ -93,29 +101,9 @@ public class MainController implements FrameController {
         currentView = loginView;
     }
 
-    public void resumeGame(int gameId) {
-        int n_currencies = 0;
-        int[] n_generators = {0,0,0}; //{n_basic, n_mid, n_high}
-        int[] boosts_lvl = {0,0,0};   //{lvl_basic, lvl_mid, lvl_high}
-        List<String> generator_types;
-        int i = 0;
-
-        try {
-            n_currencies = gameManager.getGameCurrencies(gameId);
-        } catch (NotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            generator_types = generatorManager.getGeneratorsTypes(gameId);
-            for(String s: generator_types){
-                n_generators[i] = generatorManager.getNumberOfGenerators(gameId, s);
-                boosts_lvl[i++] = generatorManager.getLevelOfGenerator(gameId, s);
-            }
-        } catch (BusinessException e) {
-            throw new RuntimeException(e); // no generators exception/persistance exception
-        }
-
-        gameView.initialize(n_currencies, n_generators[0], n_generators[1], n_generators[2], boosts_lvl[0],boosts_lvl[1],boosts_lvl[2]);
+    public void resumeGameButton() throws PersistenceException {
+        Map<Integer, Integer> games = getUnfinishedGames();
+        homeView.displayGames(games);
     }
 
     public void buyGenerator(String type) {
@@ -152,5 +140,30 @@ public class MainController implements FrameController {
 
     public void loginUser(String userLoginMail, String userLoginPass) throws UserException, UserException {
         userManager.loginUser(userLoginMail, userLoginPass);
+    }
+
+    public void resumeGame(int gameId) {
+        int n_currencies = 0;
+        int[] n_generators = {0,0,0}; //{n_basic, n_mid, n_high}
+        int[] boosts_lvl = {0,0,0};   //{lvl_basic, lvl_mid, lvl_high}
+        List<String> generator_types;
+        int i = 0;
+
+        try {
+            n_currencies = gameManager.getGameCurrencies(gameId);
+        } catch (NotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            generator_types = generatorManager.getGeneratorsTypes(gameId);
+            for(String s: generator_types){
+                n_generators[i] = generatorManager.getNumberOfGenerators(gameId, s);
+                boosts_lvl[i++] = generatorManager.getLevelOfGenerator(gameId, s);
+            }
+        } catch (BusinessException e) {
+            throw new RuntimeException(e); // no generators exception/persistance exception
+        }
+
+        gameView.initialize(n_currencies, n_generators[0], n_generators[1], n_generators[2], boosts_lvl[0],boosts_lvl[1],boosts_lvl[2]);
     }
 }

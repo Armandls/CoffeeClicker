@@ -1,30 +1,16 @@
 package Presentation.Controllers;
 
-import Business.Exception.BusinessException;
-import Business.Exception.UserException.InvalidLoginEmailException;
-import Business.Exception.UserException.InvalidPasswordException;
-import Business.Exception.UserException.UserAlreadyExistsException;
-import Business.Exception.UserException.UserException;
-import Business.GameManager;
-import Business.UserManager;
-import Persistance.Exception.ConnectionErrorException;
 import Persistance.Exception.PersistenceException;
-import Presentation.FrameController;
 import Presentation.MainController;
-import Presentation.Views.HomeView;
-import Presentation.Views.RegisterView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Map;
 
 public class HomeController implements ActionListener{
-    private HomeView homeView;
     private MainController mainController;
 
     public HomeController(MainController mainController) {
         this.mainController = mainController;
-        setupListeners();
     }
 
     @Override
@@ -40,7 +26,7 @@ public class HomeController implements ActionListener{
         } else if (command.equals("resumeGame")) {
             System.out.println("Resume Game");
             try {
-                resumeGame();
+                mainController.resumeGameButton();
             } catch (PersistenceException ex) {
                 throw new RuntimeException(ex);
             }
@@ -54,20 +40,5 @@ public class HomeController implements ActionListener{
     public void addGame () throws PersistenceException {
         String email = mainController.getEmail_id();
         mainController.addGame(1, 0, false, email);
-    }
-
-    private void setupListeners() {
-        this.homeView.addNewGameButtonListener(this);
-        this.homeView.addResumeGameButtonListener(e -> {
-            try {
-                resumeGame();
-            } catch (PersistenceException ex) {
-                throw new RuntimeException(ex);
-            }
-        });
-    }
-    public void resumeGame() throws PersistenceException {
-        Map<Integer, Integer> games = mainController.getUnfinishedGames();
-        homeView.displayGames(games);
     }
 }
