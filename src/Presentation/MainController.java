@@ -81,7 +81,7 @@ public class MainController implements FrameController {
         homeView.addNewGameButtonListener(homeController);
         homeView.addResumeGameButtonListener(e -> {
             try {
-                resumeGame();
+                resumeGameButton();
             } catch (PersistenceException ex) {
                 throw new RuntimeException(ex);
             }
