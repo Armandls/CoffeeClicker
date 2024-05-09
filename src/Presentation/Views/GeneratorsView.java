@@ -57,7 +57,14 @@ public class GeneratorsView extends JPanel {
         panel.setOpaque(false);
 
         ImageIcon image = new ImageIcon(System.getProperty("user.dir") + picture);
-        image = new ImageIcon(image.getImage().getScaledInstance(35, 35, Image.SCALE_DEFAULT));
+        int value = image.getIconWidth() - image.getIconHeight();
+        if (value >= 0) {
+
+            image = new ImageIcon(image.getImage().getScaledInstance(50, (image.getIconHeight()*50)/image.getIconWidth(), Image.SCALE_DEFAULT));
+        }
+        else {
+            image = new ImageIcon(image.getImage().getScaledInstance((image.getIconWidth()*50)/image.getIconHeight(), 50, Image.SCALE_DEFAULT));
+        }
         panel.add(new JLabel(image));
 
         JLabel nameLabel = new JLabel(name);

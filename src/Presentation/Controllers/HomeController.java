@@ -32,7 +32,7 @@ public class HomeController implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
         if (command.equals("newGame")) {
-            addGame();
+            //addGame();
             mainController.swapPanel("game");
         } else if (command.equals("resumeGame")) {
             System.out.println("Resume Game");
@@ -59,11 +59,11 @@ public class HomeController implements ActionListener{
         this.homeView.addResumeGameButtonListener(e -> resumeGame());
     }
     public void resumeGame() {
-        try {
+        /*try {
             Map<Integer, Integer> games = gameManager.getUnfinishedGames(userManager.getCurrentUser().getEmail());
             homeView.displayGames(games);
         } catch (PersistenceException e) {
             throw new RuntimeException(e);
-        }
+        }*/
     }
 }
