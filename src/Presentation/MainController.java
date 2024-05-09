@@ -1,7 +1,6 @@
 package Presentation;
 
 import Business.Exception.BusinessException;
-import Business.Exception.GeneratorException.GeneratorAddedException;
 import Business.Exception.UserException.UserException;
 import Business.GameManager;
 import Business.GeneratorManager;
@@ -16,11 +15,9 @@ import Presentation.Controllers.LoginController;
 import Presentation.Controllers.RegisterController;
 import Presentation.Views.*;
 import Presentation.Controllers.StoresController;
-import Presentation.Views.*;
 
 import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -56,7 +53,6 @@ public class MainController implements FrameController {
         currentView = views.get(panelName);
     }
 
-    @Override
     public void initializeGame(int currency, int basicGenerator, int midGenerator, int highGenerator, int lvlBasicImp, int lvlMidImp, int lvlHighImp) {
         gameView.initialize(currency, basicGenerator, midGenerator, highGenerator, lvlBasicImp, lvlMidImp, lvlHighImp);
     }
@@ -106,141 +102,136 @@ public class MainController implements FrameController {
         homeView.displayGames(games);
     }
 
-    public void buyGenerator(String type) {
+    public void buyGenerator(String type) throws PersistenceException {
         boolean validPurchase;
         validPurchase = gameManager.buyGenerator(type);
         if (validPurchase) {
             getGeneratorInfo();
-        }
-        else{
+        } else {
             //Mostra missatge de que no es te suficient diners per comprar;
         }
     }
 
-    public String getEmail_id () {
+    public String getEmail_id() {
         return userManager.getCurrentUser().getEmail();
     }
 
     public void addGame(int id, int currency_count, boolean finished, String mail_user) throws PersistenceException {
         //gameManager.addGame(id, currency_count, finished, mail_user);
     }
+
     public void registerUser(String username, String email, String password, String confirmPassword) throws BusinessException, ConnectionErrorException {
         userManager.registerUser(username, email, password, confirmPassword);
     }
 
-    public void getGeneratorInfo() {
+    public Map<Integer, Integer> getGeneratorInfo() throws PersistenceException {
         //Pillar info dels generadors per passar.
-
-        //StoresView.loadShop();
-    public void restartValuesUser() {
+        //StoresView.loadShop()
+        return null;
+    }
+    public void restartValuesUser () {
         userManager.restartValuesUser();
     }
-
-    public void deleteUser() throws ConnectionErrorException, ConnectionErrorException {
+    public void deleteUser () throws ConnectionErrorException, ConnectionErrorException {
         userManager.deleteUser();
     }
-
-    public Map<Integer, Integer> getUnfinishedGames() throws PersistenceException {
+    public Map<Integer, Integer> getUnfinishedGames () throws PersistenceException {
         return gameManager.getUnfinishedGames(getEmail_id());
     }
-
-    public void loginUser(String userLoginMail, String userLoginPass) throws UserException, UserException {
+    public void loginUser (String userLoginMail, String userLoginPass) throws UserException {
         userManager.loginUser(userLoginMail, userLoginPass);
     }
-
-    public void resumeGame(int gameId) {
-        int n_currencies = 0;
-        int[] n_generators = {0,0,0}; //{n_basic, n_mid, n_high}
-        int[] boosts_lvl = {0,0,0};   //{lvl_basic, lvl_mid, lvl_high}
-        List<String> generator_types;
-        int i = 0;
-
-        try {
-            n_currencies = gameManager.getGameCurrencies(gameId);
-        } catch (NotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            generator_types = generatorManager.getGeneratorsTypes(gameId);
-            for(String s: generator_types){
-                n_generators[i] = generatorManager.getNumberOfGenerators(gameId, s);
-                boosts_lvl[i++] = generatorManager.getLevelOfGenerator(gameId, s);
-            }
-        } catch (BusinessException e) {
-            throw new RuntimeException(e); // no generators exception/persistance exception
-        }
-
-        gameView.initialize(n_currencies, n_generators[0], n_generators[1], n_generators[2], boosts_lvl[0],boosts_lvl[1],boosts_lvl[2]);
-    }
-
-    public void registerEnterValid(String what) {
+    public void registerEnterValid (String what){
         if (what.equals("email")) {
             registerView.enterValidEmail();
-        }else {
+        } else {
             registerView.enterValidPassword();
         }
     }
-    public void loginEnterValid(String what) {
+    public void loginEnterValid (String what){
         if (what.equals("email")) {
             loginView.enterValidEmail();
-        }else {
+        } else {
             loginView.enterValidPassword();
         }
     }
-
-    public String[] getLoginInfo() {
+    public String[] getLoginInfo () {
         return loginView.getInfo();
     }
-
-    public void clearForm(String what) {
+    public void clearForm (String what){
         switch (what) {
             case "login":
                 loginView.clearForm();
                 break;
-            case "register":
-                registerView.clearForm();
-                break;
+                case "register":
+                    registerView.clearForm();
+                    break;
+            }
         }
-    }
 
-    public void adviceMessage(String error, String databaseError, String what) {
-        if (what.equals("login")) {
-            loginView.adviceMessage(error, databaseError);
-        }else {
-            registerView.adviceMessage(error, databaseError);
+        public void adviceMessage (String error, String databaseError, String what){
+            if (what.equals("login")) {
+                loginView.adviceMessage(error, databaseError);
+            } else {
+                registerView.adviceMessage(error, databaseError);
+            }
         }
-    }
 
-    public void showProfile() {
-        gameView.stop();
-        gameView.showProfile();
-    }
+        public void showProfile () {
+            gameView.stop();
+            gameView.showProfile();
+        }
 
-    public void showConfig() {
-        gameView.stop();
-        gameView.showConfig();
-    }
+        public void showConfig () {
+            gameView.stop();
+            gameView.showConfig();
+        }
 
-    public void toggleStore() {
-        gameView.toggleStore();
-    }
+        public void toggleStore () {
+            gameView.toggleStore();
+        }
 
-    public void startRedPanelAnimation(Point location) {
-        gameView.increase();
-        gameView.startRedPanelAnimation(location);
-    }
+        public void startRedPanelAnimation (Point location){
+            gameView.increase();
+            gameView.startRedPanelAnimation(location);
+        }
 
-    public void hideProfile() {
-        gameView.start();
-        gameView.hideProfile();
-    }
+        public void hideProfile () {
+            gameView.start();
+            gameView.hideProfile();
+        }
 
-    public void hideConfig() {
-        gameView.start();
-        gameView.hideConfig();
-    }
+        public void hideConfig () {
+            gameView.start();
+            gameView.hideConfig();
+        }
 
-    public String[] getRegisterInfo() {
-        return registerView.getInfo();
-    }
+        public String[] getRegisterInfo () {
+            return registerView.getInfo();
+        }
+
+        public void resumeGame ( int gameId){
+            int n_currencies = 0;
+            int[] n_generators = {0, 0, 0}; //{n_basic, n_mid, n_high}
+            int[] boosts_lvl = {0, 0, 0};   //{lvl_basic, lvl_mid, lvl_high}
+            List<String> generator_types;
+            int i = 0;
+
+            try {
+                n_currencies = gameManager.getGameCurrencies(gameId);
+            } catch (NotFoundException e) {
+                throw new RuntimeException(e);
+            }
+            try {
+                generator_types = generatorManager.getGeneratorsTypes(gameId);
+                for (String s : generator_types) {
+                    n_generators[i] = generatorManager.getNumberOfGenerators(gameId, s);
+                    boosts_lvl[i++] = generatorManager.getLevelOfGenerator(gameId, s);
+                }
+            } catch (BusinessException e) {
+                throw new RuntimeException(e); // no generators exception/persistance exception
+            }
+
+            gameView.initialize(n_currencies, n_generators[0], n_generators[1], n_generators[2], boosts_lvl[0], boosts_lvl[1], boosts_lvl[2]);
+        }
 }
