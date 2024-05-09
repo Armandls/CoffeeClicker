@@ -9,6 +9,13 @@ public class StoresController implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getActionCommand().contains("generatorsBuy")) {
+            System.out.println(e.getActionCommand());
+        }
+        else if (e.getActionCommand().contains("generatorBuy")) {
+            System.out.println(e.getActionCommand());
+        }
+
         switch(e.getActionCommand()) {
             case "back":
                 System.out.println("back");

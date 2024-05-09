@@ -75,7 +75,6 @@ public class StoresView extends JPanel {
         buttonsPanel.add(upgradesButton);
         panel.add(buttonsPanel);
 
-
         storePanel.add("generators", this.generatorsView);
         storePanel.add("upgrades", this.improvementsView);
 
@@ -97,9 +96,10 @@ public class StoresView extends JPanel {
     }
 
     public void initialize (int basicGenerator, int midGenerator, int highGenerator, int lvlBasicImp, int lvlMidImp, int lvlHighImp) {
-        //this.generatorsView.addGenerator();
-        //this.generatorsView.addGenerator();
-        //this.generatorsView.addGenerator();
+        this.generatorsView.removeGenerators();
+        this.generatorsView.addGenerator(R.REDBULL, "Redbull", "100", String.valueOf(basicGenerator));
+        this.generatorsView.addGenerator(R.ENCHANTED_BOOK, "Frind's\nNotes", "200", String.valueOf(midGenerator));
+        this.generatorsView.addGenerator(R.CEUS, "CEUS", "300", String.valueOf(highGenerator));
         /*this.improvementsView.addImprovement();
         this.improvementsView.addImprovement();
         this.improvementsView.addImprovement();*/

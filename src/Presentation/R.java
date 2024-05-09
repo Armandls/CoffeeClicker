@@ -6,6 +6,10 @@ public class R {
     public static final String STORES_BACKGROUND = "/files/Resources/Images/phone.png";
     public static final String GAME_BACKGROUND = "/files/Resources/Images/game_background.jpg";
     public static final String LCD = "/files/Resources/Images/lcd.png";
+    public static final String ENCHANTED_BOOK = "/files/Resources/Images/EnchantedBook.gif";
+    public static final String REDBULL = "/files/Resources/Images/redBull.png";
+    public static final String CEUS = "/files/Resources/Images/ceus.png";
+
 
 
     public static final String BUTTON_DEFAULT = "/files/Resources/Textures/button.png";

@@ -1,16 +1,20 @@
 package Presentation;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 public class JImagePanel extends JPanel {
 
+    private int currentFrameIndex;
     private BufferedImage image;
-
     private int res;
 
     private float alpha;
@@ -31,11 +35,14 @@ public class JImagePanel extends JPanel {
         setOpaque(false);
     }
 
+
     public JImagePanel(String path) throws IOException {
-        this.image = loadImage(path);
         this.alpha = 1.0f;
+        currentFrameIndex = 0;
         setOpaque(false);
+        this.image = loadImage(path);
     }
+
 
     public void setImage(BufferedImage image) {
         this.image = image;
@@ -50,81 +57,77 @@ public class JImagePanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g.create();
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+        if (res == 0) {
+            // Set the panel to be transparent
+            setOpaque(false);
 
-        if (image != null) {
-            Graphics2D g2d = (Graphics2D) g.create();
-            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha)); // Set alpha composite
-            if (res == 0) {
-                // Set the panel to be transparent
-                setOpaque(false);
+            int panelWidth = getWidth();
+            int panelHeight = getHeight();
 
-                int panelWidth = getWidth();
-                int panelHeight = getHeight();
+            // Get the image's original width and height
+            int imageWidth = image.getWidth();
+            int imageHeight = image.getHeight();
 
-                // Get the image's original width and height
-                int imageWidth = image.getWidth();
-                int imageHeight = image.getHeight();
+            // Calculate the scale to fit the image to the panel size
+            double scaleFactor = Math.min((double) panelWidth / imageWidth, (double) panelHeight / imageHeight);
 
-                // Calculate the scale to fit the image to the panel size
-                double scaleFactor = Math.min((double) panelWidth / imageWidth, (double) panelHeight / imageHeight);
+            // Calculate the new image dimensions
+            int newImageWidth = (int) (imageWidth * scaleFactor);
+            int newImageHeight = (int) (imageHeight * scaleFactor);
 
-                // Calculate the new image dimensions
-                int newImageWidth = (int) (imageWidth * scaleFactor);
-                int newImageHeight = (int) (imageHeight * scaleFactor);
+            // Calculate the offset for centered positioning
+            int xOffset = (panelWidth - newImageWidth) / 2;
+            int yOffset = (panelHeight - newImageHeight) / 2;
 
-                // Calculate the offset for centered positioning
-                int xOffset = (panelWidth - newImageWidth) / 2;
-                int yOffset = (panelHeight - newImageHeight) / 2;
+            // Draw the scaled image centered onto the panel
+            g2d.drawImage(image, xOffset, yOffset, newImageWidth, newImageHeight, this);
+        }
+        else if (res == 1) {
+            int panelWidth = getWidth();
+            int panelHeight = getHeight();
 
-                // Draw the scaled image centered onto the panel
-                g2d.drawImage(image, xOffset, yOffset, newImageWidth, newImageHeight, this);
-            }
-            else if (res == 1) {
-                int panelWidth = getWidth();
-                int panelHeight = getHeight();
+            // Get the image's original width and height
+            int imageWidth = image.getWidth();
+            int imageHeight = image.getHeight();
 
-                // Get the image's original width and height
-                int imageWidth = image.getWidth();
-                int imageHeight = image.getHeight();
+            // Calculate the scale to fit the extended image width to the panel size
+            double scaleFactor = (double) panelWidth / imageWidth;
 
-                // Calculate the scale to fit the extended image width to the panel size
-                double scaleFactor = (double) panelWidth / imageWidth;
+            // Calculate the new image dimensions
+            int newImageWidth = panelWidth;
+            int newImageHeight = (int) (imageHeight * scaleFactor);
 
-                // Calculate the new image dimensions
-                int newImageWidth = panelWidth;
-                int newImageHeight = (int) (imageHeight * scaleFactor);
+            // Calculate the offset for centered positioning
+            int xOffset = 0;
+            int yOffset = (panelHeight - newImageHeight) / 2;
 
-                // Calculate the offset for centered positioning
-                int xOffset = 0;
-                int yOffset = (panelHeight - newImageHeight) / 2;
+            // Draw the scaled image centered onto the panel
+            g.drawImage(image, xOffset, yOffset, newImageWidth, newImageHeight, this);
 
-                // Draw the scaled image centered onto the panel
-                g.drawImage(image, xOffset, yOffset, newImageWidth, newImageHeight, this);
+        }
+        else if (res == 2) {
+            int panelWidth = getWidth();
+            int panelHeight = getHeight();
 
-            }
-            else if (res == 2) {
-                int panelWidth = getWidth();
-                int panelHeight = getHeight();
+            // Get the image's original width and height
+            int imageWidth = image.getWidth(null);
+            int imageHeight = image.getHeight(null);
 
-                // Get the image's original width and height
-                int imageWidth = image.getWidth(null);
-                int imageHeight = image.getHeight(null);
+            // Calculate the scale to fit the extended image width to the panel size
+            double scaleFactor = (double) panelWidth / imageWidth;
 
-                // Calculate the scale to fit the extended image width to the panel size
-                double scaleFactor = (double) panelWidth / imageWidth;
+            // Calculate the new image dimensions
+            int newImageWidth = panelWidth;
+            int newImageHeight = (int) (imageHeight * scaleFactor);
 
-                // Calculate the new image dimensions
-                int newImageWidth = panelWidth;
-                int newImageHeight = (int) (imageHeight * scaleFactor);
+            // Calculate the offset for centered positioning
+            int xOffset = 0;
+            int yOffset = (panelHeight - newImageHeight) / 2;
 
-                // Calculate the offset for centered positioning
-                int xOffset = 0;
-                int yOffset = (panelHeight - newImageHeight) / 2;
-
-                // Draw the scaled image centered onto the panel
-                g.drawImage(image, xOffset+50, yOffset+60, newImageWidth-100, newImageHeight-100, null);
-
-            }
+            // Draw the scaled image centered onto the panel
+            g.drawImage(image, xOffset+50, yOffset+60, newImageWidth-100, newImageHeight-100, null);
         }
     }
 

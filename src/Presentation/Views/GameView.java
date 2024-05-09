@@ -1,12 +1,9 @@
 package Presentation.Views;
 
-import Presentation.Controllers.GameController;
-import Presentation.Controllers.StoresController;
 import Presentation.Fonts.MinecraftFont;
 import Presentation.JImagePanel;
 import Presentation.JTexturedButton;
 import Presentation.R;
-import org.checkerframework.checker.units.qual.C;
 
 import javax.swing.*;
 import java.awt.*;
@@ -74,7 +71,7 @@ public class GameView extends JPanel implements MyView {
         profileView.setVisible(false);
 
         configView = new ConfigView(listener);
-        storesView = new StoresView(listener);
+        //storesView = new StoresView(listener);
         start();
     }
 
