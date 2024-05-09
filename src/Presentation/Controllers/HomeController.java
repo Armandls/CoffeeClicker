@@ -22,7 +22,7 @@ public class HomeController implements ActionListener{
     private HomeView homeView;
     private MainController mainController;
 
-    public HomeController(MainController mainController, UserManager userManager, GameManager gameManager) {
+    public HomeController(MainController mainController) {
         this.mainController = mainController;
         setupListeners();
     }
@@ -39,7 +39,11 @@ public class HomeController implements ActionListener{
             mainController.swapPanel("game");
         } else if (command.equals("resumeGame")) {
             System.out.println("Resume Game");
-            resumeGame();
+            try {
+                resumeGame();
+            } catch (PersistenceException ex) {
+                throw new RuntimeException(ex);
+            }
         } else if (command.startsWith("loadGame-")) {
             String gameIdStr = command.substring(9);
             int gameId = Integer.parseInt(gameIdStr);
@@ -54,9 +58,15 @@ public class HomeController implements ActionListener{
 
     private void setupListeners() {
         this.homeView.addNewGameButtonListener(this);
-        this.homeView.addResumeGameButtonListener(e -> resumeGame());
+        this.homeView.addResumeGameButtonListener(e -> {
+            try {
+                resumeGame();
+            } catch (PersistenceException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
     }
-    public void resumeGame() {
+    public void resumeGame() throws PersistenceException {
         Map<Integer, Integer> games = mainController.getUnfinishedGames();
         homeView.displayGames(games);
     }

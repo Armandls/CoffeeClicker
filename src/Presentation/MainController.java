@@ -2,11 +2,14 @@ package Presentation;
 
 import Business.Exception.BusinessException;
 import Business.Exception.GeneratorException.GeneratorAddedException;
+import Business.Exception.UserException.UserException;
 import Business.GameManager;
 import Business.GeneratorManager;
 import Business.ImprovementManager;
 import Business.UserManager;
+import Persistance.Exception.ConnectionErrorException;
 import Persistance.Exception.NotFoundException;
+import Persistance.Exception.PersistenceException;
 import Presentation.Controllers.GameController;
 import Presentation.Controllers.HomeController;
 import Presentation.Controllers.LoginController;
@@ -139,15 +142,15 @@ public class MainController implements FrameController {
         userManager.restartValuesUser();
     }
 
-    public void deleteUser() throws ConnectionErrorException {
+    public void deleteUser() throws ConnectionErrorException, ConnectionErrorException {
         userManager.deleteUser();
     }
 
-    public Map<Integer, Integer> getUnfinishedGames() {
-        return gameManager.getUnfinishedGames(userManager.getEmail_id());
+    public Map<Integer, Integer> getUnfinishedGames() throws PersistenceException {
+        return gameManager.getUnfinishedGames(getEmail_id());
     }
 
-    public void loginUser(String userLoginMail, String userLoginPass) throws UserException {
+    public void loginUser(String userLoginMail, String userLoginPass) throws UserException, UserException {
         userManager.loginUser(userLoginMail, userLoginPass);
     }
 }
