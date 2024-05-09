@@ -81,8 +81,10 @@ public class GeneratorsView extends JPanel {
         JPanel buttonPanel = new JPanel(new BorderLayout());
         buttonPanel.setOpaque(false);
         JButton button = new JButton();
+
         button.addActionListener(actionListener);
         button.setActionCommand("generatorsBuy:" + name);
+
         button.setOpaque(false);
         button.setContentAreaFilled(false);
         button.setBorderPainted(false);

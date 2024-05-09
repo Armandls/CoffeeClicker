@@ -71,7 +71,6 @@ public class GameView extends JPanel implements MyView {
         profileView.setVisible(false);
 
         configView = new ConfigView(listener);
-        storesView = new StoresView(listener);
         start();
     }
 
