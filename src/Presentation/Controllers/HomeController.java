@@ -22,7 +22,7 @@ public class HomeController implements ActionListener{
     private HomeView homeView;
     private MainController mainController;
 
-    public HomeController(MainController mainController) {
+    public HomeController(MainController mainController, UserManager userManager, GameManager gameManager) {
         this.mainController = mainController;
         setupListeners();
     }
@@ -31,7 +31,11 @@ public class HomeController implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
         if (command.equals("newGame")) {
-            System.out.println("New Game");
+            try {
+                addGame();
+            } catch (PersistenceException ex) {
+                throw new RuntimeException(ex);
+            }
             mainController.swapPanel("game");
         } else if (command.equals("resumeGame")) {
             System.out.println("Resume Game");
@@ -42,6 +46,12 @@ public class HomeController implements ActionListener{
             mainController.resumeGame(gameId);
         }
     }
+
+    public void addGame () throws PersistenceException {
+        String email = mainController.getEmail_id();
+        mainController.addGame(1, 0, false, email);
+    }
+
     private void setupListeners() {
         this.homeView.addNewGameButtonListener(this);
         this.homeView.addResumeGameButtonListener(e -> resumeGame());

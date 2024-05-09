@@ -2,12 +2,10 @@ package Presentation;
 
 import Business.Exception.BusinessException;
 import Business.Exception.GeneratorException.GeneratorAddedException;
-import Business.Exception.UserException.UserException;
 import Business.GameManager;
 import Business.GeneratorManager;
 import Business.ImprovementManager;
 import Business.UserManager;
-import Persistance.Exception.ConnectionErrorException;
 import Persistance.Exception.NotFoundException;
 import Presentation.Controllers.GameController;
 import Presentation.Controllers.HomeController;
@@ -124,7 +122,14 @@ public class MainController implements FrameController {
             //gameManager.buyGenerator();
         }
         //generatorManager.purchaseNewGenerator(type, gameManager.getGameId());
+    }
 
+    public String getEmail_id () {
+        return userManager.getCurrentUser().getEmail();
+    }
+
+    public void addGame(int id, int currency_count, boolean finished, String mail_user) throws PersistenceException {
+        //gameManager.addGame(id, currency_count, finished, mail_user);
     }
     public void registerUser(String username, String email, String password, String confirmPassword) throws BusinessException, ConnectionErrorException {
         userManager.registerUser(username, email, password, confirmPassword);
