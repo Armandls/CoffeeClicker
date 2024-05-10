@@ -25,11 +25,6 @@ public class HomeController implements ActionListener{
             mainController.swapPanel("game");
         } else if (command.equals("resumeGame")) {
             System.out.println("Resume Game");
-            try {
-                mainController.resumeGameButton();
-            } catch (PersistenceException ex) {
-                throw new RuntimeException(ex);
-            }
         } else if (command.startsWith("loadGame-")) {
             String gameIdStr = command.substring(9);
             int gameId = Integer.parseInt(gameIdStr);
