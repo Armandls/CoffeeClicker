@@ -1,6 +1,7 @@
 package Business;
 
 import Business.Entities.Game;
+import Business.Exception.BusinessException;
 import Persistance.DAO.GameDAO;
 import Persistance.Exception.NotFoundException;
 import Persistance.Exception.PersistenceException;
@@ -19,12 +20,19 @@ public class GameManager {
     Game game;
     public GameManager (GameDAO gameDAO) {
         this.gameDAO = gameDAO;
+        this.game = new Game();
+        this.generatorManager = new GeneratorManager();
     }
     public int getGameId() {
         return game.getIdGame();
     }
+
+    /**
+     * Get del valor de currency que es te en temps real de la partida, no consulta la base de dades.
+     * @return
+     */
     public int getGameCurrency() {return game.getCurrencyCount();}
-    public boolean buyGenerator(String type) {
+    public boolean buyGenerator(String type) throws BusinessException {
         int generatorId;
         if (generatorManager.generatorPurchaseAvailable(game.getCurrencyCount(), game.getIdGame(), type)) {
             generatorId = generatorManager.purchaseNewGenerator(type, game.getIdGame());

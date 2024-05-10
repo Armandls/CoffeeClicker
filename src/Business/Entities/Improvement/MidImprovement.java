@@ -6,4 +6,6 @@ public class MidImprovement extends Improvement{
     public MidImprovement(int idImprovement, int level, String imageUrl) {
         super(idImprovement, level, imageUrl);
     }
+    public MidImprovement() {super(0, "path_basic_image");}
+
 }

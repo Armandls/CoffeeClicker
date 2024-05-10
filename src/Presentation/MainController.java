@@ -102,13 +102,18 @@ public class MainController implements FrameController {
         homeView.displayGames(games);
     }
 
-    public void buyGenerator(String type) throws PersistenceException {
+    public void buyGenerator(String type) {
         boolean validPurchase;
-        validPurchase = gameManager.buyGenerator(type);
-        if (validPurchase) {
-            getGeneratorInfo();
-        } else {
-            //Mostra missatge de que no es te suficient diners per comprar;
+        try {
+            validPurchase = gameManager.buyGenerator(type);
+            if (validPurchase) {
+                getGeneratorInfo();
+            } else {
+                //Mostra missatge de que no es te suficient diners per comprar;
+                System.out.println("Not enough money you have " + gameManager.getGameCurrency());
+            }
+        } catch (BusinessException e) {
+            //Printeja el missatge d'error on toqui.
         }
     }
 
@@ -124,10 +129,27 @@ public class MainController implements FrameController {
         userManager.registerUser(username, email, password, confirmPassword);
     }
 
-    public Map<Integer, Integer> getGeneratorInfo() throws PersistenceException {
-        //Pillar info dels generadors per passar.
-        //StoresView.loadShop()
-        return null;
+    public void getGeneratorInfo() {
+        try {
+            //Pillar info dels generadors per passar.
+            int auxGameId = gameManager.getGameId();
+            String shopNames[] = generatorManager.getShopNames();
+            int shopPrices[] = generatorManager.getShopPrices(auxGameId);
+            int shopNumGens[] = generatorManager.getNumGeneratorsInShop(auxGameId);
+            String shopImages[] = generatorManager.getShopImages();
+
+            int currencyActualGame = gameManager.getGameCurrency();
+
+            //for (int i = 0; i < 3; i++) {
+                //System.out.println("\nGenerador " + (i + 1));
+                //System.out.printf("Nom: %s\nPreu: %d\nNumero Generadors: %d\nPath Imatge:\n\t%s\n", shopNames[i], shopPrices[i], shopNumGens[i], shopImages[i]);
+            //}
+
+            //Passar la info a la view
+
+        } catch (BusinessException e) {
+            //Printejar el missatge d'error
+        }
     }
     public void restartValuesUser () {
         userManager.restartValuesUser();
