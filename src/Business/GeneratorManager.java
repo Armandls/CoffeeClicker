@@ -4,6 +4,7 @@ import Business.Entities.Generator.BasicGenerator;
 import Business.Entities.Generator.Generator;
 import Business.Entities.Generator.HighGenerator;
 import Business.Entities.Generator.MidGenerator;
+import Business.Entities.GeneratorStore;
 import Business.Exception.BusinessException;
 import Business.Exception.GeneratorException.NoGeneratorException;
 import Persistance.DAO.GeneratorDAO;

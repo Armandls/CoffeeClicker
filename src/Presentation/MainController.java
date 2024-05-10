@@ -53,11 +53,6 @@ public class MainController implements FrameController {
         currentView = views.get(panelName);
     }
 
-    @Override
-    public void initializeGame(int currency, int basicGenerator, int midGenerator, int highGenerator, int lvlBasicImp, int lvlMidImp, int lvlHighImp) {
-        gameView.initialize(currency, basicGenerator, midGenerator, highGenerator, lvlBasicImp, lvlMidImp, lvlHighImp);
-    }
-
     void init() throws IOException {
         mainFrame = new MainFrame();
         views = new Hashtable<>();
@@ -87,7 +82,7 @@ public class MainController implements FrameController {
         mainFrame.addPanel(loginView, "login");
         mainFrame.addPanel(gameView, "game");
         mainFrame.addPanel(registerView, "register");
-        //mainFrame.addPanel(gameView, "game");
+        mainFrame.addPanel(gameView, "game");
         mainFrame.addPanel(homeView, "home");
         mainFrame.setVisible(true);
 
@@ -118,6 +113,7 @@ public class MainController implements FrameController {
             //Printeja el missatge d'error on toqui.
         }
     }
+
 
     public String getEmail_id() {
         return userManager.getCurrentUser().getEmail();
@@ -259,22 +255,11 @@ public class MainController implements FrameController {
 
         //2. Afegim a la classe game els generadors guardats a la partida que es vol restaurar
         try {
+            String user = userManager.getCurrentUser().getEmail();
             gameManager.initGame(gameId, n_currencies, user);
         } catch (BusinessException e) {
             throw new RuntimeException(e); // no generators exception/persistance exception
         }
         gameView.initialize(n_currencies, n_generators[0], n_generators[1], n_generators[2], boosts_lvl[0], boosts_lvl[1], boosts_lvl[2]);
     }
-
-    public void buyGenerator(String type) {
-        int generatorId;
-        if (generatorManager.generatorPurchaseAvailable(gameManager.getGameCurrency(), gameManager.getGameId(), type)) {
-            generatorId = generatorManager.purchaseNewGenerator(type, gameManager.getGameId());
-            //gameManager.buyGenerator();
-        }
-        //generatorManager.purchaseNewGenerator(type, gameManager.getGameId());
-
-    }
-
-
 }
