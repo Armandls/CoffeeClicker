@@ -4,6 +4,7 @@ import Business.Entities.Game;
 import Business.Entities.Generator.Generator;
 import Business.Exception.BusinessException;
 import Business.Exception.GeneratorException.NoGeneratorException;
+import Business.Exception.BusinessException;
 import Persistance.DAO.GameDAO;
 import Persistance.Exception.NotFoundException;
 import Persistance.Exception.PersistenceException;
@@ -41,13 +42,24 @@ public class GameManager {
     public int getGameId() {
         return game.getIdGame();
     }
-    public int getGameCurrency() {return game.getCurrencyCount();}
-    public void buyGenerator(String type, String imageUrl) {
 
+    /**
+     * Get del valor de currency que es te en temps real de la partida, no consulta la base de dades.
+     * @return
+     */
+    public int getGameCurrency() {return game.getCurrencyCount();}
+    public boolean buyGenerator(String type) throws BusinessException {
+        int generatorId;
+        if (generatorManager.generatorPurchaseAvailable(game.getCurrencyCount(), game.getIdGame(), type)) {
+            generatorId = generatorManager.purchaseNewGenerator(type, game.getIdGame());
+            game.addGeneratorToGame(type, generatorId);
+            return true;
+        }
+        return false;
     }
-    public void addGame(Game game, String mail_user) throws PersistenceException {
+    public void addGame(int id, int currency_count, boolean finished, String mail_user) throws PersistenceException {
         try {
-            gameDAO.addGame(game, mail_user);
+            gameDAO.addGame(new Game(id, currency_count, finished, mail_user));
         }catch (PersistenceException exception) {
             throw new PersistenceException("ERROR: Couldn't add game to the database.");
         }
