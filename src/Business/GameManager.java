@@ -1,6 +1,9 @@
 package Business;
 
 import Business.Entities.Game;
+import Business.Entities.Generator.Generator;
+import Business.Exception.BusinessException;
+import Business.Exception.GeneratorException.NoGeneratorException;
 import Business.Exception.BusinessException;
 import Persistance.DAO.GameDAO;
 import Persistance.Exception.NotFoundException;
@@ -18,10 +21,23 @@ public class GameManager {
     GeneratorManager generatorManager;
     GameDAO gameDAO;
     Game game;
-    public GameManager (GameDAO gameDAO) {
+    public GameManager (GameDAO gameDAO, GeneratorManager generatorManager) {
         this.gameDAO = gameDAO;
-        this.game = new Game();
-        this.generatorManager = new GeneratorManager();
+        this.generatorManager =generatorManager;
+        //this.game = new Game();
+    }
+
+    public void initGame(int gameId, int n_currencies, String user) throws BusinessException{
+        List<Generator> generators;
+        this.game = new Game(gameId, n_currencies, false, user);
+        try {
+            generators = generatorManager.getGenerators(gameId);
+            for(Generator g: generators) {
+                game.initGenerator(g);
+            }
+        } catch (BusinessException e) {
+            throw new NoGeneratorException("No generators were found for game with id ->" + "gameId");
+        }
     }
     public int getGameId() {
         return game.getIdGame();

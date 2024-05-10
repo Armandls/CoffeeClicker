@@ -33,7 +33,7 @@ public class HomeController implements ActionListener{
         } else if (command.startsWith("loadGame-")) {
             String gameIdStr = command.substring(9);
             int gameId = Integer.parseInt(gameIdStr);
-            mainController.resumeGame(gameId);
+            mainController.resumeGame(gameId, userManager.getCurrentUser().getEmail());
         }
     }
 

@@ -20,10 +20,12 @@ import java.util.List;
  */
 public class GeneratorManager {
     GeneratorDAO generatorDAO;
+    GeneratorStore generatorStore;
+
     String[] genTypes = {"Basic", "Mid", "High"};
     String[] generatorNames = {"REDBULL", "NOTES", "CEUS"};
 
-    public GeneratorManager(GameManager gameManager, GeneratorDAO generatorDAO) throws BusinessException{
+    public GeneratorManager(GeneratorDAO generatorDAO) throws BusinessException{
         this.generatorDAO = generatorDAO;
         //this.gameManager = gameManager;
         //this.generatorStore = new GeneratorStore(getGenerators());  //Aqui faltaria passar-li la partida.
@@ -37,7 +39,7 @@ public class GeneratorManager {
         try {
             generators = generatorDAO.getGeneratorsFromGame(gameId);
         } catch (NotFoundException e) {
-            throw new NoGeneratorException("No generators were found for game with id -> " + 0); //gameManager.getIdGame());
+            throw new NoGeneratorException("No generators were found for game with id -> " + gameId); //gameManager.getIdGame());
         } catch (PersistenceException e) {
             throw new BusinessException(e.getMessage());
         }
