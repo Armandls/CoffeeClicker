@@ -73,4 +73,8 @@ public class Game {
     public void  initGenerator(Generator generator) {
         gameGenerators.add(generator);
     }
+
+    public boolean getFinished() {
+        return finished;
+    }
 }

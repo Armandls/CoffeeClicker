@@ -101,13 +101,24 @@ public class MainController implements FrameController {
 
     public void buyGenerator(String type) {
         boolean validPurchase;
+        switch (type) {
+            case "RedBull":
+                type = "Basic";
+                break;
+            case "Notes":
+                type = "Mid";
+                break;
+            case "CEUS":
+                type = "High";
+                break;
+        }
         try {
             validPurchase = gameManager.buyGenerator(type);
             if (validPurchase) {
-                getGeneratorInfo();
+                updateStoresGeneratorsView();
             } else {
                 //Mostra missatge de que no es te suficient diners per comprar;
-                System.out.println("Not enough money you have " + gameManager.getGameCurrency());
+                System.out.println("Not enough money, you have " + gameManager.getGameCurrency());
             }
         } catch (BusinessException e) {
             //Printeja el missatge d'error on toqui.
@@ -120,34 +131,11 @@ public class MainController implements FrameController {
     }
 
     public void addGame(int id, int currency_count, boolean finished, String mail_user) throws PersistenceException {
-        //gameManager.addGame(id, currency_count, finished, mail_user);
+        gameManager.addGame(id, currency_count, finished, mail_user);
     }
 
     public void registerUser(String username, String email, String password, String confirmPassword) throws BusinessException, ConnectionErrorException {
         userManager.registerUser(username, email, password, confirmPassword);
-    }
-
-    public void getGeneratorInfo() {
-        try {
-            //Pillar info dels generadors per passar.
-            int auxGameId = gameManager.getGameId();
-            String shopNames[] = generatorManager.getShopNames();
-            int shopPrices[] = generatorManager.getShopPrices(auxGameId);
-            int shopNumGens[] = generatorManager.getNumGeneratorsInShop(auxGameId);
-            String shopImages[] = generatorManager.getShopImages();
-
-            int currencyActualGame = gameManager.getGameCurrency();
-
-            //for (int i = 0; i < 3; i++) {
-            //System.out.println("\nGenerador " + (i + 1));
-            //System.out.printf("Nom: %s\nPreu: %d\nNumero Generadors: %d\nPath Imatge:\n\t%s\n", shopNames[i], shopPrices[i], shopNumGens[i], shopImages[i]);
-            //}
-
-            //Passar la info a la view
-
-        } catch (BusinessException e) {
-            //Printejar el missatge d'error
-        }
     }
     public void restartValuesUser () {
         userManager.restartValuesUser();
@@ -261,5 +249,16 @@ public class MainController implements FrameController {
             throw new RuntimeException(e); // no generators exception/persistance exception
         }
         gameView.initialize(n_currencies, n_generators[0], n_generators[1], n_generators[2], boosts_lvl[0], boosts_lvl[1], boosts_lvl[2]);
+    }
+
+    public void updateStoresGeneratorsView() {
+        try {
+            //Pillar info dels generadors per passar.
+            int auxGameId = gameManager.getGameId();
+            storesView.updateGeneratorsView(generatorManager.getShopPrices(auxGameId), generatorManager.getNumGeneratorsInShop(auxGameId));
+
+        } catch (BusinessException e) {
+            //Printejar el missatge d'error
+        }
     }
 }
