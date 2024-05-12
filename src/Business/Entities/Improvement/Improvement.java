@@ -10,6 +10,12 @@ public abstract class Improvement {
         this.level = level;
         this.imageUrl = imageUrl;
     }
+    public Improvement() {}
+
+    public Improvement(int level, String imageUrl){
+        this.level = level;
+        this.imageUrl = imageUrl;
+    }
 
     public int getIdImprovement() {
         return id_improvement;

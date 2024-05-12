@@ -34,6 +34,7 @@ public class HomeController implements ActionListener{
             String gameIdStr = command.substring(9);
             int gameId = Integer.parseInt(gameIdStr);
             mainController.resumeGame(gameId);
+            mainController.swapPanel("game");
         }
     }
 

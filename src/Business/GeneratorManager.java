@@ -1,21 +1,16 @@
 package Business;
 
-import Business.Entities.Game;
 import Business.Entities.Generator.BasicGenerator;
 import Business.Entities.Generator.Generator;
 import Business.Entities.Generator.HighGenerator;
 import Business.Entities.Generator.MidGenerator;
 import Business.Entities.GeneratorStore;
 import Business.Exception.BusinessException;
-import Business.Exception.GeneratorException.GeneratorAddedException;
-import Business.Exception.GeneratorException.GeneratorException;
 import Business.Exception.GeneratorException.NoGeneratorException;
-import Business.Exception.GeneratorException.NotEnoughCurrencyException;
 import Persistance.DAO.GeneratorDAO;
 import Persistance.Exception.ConnectionErrorException;
 import Persistance.Exception.NotFoundException;
 import Persistance.Exception.PersistenceException;
-import Persistance.SQL.SQLGameGenDAO;
 import Persistance.SQL.SQLGenerator;
 
 import java.util.ArrayList;
@@ -29,8 +24,9 @@ public class GeneratorManager {
     GeneratorStore generatorStore;
 
     String[] genTypes = {"Basic", "Mid", "High"};
+    String[] generatorNames = {"REDBULL", "NOTES", "CEUS"};
 
-    public GeneratorManager(GameManager gameManager, GeneratorDAO generatorDAO) throws BusinessException{
+    public GeneratorManager(GeneratorDAO generatorDAO) throws BusinessException{
         this.generatorDAO = generatorDAO;
         //this.gameManager = gameManager;
         //this.generatorStore = new GeneratorStore(getGenerators());  //Aqui faltaria passar-li la partida.
@@ -44,7 +40,7 @@ public class GeneratorManager {
         try {
             generators = generatorDAO.getGeneratorsFromGame(gameId);
         } catch (NotFoundException e) {
-            throw new NoGeneratorException("No generators were found for game with id -> " + 0); //gameManager.getIdGame());
+            throw new NoGeneratorException("No generators were found for game with id -> " + gameId); //gameManager.getIdGame());
         } catch (PersistenceException e) {
             throw new BusinessException(e.getMessage());
         }
@@ -69,7 +65,7 @@ public class GeneratorManager {
         return generator_types;
     }
 
-    public boolean generatorPurchaseAvailable(int currency, int gameId, String type) {
+    public boolean generatorPurchaseAvailable(int currency, int gameId, String type) throws BusinessException{
         try {
             Generator auxGen = getGeneratorFromGame(gameId, type);
             return (currency >= auxGen.getGeneratorPrice());
@@ -83,7 +79,6 @@ public class GeneratorManager {
                 case "High":
                     return (currency >= new HighGenerator().getGeneratorPrice());
             }
-        } catch (BusinessException e) {
         }
         return false;
     }
@@ -99,7 +94,7 @@ public class GeneratorManager {
         return outputVal;
     }
 
-    public int purchaseNewGenerator(String type, int gameId) {
+    public int purchaseNewGenerator(String type, int gameId) throws BusinessException{
         int generatorId = -1;
         try {
             Generator auxGen = getGeneratorFromGame(gameId, type);
@@ -112,17 +107,34 @@ public class GeneratorManager {
                 switch (type) {
                     case "Basic":
                         generatorDAO.addGenerator(new BasicGenerator(gameId));
+                        break;
                     case "Mid":
                         generatorDAO.addGenerator(new MidGenerator(gameId));
+                        break;
                     case "High":
                         generatorDAO.addGenerator(new HighGenerator(gameId));
+                        break;
                 }
                 generatorId = getGeneratorIdFromGame(type, gameId);
             } catch (ConnectionErrorException ex) {
+                throw new BusinessException(e.getMessage());
             }
-        } catch (BusinessException | ConnectionErrorException e) {
+        } catch (ConnectionErrorException e) {
+            throw new BusinessException(e.getMessage());
         }
         return generatorId;
+    }
+
+    public Generator getEmptyGenerator(String type) {
+        switch (type) {
+            case "Basic":
+                return new BasicGenerator();
+            case "Mid":
+                return new MidGenerator();
+            case "High":
+                return new HighGenerator();
+        }
+        return null;
     }
 
     public int[] getShopPrices(int gameId) throws BusinessException{
@@ -132,7 +144,7 @@ public class GeneratorManager {
                 Generator auxGen = getGeneratorFromGame(gameId, genTypes[i]);
                 outputArr[i] = auxGen.getGeneratorPrice();
             } catch (NoGeneratorException e) {
-                outputArr[i] = 0;
+                outputArr[i] = getEmptyGenerator(genTypes[i]).getGeneratorPrice();
             } catch (BusinessException e) {
                 throw new BusinessException(e.getMessage());
             }
@@ -140,29 +152,21 @@ public class GeneratorManager {
         return outputArr;
     }
 
-    public String[] getShopNames(int gameId) {
-        return genTypes.clone();
+    public String[] getShopNames() {
+        return generatorNames.clone();
     }
 
-    public boolean[] getGensInShop(int gameId) throws BusinessException {
-        boolean[] outputArr = new boolean[genTypes.length];
-        List<String> gensInGame = new ArrayList<>();
-
-        for(int i = 0; i < genTypes.length; i ++) {
-            outputArr[i] = false;
-        }
-
-        try {
-            gensInGame = getGeneratorsTypes(gameId);
-            for (int i = 0; i < genTypes.length; i++) {
-                for (int j = 0; j < genTypes.length; j++) {
-                    if (gensInGame.get(i).equals(genTypes[j])) {
-                        outputArr[j] = true;
-                    }
-                }
+    public int[] getNumGeneratorsInShop(int gameId) throws BusinessException {
+        int[] outputArr = new int[genTypes.length];
+        for(int i = 0; i < genTypes.length; i++) {
+            try {
+                Generator auxGen = getGeneratorFromGame(gameId, genTypes[i]);
+                outputArr[i] = auxGen.getNGens();
+            } catch (NoGeneratorException e) {
+                outputArr[i] = 0;
+            } catch (BusinessException e) {
+                throw new BusinessException(e.getMessage());
             }
-        }
-        catch (NoGeneratorException e) {
         }
         return outputArr;
     }
@@ -181,7 +185,7 @@ public class GeneratorManager {
         } catch (BusinessException e) {
             throw new BusinessException(e.getMessage());
         }
-        return null;
+        throw new NoGeneratorException("No gens");
     }
 
     /**
@@ -226,17 +230,25 @@ public class GeneratorManager {
         }
         return gen_lvl;
     }
-    public void buyGenerator(String type) throws NotEnoughCurrencyException {
-        generatorStore.buyGenerator(type);
+
+
+    public String[] getShopImages() {
+        String[] shopImages = new String[genTypes.length];
+        String imageStr = "";
+        for(int i = 0; i < genTypes.length; i++) {
+            switch (i) {
+                case 0:
+                    imageStr = BasicGenerator.getGeneratorImage();
+                    break;
+                case 1:
+                    imageStr = MidGenerator.getGeneratorImage();
+                    break;
+                case 2:
+                    imageStr = HighGenerator.getGeneratorImage();
+                    break;
+            }
+            shopImages[i] = imageStr;
+        }
+        return shopImages;
     }
-
-    public List<Generator> getStoreGenerators() {
-        return generatorStore.getStoreGenerators();
-    }
-
-
-
-
-
-
 }

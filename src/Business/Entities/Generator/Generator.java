@@ -25,11 +25,18 @@ public abstract class Generator {
         this.n_currencies = 0;
     }
 
+    public Generator(int id_game, Improvement improvement) {
+        this.id_game = id_game;
+        this.n_gens = 1;
+        this.n_currencies = 0;
+        this.improvement = improvement;
+    }
+
 
 
     //Creació de generador buit per obtenir la instancia del generador i saber quin tipus de fill es
     public Generator(){
-        this.n_gens = 1;
+        this.n_gens = 0;
     }
 
     public void increaseCurrency(float increaseVal) {
@@ -51,9 +58,9 @@ public abstract class Generator {
         return n_gens;
     }
 
-    //public String getImageUrl() {
-        //return imageUrl;
-    //}
+    public String getImageUrl() {
+        return imageUrl;
+    }
 
     public Improvement getImprovement() {
         return improvement;
@@ -75,5 +82,5 @@ public abstract class Generator {
     public void addGenerator() {
         n_gens++;
     }
-    public String getGeneratorImage(){return null;}
+    public static String getGeneratorImage(){return null;}
 }

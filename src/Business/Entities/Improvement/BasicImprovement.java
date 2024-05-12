@@ -3,7 +3,9 @@ package Business.Entities.Improvement;
 @Improvement, @BasicGenerator
 */
 public class BasicImprovement extends Improvement {
+
     public BasicImprovement(int idImprovement, int level, String imageUrl) {
         super(idImprovement, level, imageUrl);
     }
+    public BasicImprovement() {super(0, "path_basic_image");}
 }
