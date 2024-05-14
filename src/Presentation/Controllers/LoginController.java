@@ -4,8 +4,6 @@ import Business.Exception.UserException.InvalidLoginEmailException;
 import Business.Exception.UserException.InvalidPasswordException;
 import Business.Exception.UserException.UserException;
 import Business.Exception.UserException.UserNotFoundException;
-import Business.UserManager;
-import Presentation.FrameController;
 import Presentation.MainController;
 import Presentation.Views.LoginView;
 
@@ -13,15 +11,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class LoginController implements ActionListener {
-
     private MainController mainController;
-    private UserManager userManager;
-    private LoginView loginView;
-    private String email = "";
 
-    public LoginController(MainController mainController, UserManager userManager) {
+    public LoginController(MainController mainController) {
         this.mainController = mainController;
-        this.userManager = userManager;
     }
 
     @Override
@@ -48,28 +41,24 @@ public class LoginController implements ActionListener {
 
     private void finishSignUp(boolean wasSuccessful) {
         if (wasSuccessful) {
-            loginView.clearForm();
+            mainController.clearForm("login");
             mainController.swapPanel("home");
         } else {
-            loginView.clearForm();
+            mainController.clearForm("login");
         }
     }
 
-    public void setView(LoginView view) {
-        this.loginView = view;
-    }
-
     void login() {
-        String[] info = loginView.getInfo();
+        String[] info = mainController.getLoginInfo();
 
         // Comprovar que els camps no estiguin buits
         if (info[0].equals( "username:")) {
-            loginView.enterValidEmail();
+            mainController.loginEnterValid("email");
             finishSignUp(false);
         }
         else {
             if (info[1].split(":")[1].trim().length() < 7) {
-                loginView.enterValidPassword();
+                mainController.loginEnterValid("password");
                 finishSignUp(false);
             }
             else {
@@ -78,18 +67,18 @@ public class LoginController implements ActionListener {
                 String userLoginPass = info[1].split(":")[1].trim().replaceAll(" ", "").replaceAll(",","").replace("[", "").replace("]","");
                 String userLoginRem =  info[2].split(":")[1].trim();
                     try {
-                        userManager.loginUser(userLoginMail, userLoginPass);
+                        mainController.loginUser(userLoginMail, userLoginPass);
                         finishSignUp(true);
                     } catch (InvalidLoginEmailException e) {
-                        loginView.adviceMessage(e.getMessage(), "Wrong Email Format");
+                        mainController.adviceMessage(e.getMessage(), "Wrong Email Format", "login");
                         finishSignUp(false);
                     } catch (UserNotFoundException e) {
-                        loginView.adviceMessage(e.getMessage() + " Please enter a valid email.", "Invalid email");
+                        mainController.adviceMessage(e.getMessage() + " Please enter a valid email.", "Invalid email", "login");
                         finishSignUp(false);
                     } catch (InvalidPasswordException e) {
-                        loginView.adviceMessage(e.getMessage() + "Please enter a valid password", "Invalid password");
+                        mainController.adviceMessage(e.getMessage() + "Please enter a valid password", "Invalid password", "login");
                     } catch (UserException e) {
-                        loginView.adviceMessage(e.getMessage(), "Database Error");
+                        mainController.adviceMessage(e.getMessage(), "Database Error", "login");
                     }
 
                 /*

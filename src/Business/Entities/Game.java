@@ -4,6 +4,7 @@ import Business.Entities.Generator.BasicGenerator;
 import Business.Entities.Generator.Generator;
 import Business.Entities.Generator.HighGenerator;
 import Business.Entities.Generator.MidGenerator;
+import Business.Exception.BusinessException;
 import Business.Exception.GeneratorException.GeneratorAddedException;
 
 import java.util.ArrayList;
@@ -15,6 +16,10 @@ public class Game {
     private boolean finished;
     private String mail_user;
     private ArrayList<Generator> gameGenerators;
+
+    public Game() {
+        this.gameGenerators = new ArrayList<>(); // necessari per evitar nullPOinter exception en inicialitzar generators
+    }
 
     public Game(int id_game, int currency_count, boolean finished, String mail_user) {
         this.id_game = id_game;
@@ -38,25 +43,34 @@ public class Game {
     public boolean isFinished() {
         return finished;
     }
-    public void addGeneratorToGame(String type, String imageUrl) throws GeneratorAddedException{
+    public void addGeneratorToGame(String type, int idGenerator) {
         Generator toAdd;
         for (Generator auxGen : gameGenerators) {
             if (auxGen.getClass().getSimpleName().contains(type)) {
+                currency_count -= auxGen.getGeneratorPrice();
                 auxGen.addGenerator();
                 return;
             }
         }
         switch (type) {
             case "Basic":
-                gameGenerators.add(new BasicGenerator(id_game, imageUrl));
-                throw new GeneratorAddedException("Generator added");
+                toAdd = new BasicGenerator(id_game);
+                break;
             case "Mid":
-                gameGenerators.add(new MidGenerator(id_game, imageUrl));
-                throw new GeneratorAddedException("Generator added");
+                toAdd = new MidGenerator(id_game);
+                break;
             case "High":
-                gameGenerators.add(new HighGenerator(id_game, imageUrl));
-                throw new GeneratorAddedException("Generator added");
+                toAdd = new HighGenerator(id_game);
+                break;
+            default:
+                toAdd = new BasicGenerator(id_game);
+                break;
         }
+        toAdd.setIdGenerator(idGenerator);
+        currency_count -= toAdd.getGeneratorPrice();
+        gameGenerators.add(toAdd);
     }
-
+    public void  initGenerator(Generator generator) {
+        gameGenerators.add(generator);
+    }
 }

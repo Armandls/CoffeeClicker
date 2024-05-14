@@ -2,6 +2,7 @@ package Presentation.Controllers;
 import Business.UserManager;
 import Persistance.Exception.ConnectionErrorException;
 import Presentation.FrameController;
+import Presentation.MainController;
 import Presentation.Views.GameView;
 import Presentation.Views.LoginView;
 import Presentation.Views.StoresView;
@@ -12,22 +13,11 @@ import java.io.IOException;
 import java.util.Timer;
 
 public class GameController implements ActionListener {
+    private MainController mainController;
 
 
-    private FrameController frame;
-
-    private GameView gameView;
-
-    private UserManager userManager;
-
-
-    public GameController(FrameController frame, UserManager userManager) throws IOException {
-        this.frame = frame;
-        this.userManager = userManager;
-    }
-
-    public void setView(GameView view) {
-        this.gameView = view;
+    public GameController(MainController mainController) {
+        this.mainController = mainController;
     }
 
     @Override
@@ -35,36 +25,30 @@ public class GameController implements ActionListener {
         switch(e.getActionCommand()) {
             case "profile":
                 System.out.println("profile");
-                gameView.stop();
-                gameView.showProfile();
+                mainController.showProfile();
                 break;
 
             case "config":
                 System.out.println("config");
-                gameView.stop();
-                gameView.showConfig();
+                mainController.showConfig();
                 break;
 
             case "phone":
                 System.out.println("phone");
-                gameView.toggleStore();
+                mainController.toggleStore();
                 break;
 
             case "click":
                 System.out.println("click");
-                gameView.increase();
-                gameView.startRedPanelAnimation(MouseInfo.getPointerInfo().getLocation()); // Trigger animation when click button is pressed
+                mainController.startRedPanelAnimation(MouseInfo.getPointerInfo().getLocation());
                 break;
             case "profileClose":
                 System.out.println("profileClose");
-                gameView.start();
-            
-                gameView.hideProfile();
+                mainController.hideProfile();
                 break;
             case "configClose":
                 System.out.println("configClose");
-                gameView.start();
-                gameView.hideConfig();
+                mainController.hideConfig();
                 break;
             case "deleteAccount":
                 System.out.println("Delete Account");
@@ -73,24 +57,21 @@ public class GameController implements ActionListener {
                 } catch (ConnectionErrorException ex) {
                     throw new RuntimeException(ex);
                 }
-                frame.swapPanel("login");
+                mainController.swapPanel("login");
                 break;
             case "logout":
                 System.out.println("Logout");
                 logout();
-                frame.swapPanel("login");
+                mainController.swapPanel("login");
                 break;
         }
     }
 
     void logout() {
-        userManager.restartValuesUser();
+        mainController.restartValuesUser();
     }
 
     void deleteAccount() throws ConnectionErrorException {
-        userManager.deleteUser();
-    }
-    public void initializeGame (int currency, int basicGenerator, int midGenerator, int highGenerator, int lvlBasicImp, int lvlMidImp, int lvlHighImp){
-        this.gameView.initialize(currency, basicGenerator, midGenerator, highGenerator, lvlBasicImp, lvlMidImp, lvlHighImp);
+        mainController.deleteUser();
     }
 }

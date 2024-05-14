@@ -17,18 +17,19 @@ public class Main {
         UserDAO userDAO = new SQLUserDAO();
         GeneratorDAO generatorDAO = new SQLGenerator();
 
-        
-        // Create the different managers and the controller's instance
-        GameManager gameManager = new GameManager(new SQLGameDAO());
-
         GeneratorManager generatorManager = null;
         try {
-            generatorManager = new GeneratorManager(new GameManager(new SQLGameDAO()), generatorDAO);
+            generatorManager = new GeneratorManager(generatorDAO);
         } catch (BusinessException e) {
             // Handle the exception
             System.err.println("Failed to create GeneratorManager: " + e.getMessage());
             e.printStackTrace(); // Print the stack trace for detailed error information
         }
+
+        // Create the different managers and the controller's instance
+        GameManager gameManager = new GameManager(new SQLGameDAO(), generatorManager);
+
+
         ImprovementManager improvementManager = new ImprovementManager();
         UserManager userManager = new UserManager(userDAO);
 

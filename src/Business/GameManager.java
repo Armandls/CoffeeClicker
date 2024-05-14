@@ -1,6 +1,10 @@
 package Business;
 
 import Business.Entities.Game;
+import Business.Entities.Generator.Generator;
+import Business.Exception.BusinessException;
+import Business.Exception.GeneratorException.NoGeneratorException;
+import Business.Exception.BusinessException;
 import Persistance.DAO.GameDAO;
 import Persistance.Exception.NotFoundException;
 import Persistance.Exception.PersistenceException;
@@ -14,18 +18,44 @@ import java.util.Map;
  *  @Currency, @ImprovementStore, @Game
  */
 public class GameManager {
+    GeneratorManager generatorManager;
     GameDAO gameDAO;
     Game game;
-    public GameManager (GameDAO gameDAO) {
+    public GameManager (GameDAO gameDAO, GeneratorManager generatorManager) {
         this.gameDAO = gameDAO;
+        this.generatorManager =generatorManager;
+        //this.game = new Game();
     }
 
+    public void initGame(int gameId, int n_currencies, String user) throws BusinessException{
+        List<Generator> generators;
+        this.game = new Game(gameId, n_currencies, false, user);
+        try {
+            generators = generatorManager.getGenerators(gameId);
+            for(Generator g: generators) {
+                game.initGenerator(g);
+            }
+        } catch (BusinessException e) {
+            throw new NoGeneratorException("No generators were found for game with id ->" + "gameId");
+        }
+    }
     public int getGameId() {
         return game.getIdGame();
     }
-    public int getGameCurrency() {return game.getCurrencyCount();}
-    public void buyGenerator(String type, String imageUrl) {
 
+    /**
+     * Get del valor de currency que es te en temps real de la partida, no consulta la base de dades.
+     * @return
+     */
+    public int getGameCurrency() {return game.getCurrencyCount();}
+    public boolean buyGenerator(String type) throws BusinessException {
+        int generatorId;
+        if (generatorManager.generatorPurchaseAvailable(game.getCurrencyCount(), game.getIdGame(), type)) {
+            generatorId = generatorManager.purchaseNewGenerator(type, game.getIdGame());
+            game.addGeneratorToGame(type, generatorId);
+            return true;
+        }
+        return false;
     }
     public void addGame(int id, int currency_count, boolean finished, String mail_user) throws PersistenceException {
         try {
