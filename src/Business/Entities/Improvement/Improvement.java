@@ -5,10 +5,19 @@ public abstract class Improvement {
     private int level;
     private String imageUrl;
 
+    private String description;
+
     public Improvement(int id_improvement, int level, String imageUrl) {
         this.id_improvement = id_improvement;
         this.level = level;
         this.imageUrl = imageUrl;
+    }
+
+    public Improvement(int id_improvement, int level, String imageUrl, String description) {
+        this.id_improvement = id_improvement;
+        this.level = level;
+        this.imageUrl = imageUrl;
+        this.description = description;
     }
 
     public int getIdImprovement() {

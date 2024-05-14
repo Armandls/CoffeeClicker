@@ -1,26 +1,30 @@
 package Presentation.Views;
 
 import Presentation.Fonts.MinecraftFont;
+import Presentation.FrameController;
+import Presentation.JHoverPanel;
 import Presentation.R;
 
 import javax.swing.*;
+import javax.swing.border.StrokeBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
 public class ImprovementsView extends JPanel {
 
+    public static final String basicImprovementDesc = "Aquestes pastilles combinades amb el teu RedBull\nson una bomba d'hiperactivitat que et permet\nestudiar a nivells inimaginables.\n\nNo et preocupis, no et faran mal.";
+    public static final String midImprovementDesc = "Tantes hores llegint fan mal.\nMillor posa't unes ulleres que els oculistes\nsón cars!";
+    public static final String highImprovementDesc = "Que cols que t'hi digui, si no fós \nper aquest home, molta gent suspendria Mates.";
     private ActionListener actionListener;
+    private FrameController controller;
     private JScrollPane scrollPane;
     private JPanel mainPanel;
 
-    public ImprovementsView(ActionListener listener) {
+    public ImprovementsView(ActionListener listener, FrameController controller) {
         this.actionListener = listener;
+        this.controller = controller;
         init();
         mount();
-
-        addImprovement(R.PILLS, "Pills", "100", "0");
-        addImprovement(R.GLASSES, "Glasses", "200", "0");
-        addImprovement(R.CARLOS, "Carlos", "300", "0");
         setVisible(true);
     }
 
@@ -45,7 +49,7 @@ public class ImprovementsView extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
     }
 
-    public void addImprovement(String picture, String name, String price, String amount) {
+    public void addImprovement(String picture, String name, String price, String amount, String description) {
         JLayeredPane generatorPanel = new JLayeredPane();
         generatorPanel.setLayout(new OverlayLayout(generatorPanel));
         generatorPanel.setPreferredSize(new Dimension(245, 50));
@@ -100,6 +104,22 @@ public class ImprovementsView extends JPanel {
         generatorPanel.setLayer(buttonPanel, 1);
         generatorPanel.add(buttonPanel);
 
+
+        JPanel descriptionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        descriptionPanel.setOpaque(true);
+        descriptionPanel.setSize(300, 100);
+        JTextArea descriptionLabel = new JTextArea(description);
+        descriptionLabel.setBackground(Color.darkGray);
+        descriptionLabel.setPreferredSize(new Dimension(290, 90));
+        descriptionLabel.setFont(MinecraftFont.getFontWithSize(16));
+        descriptionLabel.setForeground(Color.cyan);
+        descriptionPanel.add(descriptionLabel);
+        descriptionPanel.setBackground(Color.darkGray);
+        descriptionPanel.setBorder(new StrokeBorder(new BasicStroke(1.0f), Color.YELLOW));
+
+        JHoverPanel hoverPanel = new JHoverPanel(button, descriptionPanel);
+        controller.addHoverPanel(hoverPanel);
+
         mainPanel.add(generatorPanel);
         mainPanel.revalidate();
         scrollPane.revalidate();
@@ -107,6 +127,17 @@ public class ImprovementsView extends JPanel {
 
     public void removeImprovements() {
         this.mainPanel.removeAll();
+
+        JPanel generatorsPanel = new JPanel(new GridLayout(1, 4));
+        generatorsPanel.setBackground(Color.BLACK);
+        JPanel emptyPanel = new JPanel();
+        emptyPanel.setOpaque(false);
+        generatorsPanel.add(emptyPanel);
+        generatorsPanel.add(new JLabel("Name"));
+        generatorsPanel.add(new JLabel("Price"));
+        generatorsPanel.add(new JLabel("Amount"));
+        mainPanel.add(generatorsPanel);
+
         scrollPane.revalidate();
     }
 }

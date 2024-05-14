@@ -66,7 +66,7 @@ public class MainController implements FrameController {
         registerController.setView(registerView);
 
         storesController = new StoresController();
-        StoresView storesView = new StoresView(storesController);
+        StoresView storesView = new StoresView(storesController, this);
         storesController.addView(storesView);
 
         gameController = new GameController(this, userManager);
@@ -77,12 +77,9 @@ public class MainController implements FrameController {
         HomeView homeView = new HomeView(homeController);
         homeController.setView(homeView);
 
-
-
         //mainFrame.addPanel(loginView, "login");
         mainFrame.addPanel(gameView, "game");
         mainFrame.addPanel(registerView, "register");
-        //mainFrame.addPanel(gameView, "game");
         mainFrame.addPanel(homeView, "home");
         mainFrame.setVisible(true);
 
@@ -92,6 +89,8 @@ public class MainController implements FrameController {
         views.put("home", homeView);
 
         currentView = loginView;
+
+        initializeGame(0, 0, 0, 0, 0, 0, 0);
     }
 
     public void resumeGame(int gameId) {
@@ -136,5 +135,8 @@ public class MainController implements FrameController {
         //gameManager.addGame(id, currency_count, finished, mail_user);
     }
 
-
+    @Override
+    public void addHoverPanel(JHoverPanel panel) {
+        ((GameView)views.get("game")).addHoverPanel(panel);
+    }
 }

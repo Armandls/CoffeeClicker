@@ -6,6 +6,7 @@ import Business.Entities.Improvement.Improvement;
 @Generator, @BasicGenerator, @MidGenerator
 */
 public class HighGenerator extends Generator{
+
     public HighGenerator(int id_generator, int n_currencies, int id_game, int n_gens, Improvement improvement, String imageUrl) {
         super(id_generator, n_currencies, id_game, n_gens, improvement, imageUrl);
     }

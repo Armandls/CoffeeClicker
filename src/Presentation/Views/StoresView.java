@@ -1,6 +1,8 @@
 package Presentation.Views;
+import Business.Entities.Generator.BasicGenerator;
 import Presentation.Controllers.StoresController;
 import Presentation.Fonts.MinecraftFont;
+import Presentation.FrameController;
 import Presentation.JImagePanel;
 import Presentation.JTexturedButton;
 import Presentation.R;
@@ -20,9 +22,11 @@ public class StoresView extends JPanel {
     private GeneratorsView generatorsView;
     private ImprovementsView improvementsView;
     private ActionListener listener;
+    private FrameController controller;
 
-    public StoresView(ActionListener listener) throws IOException {
+    public StoresView(ActionListener listener, FrameController frameController) throws IOException {
         this.listener = listener;
+        this.controller = frameController;
         setSize(800, 600);
         setLayout(new OverlayLayout(this));
         setOpaque(false);
@@ -48,8 +52,8 @@ public class StoresView extends JPanel {
         upgradesButton.addActionListener(listener);
         upgradesButton.setActionCommand("upgrades");
 
-        this.generatorsView = new GeneratorsView(this.listener);
-        this.improvementsView = new ImprovementsView(this.listener);
+        this.generatorsView = new GeneratorsView(this.listener, controller);
+        this.improvementsView = new ImprovementsView(this.listener, controller);
 
         this.storePanel = new JPanel();             //panell que conté les views de les dues botigues
         storePanel.setLayout(this.cardLayout);
@@ -97,11 +101,11 @@ public class StoresView extends JPanel {
 
     public void initialize (int basicGenerator, int midGenerator, int highGenerator, int lvlBasicImp, int lvlMidImp, int lvlHighImp) {
         this.generatorsView.removeGenerators();
-        this.generatorsView.addGenerator(R.REDBULL, "Redbull", "100", String.valueOf(basicGenerator));
-        this.generatorsView.addGenerator(R.ENCHANTED_BOOK, "Notes", "200", String.valueOf(midGenerator));
-        this.generatorsView.addGenerator(R.CEUS, "CEUS", "300", String.valueOf(highGenerator));
-        /*this.improvementsView.addImprovement();
-        this.improvementsView.addImprovement();
-        this.improvementsView.addImprovement();*/
+        this.generatorsView.addGenerator(R.REDBULL, "Redbull", "100", String.valueOf(basicGenerator), GeneratorsView.basicGenDesc);
+        this.generatorsView.addGenerator(R.ENCHANTED_BOOK, "Notes", "200", String.valueOf(midGenerator), GeneratorsView.midGenDesc);
+        this.generatorsView.addGenerator(R.CEUS, "CEUS", "300", String.valueOf(highGenerator), GeneratorsView.highGenDesc);
+        this.improvementsView.addImprovement(R.PILLS, "Pills", "100", String.valueOf(lvlBasicImp), ImprovementsView.basicImprovementDesc);
+        this.improvementsView.addImprovement(R.GLASSES, "Glasses", "200", String.valueOf(lvlMidImp), ImprovementsView.midImprovementDesc);
+        this.improvementsView.addImprovement(R.CARLOS, "Carlos", "300", String.valueOf(lvlHighImp), ImprovementsView.highImprovementDesc);
     }
 }

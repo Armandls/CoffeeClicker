@@ -19,4 +19,14 @@ public class MinecraftFont extends Font {
             return null;
         }
     }
+
+    public static Font getFontWithSize(int size) {
+        try {
+            Font ret = Font.createFont(Font.TRUETYPE_FONT, new File(System.getProperty("user.dir") + "/files/Resources/Fonts/Minecraftchmc-dBlX.ttf"));
+            return ret.deriveFont(Font.BOLD, size);
+        } catch (IOException | FontFormatException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

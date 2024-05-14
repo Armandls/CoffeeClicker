@@ -10,6 +10,8 @@ public abstract class Generator {
     private Improvement improvement;
     private String imageUrl;
 
+    private String description;
+
     public Generator(int id_generator, int n_currencies, int id_game, int n_gens, Improvement improvement, String imageUrl) {
         this.id_generator = id_generator;
         this.n_currencies = n_currencies;
@@ -17,6 +19,16 @@ public abstract class Generator {
         this.n_gens = n_gens;
         this.improvement = improvement;
         this.imageUrl = imageUrl;
+    }
+
+    public Generator(int id_generator, int n_currencies, int id_game, int n_gens, Improvement improvement, String imageUrl, String description) {
+        this.id_generator = id_generator;
+        this.n_currencies = n_currencies;
+        this.id_game = id_game;
+        this.n_gens = n_gens;
+        this.improvement = improvement;
+        this.imageUrl = imageUrl;
+        this.description = description;
     }
 
     public Generator(int id_game, String imageUrl) {
