@@ -42,14 +42,17 @@ public class GameController implements ActionListener {
                 System.out.println("click");
                 mainController.startRedPanelAnimation(MouseInfo.getPointerInfo().getLocation());
                 break;
+
             case "profileClose":
                 System.out.println("profileClose");
                 mainController.hideProfile();
                 break;
+
             case "configClose":
                 System.out.println("configClose");
                 mainController.hideConfig();
                 break;
+
             case "deleteAccount":
                 System.out.println("Delete Account");
                 try {
@@ -59,6 +62,7 @@ public class GameController implements ActionListener {
                 }
                 mainController.swapPanel("login");
                 break;
+
             case "logout":
                 System.out.println("Logout");
                 logout();

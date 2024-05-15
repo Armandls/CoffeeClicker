@@ -38,6 +38,9 @@ public class MainController implements FrameController {
     private HomeView homeView;
     private GameView gameView;
 
+    private GeneratorsView generatorsView;
+    private ImprovementsView improvementsView;
+
 
     public MainController(GameManager gameManager, GeneratorManager generatorManager, ImprovementManager improvementManager, UserManager userManager) throws IOException {
         this.gameManager = gameManager;
@@ -70,6 +73,8 @@ public class MainController implements FrameController {
 
         StoresController storesController = new StoresController(this);
         storesView = new StoresView(storesController, this);
+        generatorsView = new GeneratorsView(storesController, this);
+        improvementsView = new ImprovementsView(storesController, this);
 
         GameController gameController = new GameController(this);
         gameView = new GameView(gameController, storesView, 0);
@@ -95,6 +100,7 @@ public class MainController implements FrameController {
         views.put("register", registerView);
         views.put("game", gameView);
         views.put("home", homeView);
+        views.put("stores", storesView);
 
         currentView = loginView;
 
@@ -276,4 +282,8 @@ public class MainController implements FrameController {
         ((GameView)views.get("game")).addHoverPanel(panel);
     }
 
+    @Override
+    public void swapStore(String panelName) {
+        ((StoresView)views.get("stores")).swapPanel(panelName);
+    }
 }

@@ -13,7 +13,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-public class StoresView extends JPanel {
+public class StoresView extends JPanel implements MyView {
     private JTexturedButton generatorsButton;
     private JTexturedButton upgradesButton;
     private CardLayout cardLayout;
@@ -95,8 +95,8 @@ public class StoresView extends JPanel {
         add(layeredPane);
     }
 
-    public void swapPanel(String panel) {
-        cardLayout.show(storePanel, panel);
+    public void swapPanel(String name) {
+        this.cardLayout.show(storePanel, name);
     }
 
     public void initialize (int basicGenerator, int midGenerator, int highGenerator, int lvlBasicImp, int lvlMidImp, int lvlHighImp) {
@@ -107,5 +107,20 @@ public class StoresView extends JPanel {
         this.improvementsView.addImprovement(R.PILLS, "Pills", "100", String.valueOf(lvlBasicImp), ImprovementsView.basicImprovementDesc);
         this.improvementsView.addImprovement(R.GLASSES, "Glasses", "200", String.valueOf(lvlMidImp), ImprovementsView.midImprovementDesc);
         this.improvementsView.addImprovement(R.CARLOS, "Carlos", "300", String.valueOf(lvlHighImp), ImprovementsView.highImprovementDesc);
+    }
+
+    @Override
+    public void start() {
+
+    }
+
+    @Override
+    public void stop() {
+
+    }
+
+    @Override
+    public void clear() {
+
     }
 }
