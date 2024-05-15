@@ -89,12 +89,13 @@ public class MainController implements FrameController {
                 throw new RuntimeException(ex);
             }
         });
+
         mainFrame.addPanel(loginView, "login");
         mainFrame.addPanel(gameView, "game");
         mainFrame.addPanel(registerView, "register");
-        mainFrame.addPanel(gameView, "game");
         mainFrame.addPanel(homeView, "home");
         mainFrame.setVisible(true);
+
 
         views.put("login", loginView);
         views.put("register", registerView);

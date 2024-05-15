@@ -91,8 +91,8 @@ public class ImprovementsView extends JPanel {
 
         JPanel buttonPanel = new JPanel(new BorderLayout());
         buttonPanel.setOpaque(false);
-        JButton button = new JButton();
 
+        JButton button = new JButton();
         button.addActionListener(actionListener);
         button.setActionCommand("improvementsBuy:" + name);
 

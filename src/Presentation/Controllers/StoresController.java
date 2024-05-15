@@ -15,7 +15,7 @@ public class StoresController implements ActionListener {
         if (e.getActionCommand().contains("generatorsBuy")) {
             System.out.println(e.getActionCommand());
         }
-        else if (e.getActionCommand().contains("generatorBuy")) {
+        else if (e.getActionCommand().contains("improvementsBuy")) {
             System.out.println(e.getActionCommand());
         }
 
