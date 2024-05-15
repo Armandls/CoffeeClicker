@@ -45,7 +45,13 @@ public abstract class Generator {
         this.improvement = improvement;
     }
 
-
+    public Generator(int id_game, String imageUrl) {
+        this.id_game = id_game;
+        this.imageUrl = imageUrl;
+        this.n_gens = 1;
+        this.n_currencies = 0;
+        this.improvement = null;
+    }
 
     //Creació de generador buit per obtenir la instancia del generador i saber quin tipus de fill es
     public Generator(){

@@ -53,6 +53,11 @@ public class MainController implements FrameController {
         currentView = views.get(panelName);
     }
 
+    @Override
+    public void initializeGame(int currency, int basicGenerator, int midGenerator, int highGenerator, int lvlBasicImp, int lvlMidImp, int lvlHighImp) {
+        gameView.initialize(currency, basicGenerator, midGenerator, highGenerator, lvlBasicImp, lvlMidImp, lvlHighImp);
+    }
+
     void init() throws IOException {
         mainFrame = new MainFrame();
         views = new Hashtable<>();
@@ -64,7 +69,7 @@ public class MainController implements FrameController {
         registerView = new RegisterView(registerController);
 
         StoresController storesController = new StoresController(this);
-        storesView = new StoresView(storesController);
+        storesView = new StoresView(storesController, this);
 
         GameController gameController = new GameController(this);
         gameView = new GameView(gameController, storesView, 0);
@@ -265,13 +270,6 @@ public class MainController implements FrameController {
         gameView.initialize(n_currencies, n_generators[0], n_generators[1], n_generators[2], boosts_lvl[0], boosts_lvl[1], boosts_lvl[2]);
     }
 
-    public String getEmail_id () {
-        return userManager.getCurrentUser().getEmail();
-    }
-
-    public void addGame(int id, int currency_count, boolean finished, String mail_user) throws PersistenceException {
-        //gameManager.addGame(id, currency_count, finished, mail_user);
-    }
 
     @Override
     public void addHoverPanel(JHoverPanel panel) {

@@ -16,6 +16,10 @@ public class BasicGenerator extends Generator {
     public BasicGenerator(int id_game, String imageUrl) {
         super(id_game, imageUrl);
     }
+
+    public BasicGenerator(int id_game) {
+        super(id_game);
+    }
     @Override
     public int getGeneratorPrice() {
         return (int) Math.round(10 * Math.pow(1.07, super.getNGens()));
