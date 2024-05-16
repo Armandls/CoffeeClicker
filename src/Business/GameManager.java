@@ -90,4 +90,8 @@ public class GameManager {
         }
         return game.getCurrencyCount();
     }
+
+    public void increaseCurrency() {
+        game.increaseCurrency();
+    }
 }

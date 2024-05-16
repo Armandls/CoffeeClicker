@@ -117,7 +117,7 @@ public class MainController implements FrameController {
     public void buyGenerator(String type) {
         boolean validPurchase;
         switch (type) {
-            case "RedBull":
+            case "Redbull":
                 type = "Basic";
                 break;
             case "Notes":
@@ -215,6 +215,7 @@ public class MainController implements FrameController {
     }
 
     public void startRedPanelAnimation (Point location){
+        gameManager.increaseCurrency();
         gameView.increase();
         gameView.startRedPanelAnimation(location);
     }
