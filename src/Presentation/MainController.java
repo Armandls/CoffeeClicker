@@ -81,14 +81,6 @@ public class MainController implements FrameController {
 
         HomeController homeController = new HomeController(this);
         homeView = new HomeView(homeController);
-        homeView.addNewGameButtonListener(homeController);
-        homeView.addResumeGameButtonListener(e -> {
-            try {
-                resumeGameButton();
-            } catch (PersistenceException ex) {
-                throw new RuntimeException(ex);
-            }
-        });
 
         mainFrame.addPanel(loginView, "login");
         mainFrame.addPanel(gameView, "game");

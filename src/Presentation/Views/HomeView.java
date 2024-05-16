@@ -37,18 +37,19 @@ public class HomeView extends JPanel implements MyView {
         newGame.setFont(MinecraftFont.getFont());
         newGame.setSize(200, 50);
         newGame.setText("New Game");
+        newGame.addActionListener(listener);
 
         resumeGame = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
         resumeGame.setFont(MinecraftFont.getFont());
         newGame.setSize(200, 50);
         resumeGame.setText("Resume Game");
+        resumeGame.addActionListener(listener);
 
         newGame.setActionCommand("newGame");
         resumeGame.setActionCommand("resumeGame");
 
         newGame.setFont(MinecraftFont.getFont());
         resumeGame.setFont(MinecraftFont.getFont());
-        start();
     }
 
     private void setupBackground() {
@@ -116,15 +117,6 @@ public class HomeView extends JPanel implements MyView {
 
         resumeDialog.add(scrollPane);
         resumeDialog.setVisible(true);
-    }
-
-
-    public void addNewGameButtonListener(ActionListener listener) {
-        newGame.addActionListener(listener);
-    }
-
-    public void addResumeGameButtonListener(ActionListener listener) {
-        resumeGame.addActionListener(listener);
     }
 
 
