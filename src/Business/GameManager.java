@@ -80,15 +80,15 @@ public class GameManager {
         return creditsAndIds;
     }
 
-    public int getGameCurrencies(int gameId) throws NotFoundException{
-        Game game;
+    public int getGameCurrencies() throws NotFoundException{
+        Game game2;
         try{
-            game = gameDAO.getGame(gameId);
+            game2 = gameDAO.getGame(game.getIdGame());
         }
         catch(PersistenceException e) {
             throw new NotFoundException("ERROR: Couldn't get the solicited game.");
         }
-        return game.getCurrencyCount();
+        return game2.getCurrencyCount();
     }
 
     public void increaseCurrency() {

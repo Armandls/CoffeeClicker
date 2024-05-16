@@ -187,7 +187,7 @@ public class GameView extends JPanel implements MyView {
     }
 
     public void increase() {
-        counter.setText("Credit Counter: " + num++);
+        counter.setText("Credits: " + num++);
     }
 
     public void showProfile() {
@@ -269,6 +269,7 @@ public class GameView extends JPanel implements MyView {
 
     public void initialize (int currency, int basicGenerator, int midGenerator, int highGenerator, int lvlBasicImp, int lvlMidImp, int lvlHighImp) {
         this.num = currency;
+        counter.setText("Credits: " + currency);
         storesView.initialize(basicGenerator, midGenerator, highGenerator, lvlBasicImp, lvlMidImp, lvlHighImp);
     }
 
@@ -282,5 +283,9 @@ public class GameView extends JPanel implements MyView {
         //p.setBounds(300, 50, 30, 30);
         //hoversPanel.add(p);
         //this.hoversPanel.revalidate();
+    }
+
+    public void updateCurrency(int gameCurrencies) {
+        counter.setText("Credits: " + gameCurrencies);
     }
 }
