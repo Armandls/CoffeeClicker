@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class StoresController implements ActionListener {
-    MainController mainController;
+    private MainController mainController;
 
     public StoresController (MainController mainController) {
         this.mainController = mainController;
@@ -16,7 +16,7 @@ public class StoresController implements ActionListener {
             System.out.println(e.getActionCommand());
             mainController.buyGenerator(e.getActionCommand().substring(14));
         }
-        else if (e.getActionCommand().contains("generatorBuy")) {
+        else if (e.getActionCommand().contains("improvementsBuy")) {
             System.out.println(e.getActionCommand());
         }
 
@@ -26,11 +26,11 @@ public class StoresController implements ActionListener {
                 break;
             case "upgrades":
                 System.out.println("upgrades");
-                mainController.swapPanel("upgrades");
+                mainController.swapStore("upgrades");
                 break;
             case "generators":
                 System.out.println("generators");
-                mainController.swapPanel("generators");
+                mainController.swapStore("generators");
                 break;
         }
     }

@@ -38,6 +38,9 @@ public class MainController implements FrameController {
     private HomeView homeView;
     private GameView gameView;
 
+    private GeneratorsView generatorsView;
+    private ImprovementsView improvementsView;
+
 
     public MainController(GameManager gameManager, GeneratorManager generatorManager, ImprovementManager improvementManager, UserManager userManager) throws IOException {
         this.gameManager = gameManager;
@@ -53,6 +56,11 @@ public class MainController implements FrameController {
         currentView = views.get(panelName);
     }
 
+    @Override
+    public void initializeGame(int currency, int basicGenerator, int midGenerator, int highGenerator, int lvlBasicImp, int lvlMidImp, int lvlHighImp) {
+        gameView.initialize(currency, basicGenerator, midGenerator, highGenerator, lvlBasicImp, lvlMidImp, lvlHighImp);
+    }
+
     void init() throws IOException {
         mainFrame = new MainFrame();
         views = new Hashtable<>();
@@ -64,7 +72,9 @@ public class MainController implements FrameController {
         registerView = new RegisterView(registerController);
 
         StoresController storesController = new StoresController(this);
-        storesView = new StoresView(storesController);
+        storesView = new StoresView(storesController, this);
+        generatorsView = new GeneratorsView(storesController, this);
+        improvementsView = new ImprovementsView(storesController, this);
 
         GameController gameController = new GameController(this);
         gameView = new GameView(gameController, storesView, 0);
@@ -79,6 +89,7 @@ public class MainController implements FrameController {
                 throw new RuntimeException(ex);
             }
         });
+
         mainFrame.addPanel(loginView, "login");
         mainFrame.addPanel(gameView, "game");
         mainFrame.addPanel(registerView, "register");
@@ -86,12 +97,16 @@ public class MainController implements FrameController {
         mainFrame.addPanel(homeView, "home");
         mainFrame.setVisible(true);
 
+
         views.put("login", loginView);
         views.put("register", registerView);
         views.put("game", gameView);
         views.put("home", homeView);
+        views.put("stores", storesView);
 
         currentView = loginView;
+
+        initializeGame(0, 0, 0, 0, 0, 0, 0);
     }
 
     public void resumeGameButton() throws PersistenceException {
@@ -260,5 +275,16 @@ public class MainController implements FrameController {
         } catch (BusinessException e) {
             //Printejar el missatge d'error
         }
+    }
+
+
+    @Override
+    public void addHoverPanel(JHoverPanel panel) {
+        ((GameView)views.get("game")).addHoverPanel(panel);
+    }
+
+    @Override
+    public void swapStore(String panelName) {
+        ((StoresView)views.get("stores")).swapPanel(panelName);
     }
 }

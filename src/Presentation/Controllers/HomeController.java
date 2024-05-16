@@ -2,9 +2,11 @@ package Presentation.Controllers;
 
 import Persistance.Exception.PersistenceException;
 import Presentation.MainController;
+import Presentation.Views.HomeView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map;
 
 public class HomeController implements ActionListener{
     private MainController mainController;
@@ -41,5 +43,18 @@ public class HomeController implements ActionListener{
     public void addGame () throws PersistenceException {
         String email = mainController.getEmail_id();
         mainController.addGame(1, 0, false, email);
+    }
+
+    /*private void setupListeners() {
+        .addNewGameButtonListener(this);
+        this.homeView.addResumeGameButtonListener(e -> resumeGame());
+    }*/
+    public void resumeGame() {
+        /*try {
+            Map<Integer, Integer> games = gameManager.getUnfinishedGames(userManager.getCurrentUser().getEmail());
+            homeView.displayGames(games);
+        } catch (PersistenceException e) {
+            throw new RuntimeException(e);
+        }*/
     }
 }
