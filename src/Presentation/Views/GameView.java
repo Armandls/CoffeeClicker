@@ -1,6 +1,7 @@
 package Presentation.Views;
 
 import Presentation.Fonts.MinecraftFont;
+import Presentation.JHoverPanel;
 import Presentation.JImagePanel;
 import Presentation.JTexturedButton;
 import Presentation.R;
@@ -25,6 +26,7 @@ public class GameView extends JPanel implements MyView {
     private ConfigView configView;
     private StoresView storesView;
     private JPanel overPanel;
+    private JPanel hoversPanel;
 
 
     public GameView(ActionListener listener, StoresView storesView, int num) throws IOException {
@@ -36,7 +38,11 @@ public class GameView extends JPanel implements MyView {
         mount();
     }
 
-    private void init() throws IOException {
+    private void init() {
+        hoversPanel = new JPanel(null);
+        hoversPanel.setOpaque(false);
+        hoversPanel.setVisible(true);
+
         overPanel = new JPanel();
         overPanel.setLayout(null);
         overPanel.setOpaque(false);
@@ -169,12 +175,14 @@ public class GameView extends JPanel implements MyView {
         layeredPane.setLayer(panel, 2);
         layeredPane.setLayer(storesView, 3);
         layeredPane.setLayer(overPanel, 4);
+        layeredPane.setLayer(hoversPanel, 5);
 
         layeredPane.add(panel);
         layeredPane.add(mainPanel);
         layeredPane.add(storesView);
         layeredPane.add(background);
         layeredPane.add(overPanel);
+        layeredPane.add(hoversPanel);
         add(layeredPane, BorderLayout.CENTER);
     }
 
@@ -262,5 +270,17 @@ public class GameView extends JPanel implements MyView {
     public void initialize (int currency, int basicGenerator, int midGenerator, int highGenerator, int lvlBasicImp, int lvlMidImp, int lvlHighImp) {
         this.num = currency;
         storesView.initialize(basicGenerator, midGenerator, highGenerator, lvlBasicImp, lvlMidImp, lvlHighImp);
+    }
+
+    public void addHoverPanel(JHoverPanel panel) {
+        this.hoversPanel.add(panel.getPanel());
+        //JPanel p = new JPanel();
+        //p.setOpaque(true);
+        //p.setVisible(true);
+        //p.setBackground(Color.RED);
+        //p.setPreferredSize(new Dimension(30, 30));
+        //p.setBounds(300, 50, 30, 30);
+        //hoversPanel.add(p);
+        //this.hoversPanel.revalidate();
     }
 }

@@ -38,6 +38,9 @@ public class MainController implements FrameController {
     private HomeView homeView;
     private GameView gameView;
 
+    private GeneratorsView generatorsView;
+    private ImprovementsView improvementsView;
+
 
     public MainController(GameManager gameManager, GeneratorManager generatorManager, ImprovementManager improvementManager, UserManager userManager) throws IOException {
         this.gameManager = gameManager;
@@ -53,6 +56,11 @@ public class MainController implements FrameController {
         currentView = views.get(panelName);
     }
 
+    @Override
+    public void initializeGame(int currency, int basicGenerator, int midGenerator, int highGenerator, int lvlBasicImp, int lvlMidImp, int lvlHighImp) {
+        gameView.initialize(currency, basicGenerator, midGenerator, highGenerator, lvlBasicImp, lvlMidImp, lvlHighImp);
+    }
+
     void init() throws IOException {
         mainFrame = new MainFrame();
         views = new Hashtable<>();
@@ -64,7 +72,9 @@ public class MainController implements FrameController {
         registerView = new RegisterView(registerController);
 
         StoresController storesController = new StoresController(this);
-        storesView = new StoresView(storesController);
+        storesView = new StoresView(storesController, this);
+        generatorsView = new GeneratorsView(storesController, this);
+        improvementsView = new ImprovementsView(storesController, this);
 
         GameController gameController = new GameController(this);
         gameView = new GameView(gameController, storesView, 0);
@@ -79,6 +89,7 @@ public class MainController implements FrameController {
                 throw new RuntimeException(ex);
             }
         });
+
         mainFrame.addPanel(loginView, "login");
         mainFrame.addPanel(gameView, "game");
         mainFrame.addPanel(registerView, "register");
@@ -86,12 +97,16 @@ public class MainController implements FrameController {
         mainFrame.addPanel(homeView, "home");
         mainFrame.setVisible(true);
 
+
         views.put("login", loginView);
         views.put("register", registerView);
         views.put("game", gameView);
         views.put("home", homeView);
+        views.put("stores", storesView);
 
         currentView = loginView;
+
+        initializeGame(0, 0, 0, 0, 0, 0, 0);
     }
 
     public void resumeGameButton() throws PersistenceException {
@@ -101,13 +116,24 @@ public class MainController implements FrameController {
 
     public void buyGenerator(String type) {
         boolean validPurchase;
+        switch (type) {
+            case "RedBull":
+                type = "Basic";
+                break;
+            case "Notes":
+                type = "Mid";
+                break;
+            case "CEUS":
+                type = "High";
+                break;
+        }
         try {
             validPurchase = gameManager.buyGenerator(type);
             if (validPurchase) {
-                getGeneratorInfo();
+                updateStoresGeneratorsView();
             } else {
                 //Mostra missatge de que no es te suficient diners per comprar;
-                System.out.println("Not enough money you have " + gameManager.getGameCurrency());
+                System.out.println("Not enough money, you have " + gameManager.getGameCurrency());
             }
         } catch (BusinessException e) {
             //Printeja el missatge d'error on toqui.
@@ -120,34 +146,11 @@ public class MainController implements FrameController {
     }
 
     public void addGame(int id, int currency_count, boolean finished, String mail_user) throws PersistenceException {
-        //gameManager.addGame(id, currency_count, finished, mail_user);
+        gameManager.addGame(id, currency_count, finished, mail_user);
     }
 
     public void registerUser(String username, String email, String password, String confirmPassword) throws BusinessException, ConnectionErrorException {
         userManager.registerUser(username, email, password, confirmPassword);
-    }
-
-    public void getGeneratorInfo() {
-        try {
-            //Pillar info dels generadors per passar.
-            int auxGameId = gameManager.getGameId();
-            String shopNames[] = generatorManager.getShopNames();
-            int shopPrices[] = generatorManager.getShopPrices(auxGameId);
-            int shopNumGens[] = generatorManager.getNumGeneratorsInShop(auxGameId);
-            String shopImages[] = generatorManager.getShopImages();
-
-            int currencyActualGame = gameManager.getGameCurrency();
-
-            //for (int i = 0; i < 3; i++) {
-            //System.out.println("\nGenerador " + (i + 1));
-            //System.out.printf("Nom: %s\nPreu: %d\nNumero Generadors: %d\nPath Imatge:\n\t%s\n", shopNames[i], shopPrices[i], shopNumGens[i], shopImages[i]);
-            //}
-
-            //Passar la info a la view
-
-        } catch (BusinessException e) {
-            //Printejar el missatge d'error
-        }
     }
     public void restartValuesUser () {
         userManager.restartValuesUser();
@@ -261,5 +264,27 @@ public class MainController implements FrameController {
             throw new RuntimeException(e); // no generators exception/persistance exception
         }
         gameView.initialize(n_currencies, n_generators[0], n_generators[1], n_generators[2], boosts_lvl[0], boosts_lvl[1], boosts_lvl[2]);
+    }
+
+    public void updateStoresGeneratorsView() {
+        try {
+            //Pillar info dels generadors per passar.
+            int auxGameId = gameManager.getGameId();
+            storesView.updateGeneratorsView(generatorManager.getShopPrices(auxGameId), generatorManager.getNumGeneratorsInShop(auxGameId));
+
+        } catch (BusinessException e) {
+            //Printejar el missatge d'error
+        }
+    }
+
+
+    @Override
+    public void addHoverPanel(JHoverPanel panel) {
+        ((GameView)views.get("game")).addHoverPanel(panel);
+    }
+
+    @Override
+    public void swapStore(String panelName) {
+        ((StoresView)views.get("stores")).swapPanel(panelName);
     }
 }

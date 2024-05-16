@@ -1,5 +1,8 @@
 package Presentation.Views;
 
+import Presentation.JTexturedButton;
+import Presentation.R;
+
 import javax.swing.*;
 import javax.swing.border.StrokeBorder;
 import java.awt.*;
@@ -8,28 +11,31 @@ import java.awt.event.ActionListener;
 public class ProfileView extends JPanel implements MyView {
 
     private ActionListener listener;
-    private JButton logout;
-    private JButton deleteAccount;
-    private JButton close;
+    private JTexturedButton logout;
+    private JTexturedButton deleteAccount;
+    private JTexturedButton close;
 
     public ProfileView(ActionListener listener) {
         this.listener = listener;
         setLayout(new GridLayout(2, 1));
         setBackground(Color.LIGHT_GRAY);
         setPreferredSize(new Dimension(200, 200));
-        setBorder(new StrokeBorder(new BasicStroke(2.0f)));
+        setBorder(new StrokeBorder(new BasicStroke(2.0f), Color.YELLOW));
         init();
         mount();
     }
 
     private void init() {
-        logout = new JButton("Logout");
+        logout = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
+        logout.setText("Logout");
         logout.setActionCommand("logout");
 
-        deleteAccount = new JButton("Delete Account");
+        deleteAccount = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
+        deleteAccount.setText("Delete Account");
         deleteAccount.setActionCommand("deleteAccount");
 
-        close = new JButton("x");
+        close = new JTexturedButton(R.GAME_BUTTON, R.GAME_BUTTON_PRESSED);
+        close.setPreferredSize(new Dimension(35, 35));
         close.setActionCommand("profileClose");
 
         start();
@@ -37,8 +43,11 @@ public class ProfileView extends JPanel implements MyView {
 
     private void mount() {
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        topPanel.setBackground(Color.darkGray);
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        bottomPanel.setBackground(Color.darkGray);
         JPanel aux = new JPanel();
+        aux.setBackground(Color.darkGray);
         aux.setLayout(new BoxLayout(aux, BoxLayout.Y_AXIS));
 
         topPanel.add(close);

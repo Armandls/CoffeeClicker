@@ -9,6 +9,9 @@ public class R {
     public static final String ENCHANTED_BOOK = "/files/Resources/Images/EnchantedBook.gif";
     public static final String REDBULL = "/files/Resources/Images/redBull.png";
     public static final String CEUS = "/files/Resources/Images/ceus.png";
+    public static final String GLASSES = "/files/Resources/Images/glasses.png";
+    public static final String PILLS = "/files/Resources/Images/woke_pills.png";
+    public static final String CARLOS = "/files/Resources/Images/carlos.png";
 
 
 

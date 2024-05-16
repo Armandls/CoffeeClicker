@@ -10,6 +10,8 @@ public abstract class Generator {
     private Improvement improvement;
     private String imageUrl;
 
+    private String description;
+
     public Generator(int id_generator, int n_currencies, int id_game, int n_gens, Improvement improvement, String imageUrl) {
         this.id_generator = id_generator;
         this.n_currencies = n_currencies;
@@ -19,9 +21,20 @@ public abstract class Generator {
         this.imageUrl = imageUrl;
     }
 
+    public Generator(int id_generator, int n_currencies, int id_game, int n_gens, Improvement improvement, String imageUrl, String description) {
+        this.id_generator = id_generator;
+        this.n_currencies = n_currencies;
+        this.id_game = id_game;
+        this.n_gens = n_gens;
+        this.improvement = improvement;
+        this.imageUrl = imageUrl;
+        this.description = description;
+    }
+
     public Generator(int id_game) {
         this.id_game = id_game;
         this.n_gens = 1;
+        this.imageUrl = imageUrl;
         this.n_currencies = 0;
     }
 
@@ -32,7 +45,13 @@ public abstract class Generator {
         this.improvement = improvement;
     }
 
-
+    public Generator(int id_game, String imageUrl) {
+        this.id_game = id_game;
+        this.imageUrl = imageUrl;
+        this.n_gens = 1;
+        this.n_currencies = 0;
+        this.improvement = null;
+    }
 
     //Creació de generador buit per obtenir la instancia del generador i saber quin tipus de fill es
     public Generator(){
