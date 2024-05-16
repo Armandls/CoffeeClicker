@@ -3,8 +3,6 @@ package Presentation.Views;
 import Presentation.Fonts.MinecraftFont;
 import Presentation.FrameController;
 import Presentation.JHoverPanel;
-import Presentation.JImagePanel;
-import Presentation.R;
 
 import javax.swing.*;
 import javax.swing.border.StrokeBorder;
@@ -118,13 +116,13 @@ public class GeneratorsView extends JPanel {
         descriptionPanel.add(descriptionLabel);
         descriptionPanel.setBackground(Color.darkGray);
         descriptionPanel.setBorder(new StrokeBorder(new BasicStroke(1.0f), Color.YELLOW));
-        JHoverPanel hoverPanel = new JHoverPanel(button, descriptionPanel);
+        JHoverPanel hoverPanel = new JHoverPanel(button, descriptionPanel, name);
+        this.controller.removeHoverPanel(name);
         controller.addHoverPanel(hoverPanel);
     }
 
     public void removeGenerators() {
         this.mainPanel.removeAll();
-
         JPanel generatorsPanel = new JPanel(new GridLayout(1, 4));
         generatorsPanel.setBackground(Color.BLACK);
         JPanel emptyPanel = new JPanel();

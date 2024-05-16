@@ -77,4 +77,8 @@ public class Game {
     public boolean getFinished() {
         return finished;
     }
+
+    public void increaseCurrency() {
+        currency_count++;
+    }
 }

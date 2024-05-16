@@ -89,7 +89,6 @@ public class MainController implements FrameController {
         mainFrame.addPanel(homeView, "home");
         mainFrame.setVisible(true);
 
-
         views.put("login", loginView);
         views.put("register", registerView);
         views.put("game", gameView);
@@ -109,7 +108,7 @@ public class MainController implements FrameController {
     public void buyGenerator(String type) {
         boolean validPurchase;
         switch (type) {
-            case "RedBull":
+            case "Redbull":
                 type = "Basic";
                 break;
             case "Notes":
@@ -122,6 +121,7 @@ public class MainController implements FrameController {
         try {
             validPurchase = gameManager.buyGenerator(type);
             if (validPurchase) {
+                gameView.updateCurrency(gameManager.getGameCurrencies());
                 updateStoresGeneratorsView();
             } else {
                 //Mostra missatge de que no es te suficient diners per comprar;
@@ -129,6 +129,8 @@ public class MainController implements FrameController {
             }
         } catch (BusinessException e) {
             //Printeja el missatge d'error on toqui.
+        } catch (NotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -203,10 +205,12 @@ public class MainController implements FrameController {
     }
 
     public void toggleStore () {
+        updateStoresGeneratorsView();
         gameView.toggleStore();
     }
 
     public void startRedPanelAnimation (Point location){
+        gameManager.increaseCurrency();
         gameView.increase();
         gameView.startRedPanelAnimation(location);
     }
@@ -234,7 +238,7 @@ public class MainController implements FrameController {
 
         // 1. retreiem dades de la partida que es mostraran a les views
         try {
-            n_currencies = gameManager.getGameCurrencies(gameId);
+            n_currencies = gameManager.getGameCurrencies();
         } catch (NotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -263,12 +267,15 @@ public class MainController implements FrameController {
             //Pillar info dels generadors per passar.
             int auxGameId = gameManager.getGameId();
             storesView.updateGeneratorsView(generatorManager.getShopPrices(auxGameId), generatorManager.getNumGeneratorsInShop(auxGameId));
-
         } catch (BusinessException e) {
             //Printejar el missatge d'error
         }
     }
 
+    @Override
+    public void removeHoverPanel(String name) {
+        gameView.removeHoverPanel(name);
+    }
 
     @Override
     public void addHoverPanel(JHoverPanel panel) {
