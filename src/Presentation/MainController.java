@@ -81,14 +81,6 @@ public class MainController implements FrameController {
 
         HomeController homeController = new HomeController(this);
         homeView = new HomeView(homeController);
-        homeView.addNewGameButtonListener(homeController);
-        homeView.addResumeGameButtonListener(e -> {
-            try {
-                resumeGameButton();
-            } catch (PersistenceException ex) {
-                throw new RuntimeException(ex);
-            }
-        });
 
         mainFrame.addPanel(loginView, "login");
         mainFrame.addPanel(gameView, "game");
@@ -96,7 +88,6 @@ public class MainController implements FrameController {
         mainFrame.addPanel(gameView, "game");
         mainFrame.addPanel(homeView, "home");
         mainFrame.setVisible(true);
-
 
         views.put("login", loginView);
         views.put("register", registerView);
@@ -281,6 +272,10 @@ public class MainController implements FrameController {
         }
     }
 
+    @Override
+    public void removeHoverPanel(String name) {
+        gameView.removeHoverPanel(name);
+    }
 
     @Override
     public void addHoverPanel(JHoverPanel panel) {

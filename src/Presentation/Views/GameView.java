@@ -10,11 +10,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.Hashtable;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class GameView extends JPanel implements MyView {
-
     private ActionListener listener;
     private JTexturedButton configButton;
     private JTexturedButton profileButton;
@@ -28,10 +29,13 @@ public class GameView extends JPanel implements MyView {
     private JPanel overPanel;
     private JPanel hoversPanel;
 
+    private Hashtable<String, JPanel> hoverPanelList;
+
 
     public GameView(ActionListener listener, StoresView storesView, int num) throws IOException {
         this.listener = listener;
         this.num = num;
+        hoverPanelList = new Hashtable<>();
         setLayout(new BorderLayout());
         this.storesView = storesView;
         init();
@@ -187,7 +191,7 @@ public class GameView extends JPanel implements MyView {
     }
 
     public void increase() {
-        counter.setText("Credits: " + num++);
+        counter.setText("Credit Counter: " + num++);
     }
 
     public void showProfile() {
@@ -274,18 +278,19 @@ public class GameView extends JPanel implements MyView {
     }
 
     public void addHoverPanel(JHoverPanel panel) {
+        this.hoverPanelList.put(panel.getId(), panel.getPanel());
         this.hoversPanel.add(panel.getPanel());
-        //JPanel p = new JPanel();
-        //p.setOpaque(true);
-        //p.setVisible(true);
-        //p.setBackground(Color.RED);
-        //p.setPreferredSize(new Dimension(30, 30));
-        //p.setBounds(300, 50, 30, 30);
-        //hoversPanel.add(p);
-        //this.hoversPanel.revalidate();
     }
 
     public void updateCurrency(int gameCurrencies) {
         counter.setText("Credits: " + gameCurrencies);
     }
+
+    public void removeHoverPanel(String name) {
+        this.hoversPanel.remove(this.hoverPanelList.get(name));
+        this.hoverPanelList.remove(name);
+        this.revalidate();
+    }
+
+
 }
