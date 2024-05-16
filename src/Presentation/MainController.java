@@ -121,7 +121,7 @@ public class MainController implements FrameController {
         try {
             validPurchase = gameManager.buyGenerator(type);
             if (validPurchase) {
-                gameView.updateCurrency(gameManager.getGameCurrencies());
+                gameView.updateCurrency(gameManager.getGameCurrency());
                 updateStoresGeneratorsView();
             } else {
                 //Mostra missatge de que no es te suficient diners per comprar;
@@ -129,8 +129,6 @@ public class MainController implements FrameController {
             }
         } catch (BusinessException e) {
             //Printeja el missatge d'error on toqui.
-        } catch (NotFoundException e) {
-            throw new RuntimeException(e);
         }
     }
 
@@ -211,7 +209,7 @@ public class MainController implements FrameController {
 
     public void startRedPanelAnimation (Point location){
         gameManager.increaseCurrency();
-        gameView.increase();
+        gameView.updateCurrency(gameManager.getGameCurrency());
         gameView.startRedPanelAnimation(location);
     }
 

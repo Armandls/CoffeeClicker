@@ -190,9 +190,6 @@ public class GameView extends JPanel implements MyView {
         add(layeredPane, BorderLayout.CENTER);
     }
 
-    public void increase() {
-        counter.setText("Credit Counter: " + num++);
-    }
 
     public void showProfile() {
         profileView.setVisible(true);
