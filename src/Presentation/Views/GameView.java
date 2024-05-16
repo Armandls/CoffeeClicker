@@ -284,6 +284,7 @@ public class GameView extends JPanel implements MyView {
 
     public void removeHoverPanel(String name) {
         this.hoversPanel.remove(this.hoverPanelList.get(name));
+        this.hoverPanelList.remove(name);
         this.revalidate();
     }
 
