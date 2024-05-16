@@ -89,7 +89,6 @@ public class MainController implements FrameController {
         mainFrame.addPanel(homeView, "home");
         mainFrame.setVisible(true);
 
-
         views.put("login", loginView);
         views.put("register", registerView);
         views.put("game", gameView);
@@ -269,6 +268,10 @@ public class MainController implements FrameController {
         }
     }
 
+    @Override
+    public void removeHoverPanel(String name) {
+        gameView.removeHoverPanel(name);
+    }
 
     @Override
     public void addHoverPanel(JHoverPanel panel) {

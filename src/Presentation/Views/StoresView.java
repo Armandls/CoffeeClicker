@@ -126,8 +126,8 @@ public class StoresView extends JPanel implements MyView {
 
     public void updateGeneratorsView(int[] generatorPrices, int[] generatorQuantity) {
         this.generatorsView.removeGenerators();
-        this.generatorsView.addGenerator(R.REDBULL, "Redbull", String.valueOf(generatorPrices[0]), String.valueOf(generatorQuantity[0]));
-        this.generatorsView.addGenerator(R.ENCHANTED_BOOK, "Notes", String.valueOf(generatorPrices[1]), String.valueOf(generatorQuantity[1]));
-        this.generatorsView.addGenerator(R.CEUS, "CEUS", String.valueOf(generatorPrices[2]), String.valueOf(generatorQuantity[2]));
+        this.generatorsView.addGenerator(R.REDBULL, "Redbull", String.valueOf(generatorPrices[0]), String.valueOf(generatorQuantity[0]), GeneratorsView.basicGenDesc);
+        this.generatorsView.addGenerator(R.ENCHANTED_BOOK, "Notes", String.valueOf(generatorPrices[1]), String.valueOf(generatorQuantity[1]), GeneratorsView.midGenDesc);
+        this.generatorsView.addGenerator(R.CEUS, "CEUS", String.valueOf(generatorPrices[2]), String.valueOf(generatorQuantity[2]), GeneratorsView.highGenDesc);
     }
 }
