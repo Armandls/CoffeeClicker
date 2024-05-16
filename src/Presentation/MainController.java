@@ -238,11 +238,6 @@ public class MainController implements FrameController {
 
         // 1. retreiem dades de la partida que es mostraran a les views
         try {
-            n_currencies = gameManager.getGameCurrencies();
-        } catch (NotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        try {
             generator_types = generatorManager.getGeneratorsTypes(gameId);
             for(String s: generator_types){
                 n_generators[i] = generatorManager.getNumberOfGenerators(gameId, s);
@@ -256,6 +251,12 @@ public class MainController implements FrameController {
         try {
             String user = userManager.getCurrentUser().getEmail();
             gameManager.initGame(gameId, n_currencies, user);
+            try {
+                n_currencies = gameManager.getGameCurrencies();
+            } catch (NotFoundException e) {
+                throw new RuntimeException(e);
+            }
+            gameManager.updateCurrency(n_currencies);
         } catch (BusinessException e) {
             throw new RuntimeException(e); // no generators exception/persistance exception
         }

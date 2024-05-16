@@ -81,4 +81,8 @@ public class Game {
     public void increaseCurrency() {
         currency_count++;
     }
+
+    public void updateCurrency(int nCurrencies) {
+        currency_count = nCurrencies;
+    }
 }

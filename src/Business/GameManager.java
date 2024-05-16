@@ -94,4 +94,8 @@ public class GameManager {
     public void increaseCurrency() {
         game.increaseCurrency();
     }
+
+    public void updateCurrency(int nCurrencies) {
+        game.updateCurrency(nCurrencies);
+    }
 }
