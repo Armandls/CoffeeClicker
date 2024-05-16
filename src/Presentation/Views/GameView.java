@@ -269,6 +269,7 @@ public class GameView extends JPanel implements MyView {
 
     public void initialize (int currency, int basicGenerator, int midGenerator, int highGenerator, int lvlBasicImp, int lvlMidImp, int lvlHighImp) {
         this.num = currency;
+        this.counter.setText("Credit Counter: " + num);
         storesView.initialize(basicGenerator, midGenerator, highGenerator, lvlBasicImp, lvlMidImp, lvlHighImp);
     }
 
