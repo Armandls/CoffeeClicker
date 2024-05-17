@@ -224,8 +224,20 @@ public class RegisterView extends JLayeredPane implements MyView {
         JOptionPane.showMessageDialog(this, "Please enter a valid email address. Email address must contain '@gmail.com'.", "Mail Error", JOptionPane.ERROR_MESSAGE);
     }
 
-    public void enterValidPassword() {
-        JOptionPane.showMessageDialog(this, "Please enter a valid password. Password must contain at least 7 characters.", "Password Error", JOptionPane.ERROR_MESSAGE);
+    public void enterValidPassword8C() {
+        JOptionPane.showMessageDialog(this, "Please enter a valid password. Password must contain at least 8 characters.", "Password Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void enterValidPasswordLowerCase() {
+        JOptionPane.showMessageDialog(this, "Please enter a valid password. Password must contain at least one lowercase letter", "Password Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void enterValidPasswordUpperCase() {
+        JOptionPane.showMessageDialog(this, "Please enter a valid password. Password must contain at least one uppercase letter", "Password Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void enterValidPasswordOneNumber() {
+        JOptionPane.showMessageDialog(this, "Please enter a valid password. Password must contain at least one number", "Password Error", JOptionPane.ERROR_MESSAGE);
     }
 
     public void clearForm() {

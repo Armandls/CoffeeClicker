@@ -166,7 +166,25 @@ public class MainController implements FrameController, ThreadController {
         if (what.equals("email")) {
             registerView.enterValidEmail();
         } else {
-            registerView.enterValidPassword();
+            if (what.equals("lengthPassword")) {
+                registerView.enterValidPassword8C();
+            }
+            else {
+                if (what.equals("lowerCasePassword")) {
+                    registerView.enterValidPasswordLowerCase();
+                }
+                else {
+                    if (what.equals("upperCasePassword")) {
+                        registerView.enterValidPasswordUpperCase();
+                    }
+                    else {
+                        if (what.equals("minOneNumber")) {
+                            registerView.enterValidPasswordOneNumber();
+                        }
+
+                    }
+                }
+            }
         }
     }
     public void loginEnterValid (String what){
@@ -284,6 +302,23 @@ public class MainController implements FrameController, ThreadController {
         } catch (BusinessException e) {
             //Printejar el missatge d'error
         }
+    }
+
+
+    public boolean checkLowerCaseCaracter(String password) {
+        return userManager.checkLowerCaseCaracter(password);
+    }
+
+    public boolean checkUpperCaseCaracter(String password) {
+        return userManager.checkUpperCaseCaracter(password);
+    }
+
+    public boolean checkMinOneNumber(String password) {
+        return userManager.checkMinOneNumber(password);
+    }
+
+    public boolean checkValidEmail(String email) {
+        return userManager.checkValidEmail(email);
     }
 
     @Override
