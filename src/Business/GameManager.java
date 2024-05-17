@@ -26,10 +26,12 @@ public class GameManager extends Thread{
     GameDAO gameDAO;
     Game game;
     int threadCount;
+    int min;
     public GameManager (GameDAO gameDAO, GeneratorManager generatorManager) {
         this.gameDAO = gameDAO;
         this.generatorManager = generatorManager;
         threadCount = 0;
+        min = 0;
         //this.game = new Game();
     }
 
@@ -60,8 +62,13 @@ public class GameManager extends Thread{
             //Mirem de fer l'actualitzacio de les estadistiques de cada minut.
             threadCount++;
             if (threadCount >= 60) {
+                try {
+                    gameDAO.addStatistic(game.getIdGame(), min, (int)game.getCurrencyCount());
+                } catch (ConnectionErrorException e) {
+                    // Gestionar excepció
+                }
                 threadCount = 0;
-
+                min++;
             }
         }
     }

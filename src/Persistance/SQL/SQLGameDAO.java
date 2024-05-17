@@ -84,6 +84,7 @@ public class SQLGameDAO implements GameDAO {
         }
 
     }
+
     @Override
     public void updateGame(Game game) throws ConnectionErrorException{
         int finishedVar = 0;
@@ -114,5 +115,17 @@ public class SQLGameDAO implements GameDAO {
             throw new ConnectionErrorException(e.getMessage());
         }
     }
+
+    @Override
+    public void addStatistic(int gameId, int gameMin, int currentCurrency) throws ConnectionErrorException {
+        try {
+            String query = "INSERT INTO statistics (game_min, current_currency, id_game) VALUES (" +
+                    gameMin + ", " + currentCurrency + ", " + gameId + ");";
+            SQLConnector.getInstance().insertQuery(query);
+        } catch (ConnectionErrorException e) {
+            throw new ConnectionErrorException("Error adding statistic. " + e.getMessage());
+        }
+    }
+
 
 }
