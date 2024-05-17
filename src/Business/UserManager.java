@@ -125,6 +125,37 @@ public class UserManager {
         return userPassword.equals(checkedPassword);
     }
 
+    public boolean checkLowerCaseCaracter(String password) {
+        for (char c : password.toCharArray()) {
+            if (Character.isLowerCase(c)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean checkUpperCaseCaracter(String password) {
+        for (char c : password.toCharArray()) {
+            if (Character.isUpperCase(c)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean checkMinOneNumber(String password) {
+        for (char c : password.toCharArray()) {
+            if (Character.isDigit(c)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean checkValidEmail(String email) {
+        return email.contains("@gmail.com");
+    }
+
     public void loginUser(String userLoginMail, String userLoginPassword) throws UserException {
 
         if (!userLoginMail.contains("@gmail.com")) {
@@ -150,9 +181,6 @@ public class UserManager {
 
     public void registerUser(String username, String userMail, String userPassword, String repeatPassword) throws BusinessException, ConnectionErrorException {
 
-        if (!userMail.contains("@gmail.com")) {
-            throw new InvalidLoginEmailException("Invalid email format. The email must contain <@gmail.com>.");
-        }
 
         try {
             User user = userDAO.getUser(userMail);
@@ -167,4 +195,6 @@ public class UserManager {
             }
         }
     }
+
+
 }

@@ -55,33 +55,57 @@ public class RegisterController implements ActionListener {
             finishSignUp(false);
         }
         else {
-            if (info[2].length() < 7) {
-                mainController.registerEnterValid("password");
+            if (!mainController.checkValidEmail(info[1])) {
+                mainController.registerEnterValid("email");
                 finishSignUp(false);
             }
             else {
-                String username = info[0];
-                String email = info[1];
-                String password = info[2];
-                String confirmPassword = info[3];
+                if (info[2].length() < 8) {
+                    mainController.registerEnterValid("lengthPassword");
+                    finishSignUp(false);
+                }
+                else {
+                    if (!mainController.checkLowerCaseCaracter(info[2])) {
+                        mainController.registerEnterValid("lowerCasePassword");
+                        finishSignUp(false);
+                    }
+                    else {
+                        if (!mainController.checkUpperCaseCaracter(info[2])) {
+                            mainController.registerEnterValid("upperCasePassword");
+                            finishSignUp(false);
+                        }
+                        else {
+                            if (!mainController.checkMinOneNumber(info[2])) {
+                                mainController.registerEnterValid("minOneNumber");
+                                finishSignUp(false);
+                            }
+                            else {
+                                String username = info[0];
+                                String email = info[1];
+                                String password = info[2];
+                                String confirmPassword = info[3];
 
-                try {
-                    mainController.registerUser(username, email, password, confirmPassword);
-                    finishSignUp(true);
-                } catch (InvalidLoginEmailException e) {
-                    mainController.adviceMessage(e.getMessage(), "Wrong Email Format", "register");
-                    finishSignUp(false);
-                } catch (InvalidPasswordException e) {
-                    mainController.adviceMessage(e.getMessage(), "Invalid Password", "register");
-                    finishSignUp(false);
-                } catch (UserAlreadyExistsException e) {
-                    mainController.adviceMessage(e.getMessage(), "User Already Exists", "register");
-                    finishSignUp(false);
-                } catch (UserException e) {
-                    mainController.adviceMessage(e.getMessage(), "Database Error", "register");
-                    finishSignUp(false);
-                } catch (BusinessException e) {
-                    throw new RuntimeException(e);
+                                try {
+                                    mainController.registerUser(username, email, password, confirmPassword);
+                                    finishSignUp(true);
+                                } catch (InvalidLoginEmailException e) {
+                                    mainController.adviceMessage(e.getMessage(), "Wrong Email Format", "register");
+                                    finishSignUp(false);
+                                } catch (InvalidPasswordException e) {
+                                    mainController.adviceMessage(e.getMessage(), "Invalid Password", "register");
+                                    finishSignUp(false);
+                                } catch (UserAlreadyExistsException e) {
+                                    mainController.adviceMessage(e.getMessage(), "User Already Exists", "register");
+                                    finishSignUp(false);
+                                } catch (UserException e) {
+                                    mainController.adviceMessage(e.getMessage(), "Database Error", "register");
+                                    finishSignUp(false);
+                                } catch (BusinessException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
