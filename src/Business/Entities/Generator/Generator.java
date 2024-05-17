@@ -99,8 +99,14 @@ public abstract class Generator {
     }
 
     public float getGeneratorPrice() {return 0;}
+
     public void addGenerator() {
         n_gens++;
     }
+
     public static String getGeneratorImage(){return null;}
+
+    public void incrementImprovementLevel() {
+        improvement.incrementImprovementLevel();
+    }
 }

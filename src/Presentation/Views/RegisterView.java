@@ -240,6 +240,10 @@ public class RegisterView extends JLayeredPane implements MyView {
         JOptionPane.showMessageDialog(this, "Please enter a valid password. Password must contain at least one number", "Password Error", JOptionPane.ERROR_MESSAGE);
     }
 
+    public void enterValidUsername() {
+        JOptionPane.showMessageDialog(this, "Please enter a valid username. Username must be unique.", "Username Error", JOptionPane.ERROR_MESSAGE);
+    }
+
     public void clearForm() {
         usernameField.setText("");
         emailField.setText("");

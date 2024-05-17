@@ -1,6 +1,7 @@
 package Presentation;
 
 import Business.Exception.BusinessException;
+import Business.Exception.GeneratorException.GeneratorAddedException;
 import Business.Exception.GeneratorException.NoGeneratorException;
 import Business.Exception.UserException.UserException;
 import Business.GameManager;
@@ -163,25 +164,27 @@ public class MainController implements FrameController, ThreadController {
         userManager.loginUser(userLoginMail, userLoginPass);
     }
     public void registerEnterValid (String what){
-        if (what.equals("email")) {
-            registerView.enterValidEmail();
-        } else {
-            if (what.equals("lengthPassword")) {
-                registerView.enterValidPassword8C();
-            }
-            else {
-                if (what.equals("lowerCasePassword")) {
-                    registerView.enterValidPasswordLowerCase();
-                }
-                else {
-                    if (what.equals("upperCasePassword")) {
-                        registerView.enterValidPasswordUpperCase();
-                    }
-                    else {
-                        if (what.equals("minOneNumber")) {
-                            registerView.enterValidPasswordOneNumber();
-                        }
 
+        if (what.equals("username")) {
+            registerView.enterValidUsername();
+        } else {
+            if (what.equals("email")) {
+                registerView.enterValidEmail();
+            } else {
+                if (what.equals("lengthPassword")) {
+                    registerView.enterValidPassword8C();
+                } else {
+                    if (what.equals("lowerCasePassword")) {
+                        registerView.enterValidPasswordLowerCase();
+                    } else {
+                        if (what.equals("upperCasePassword")) {
+                            registerView.enterValidPasswordUpperCase();
+                        } else {
+                            if (what.equals("minOneNumber")) {
+                                registerView.enterValidPasswordOneNumber();
+                            }
+
+                        }
                     }
                 }
             }
@@ -304,6 +307,13 @@ public class MainController implements FrameController, ThreadController {
         }
     }
 
+    public void updateImprovement (String improvement) {
+        try {
+            gameManager.updateImprovement(improvement);
+        } catch (GeneratorAddedException e) {
+            // Avisar al usuario lo que ha de hacer.
+        }
+    }
 
     public boolean checkLowerCaseCaracter(String password) {
         return userManager.checkLowerCaseCaracter(password);
@@ -319,6 +329,10 @@ public class MainController implements FrameController, ThreadController {
 
     public boolean checkValidEmail(String email) {
         return userManager.checkValidEmail(email);
+    }
+
+    public boolean checkValidUsername(String username) throws ConnectionErrorException {
+        return userManager.checkValidUsername(username);
     }
 
     @Override

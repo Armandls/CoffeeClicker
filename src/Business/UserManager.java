@@ -152,6 +152,10 @@ public class UserManager {
         return false;
     }
 
+    public boolean checkValidUsername(String username) throws ConnectionErrorException {
+        return userDAO.isUsernameAvailable(username);
+    }
+
     public boolean checkValidEmail(String email) {
         return email.contains("@gmail.com");
     }

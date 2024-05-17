@@ -3,6 +3,7 @@ package Business;
 import Business.Entities.Game;
 import Business.Entities.Generator.Generator;
 import Business.Exception.BusinessException;
+import Business.Exception.GeneratorException.GeneratorAddedException;
 import Business.Exception.GeneratorException.NoGeneratorException;
 import Business.Exception.BusinessException;
 import Persistance.DAO.GameDAO;
@@ -159,6 +160,37 @@ public class GameManager extends Thread{
             gameDAO.updateGame(this.game);
         } catch (PersistenceException e) {
             throw new BusinessException(e.getMessage());
+        }
+    }
+
+    public void updateImprovement(String improvement) throws GeneratorAddedException {
+        if (improvement.equals("Pills")) {
+            game.getGameGenerators().get(0).incrementImprovementLevel();
+            try {
+                generatorManager.updateGenerator(game.getGameGenerators().get(0));
+            }catch (PersistenceException e) {
+                throw new GeneratorAddedException("Error updating generator with id <" + game.getGameGenerators().get(0).getIdGenerator() + ">. \" + e.getMessage()");
+            }
+        }
+        else {
+            if (improvement.equals("Glasses")) {
+                game.getGameGenerators().get(1).incrementImprovementLevel();
+                try {
+                    generatorManager.updateGenerator(game.getGameGenerators().get(1));
+                }catch (PersistenceException e) {
+                    throw new GeneratorAddedException("Error updating generator with id <" + game.getGameGenerators().get(1).getIdGenerator() + ">. \" + e.getMessage()");
+                }
+            }
+            else {
+                if (improvement.equals("Carlos")) {
+                    game.getGameGenerators().get(2).incrementImprovementLevel();
+                    try {
+                        generatorManager.updateGenerator(game.getGameGenerators().get(2));
+                    }catch (PersistenceException e) {
+                        throw new GeneratorAddedException("Error updating generator with id <" + game.getGameGenerators().get(2).getIdGenerator() + ">. \" + e.getMessage()");
+                    }
+                }
+            }
         }
     }
 }

@@ -10,5 +10,8 @@ public interface UserDAO {
     User getUser(String email) throws PersistenceException;
 
     void deleteUser(String email) throws ConnectionErrorException;
+
     void updateUser(User user) throws ConnectionErrorException;
+
+    boolean isUsernameAvailable (String username) throws ConnectionErrorException;
 }
