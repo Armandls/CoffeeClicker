@@ -82,14 +82,15 @@ public class Game {
     }
 
     public void increaseCurrency() {
-        currency_count += 0.5F;
+        currency_count += 100;
         //currency_count++;
     }
 
     public void generatorsProduction() {
-        int producedAmount = 0;
         for (Generator aux : gameGenerators) {
-            //producedAmount += aux.get
+            currency_count += aux.generateCurrency();
         }
     }
+
+    public ArrayList<Generator> getGameGenerators() {return gameGenerators;}
 }

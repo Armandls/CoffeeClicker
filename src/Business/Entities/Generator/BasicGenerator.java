@@ -18,7 +18,7 @@ public class BasicGenerator extends Generator {
     }
 
     public BasicGenerator(int id_game) {
-        super(id_game);
+        super(id_game, new BasicImprovement());
     }
     @Override
     public float getGeneratorPrice() {

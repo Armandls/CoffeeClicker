@@ -47,6 +47,9 @@ public class GeneratorManager {
         return generators;
     }
 
+    public void updateGenerator(Generator generator) throws ConnectionErrorException {
+        generatorDAO.updateGenerator(generator);
+    }
     public List<String> getGeneratorsTypes(int gameId) throws BusinessException {
         List<Generator> generators = new ArrayList<>();
         List<String> generator_types = new ArrayList<>();

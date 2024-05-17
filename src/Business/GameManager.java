@@ -9,6 +9,8 @@ import Persistance.DAO.GameDAO;
 import Persistance.Exception.ConnectionErrorException;
 import Persistance.Exception.NotFoundException;
 import Persistance.Exception.PersistenceException;
+import Presentation.Controllers.ThreadController;
+import Presentation.MainController;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,6 +22,7 @@ import java.util.Map;
  */
 public class GameManager extends Thread{
     GeneratorManager generatorManager;
+    ThreadController threadController;
     GameDAO gameDAO;
     Game game;
     int threadCount;
@@ -30,16 +33,37 @@ public class GameManager extends Thread{
         //this.game = new Game();
     }
 
+    public void setThreadController(ThreadController tc) {
+        this.threadController = tc;
+    }
+
     @Override
     public void run() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        game.generatorsProduction();
-        threadCount++;
+        while (!game.isFinished()){
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+            }
+            game.generatorsProduction();
+            for(Generator aux : game.getGameGenerators()) {
+                try {
+                    generatorManager.updateGenerator(aux);
+                } catch (ConnectionErrorException e) {
+                }
+            }
+            try {
+                gameDAO.updateGame(this.game);
+            } catch (PersistenceException e) {
+            }
+            threadController.updateStoreCurrency(getGameCurrency());
 
+            //Mirem de fer l'actualitzacio de les estadistiques de cada minut.
+            threadCount++;
+            if (threadCount >= 60) {
+                threadCount = 0;
+
+            }
+        }
     }
 
     public void initGame(int gameId, int n_currencies, String user) throws BusinessException{

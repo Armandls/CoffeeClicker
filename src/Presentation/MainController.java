@@ -10,12 +10,8 @@ import Business.UserManager;
 import Persistance.Exception.ConnectionErrorException;
 import Persistance.Exception.NotFoundException;
 import Persistance.Exception.PersistenceException;
-import Presentation.Controllers.GameController;
-import Presentation.Controllers.HomeController;
-import Presentation.Controllers.LoginController;
-import Presentation.Controllers.RegisterController;
+import Presentation.Controllers.*;
 import Presentation.Views.*;
-import Presentation.Controllers.StoresController;
 
 import java.awt.*;
 import java.io.IOException;
@@ -24,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 /*Class to manage the interactions between the user interface (UI, the View) and the Manager classes*/
-public class MainController implements FrameController {
+public class MainController implements FrameController, ThreadController {
 
     private GameManager gameManager;
     private GeneratorManager generatorManager;
@@ -45,6 +41,7 @@ public class MainController implements FrameController {
 
     public MainController(GameManager gameManager, GeneratorManager generatorManager, ImprovementManager improvementManager, UserManager userManager) throws IOException {
         this.gameManager = gameManager;
+        this.gameManager.setThreadController(this);
         this.generatorManager = generatorManager;
         this.improvementManager = improvementManager;
         this.userManager = userManager;
@@ -133,7 +130,6 @@ public class MainController implements FrameController {
         }
     }
 
-
     public String getEmail_id() {
         return userManager.getCurrentUser().getEmail();
     }
@@ -145,6 +141,7 @@ public class MainController implements FrameController {
         try {
             String email = getEmail_id();
             gameManager.createNewGame(email);
+            gameManager.start();
         } catch (BusinessException e) {
             throw new RuntimeException(e);
         }
@@ -276,6 +273,7 @@ public class MainController implements FrameController {
         }
 
         gameView.initialize(n_currencies, n_generators[0], n_generators[1], n_generators[2], boosts_lvl[0], boosts_lvl[1], boosts_lvl[2]);
+        gameManager.start();
     }
 
     public void updateStoresGeneratorsView() {
@@ -301,5 +299,10 @@ public class MainController implements FrameController {
     @Override
     public void swapStore(String panelName) {
         ((StoresView)views.get("stores")).swapPanel(panelName);
+    }
+
+    @Override
+    public void updateStoreCurrency(int amount) {
+        gameView.updateCurrency(gameManager.getGameCurrency());
     }
 }
