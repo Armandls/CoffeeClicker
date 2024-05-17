@@ -280,12 +280,12 @@ public class MainController implements FrameController {
 
     @Override
     public void removeHoverPanel(String name) {
-        gameView.removeHoverPanel(name);
+        //gameView.removeHoverPanel(name);
     }
 
     @Override
     public void addHoverPanel(JHoverPanel panel) {
-        ((GameView)views.get("game")).addHoverPanel(panel);
+        //((GameView)views.get("game")).addHoverPanel(panel);
     }
 
     @Override

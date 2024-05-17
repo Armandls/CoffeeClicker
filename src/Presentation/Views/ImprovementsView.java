@@ -117,8 +117,8 @@ public class ImprovementsView extends JPanel {
         descriptionPanel.setBackground(Color.darkGray);
         descriptionPanel.setBorder(new StrokeBorder(new BasicStroke(1.0f), Color.YELLOW));
 
-        JHoverPanel hoverPanel = new JHoverPanel(button, descriptionPanel);
-        controller.addHoverPanel(hoverPanel);
+        //JHoverPanel hoverPanel = new JHoverPanel(button, descriptionPanel);
+        //controller.addHoverPanel(hoverPanel);
 
         mainPanel.add(generatorPanel);
         mainPanel.revalidate();

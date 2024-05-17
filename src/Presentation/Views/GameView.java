@@ -35,7 +35,7 @@ public class GameView extends JPanel implements MyView {
     public GameView(ActionListener listener, StoresView storesView, int num) throws IOException {
         this.listener = listener;
         this.num = num;
-        hoverPanelList = new Hashtable<>();
+        //hoverPanelList = new Hashtable<>();
         setLayout(new BorderLayout());
         this.storesView = storesView;
         init();

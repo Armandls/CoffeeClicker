@@ -116,9 +116,9 @@ public class GeneratorsView extends JPanel {
         descriptionPanel.add(descriptionLabel);
         descriptionPanel.setBackground(Color.darkGray);
         descriptionPanel.setBorder(new StrokeBorder(new BasicStroke(1.0f), Color.YELLOW));
-        JHoverPanel hoverPanel = new JHoverPanel(button, descriptionPanel, name);
+        //JHoverPanel hoverPanel = new JHoverPanel(button, descriptionPanel, name);
         this.controller.removeHoverPanel(name);
-        controller.addHoverPanel(hoverPanel);
+        //controller.addHoverPanel(hoverPanel);
     }
 
     public void removeGenerators() {
