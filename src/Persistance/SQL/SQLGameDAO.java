@@ -86,7 +86,13 @@ public class SQLGameDAO implements GameDAO {
     }
     @Override
     public void updateGame(Game game) throws ConnectionErrorException{
-        String query = "UPDATE Game SET currency_count = '" + game.getCurrencyCount() + "' WHERE id_game = '" + game.getIdGame() + "';";
+        int finishedVar = 0;
+        if (game.isFinished()) {
+            finishedVar = 1;
+        }
+        String query = "UPDATE Game SET currency_count = '" + game.getCurrencyCount() + "', " +
+                "finished = '" + finishedVar +
+                "' WHERE id_game = '" + game.getIdGame() + "';";
         SQLConnector.getInstance().updateQuery(query);
     }
 

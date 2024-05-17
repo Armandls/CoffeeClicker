@@ -13,7 +13,6 @@ public interface GameDAO {
     /**
      *
      * @param game
-     * @param mail_user
      * @return Retorna el valor del mail_user que s'ha autogenerat al afegir les dades en la taula de Game en la BBDD.
      * @throws ConnectionErrorException
      */

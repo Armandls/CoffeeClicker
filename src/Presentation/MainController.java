@@ -216,8 +216,12 @@ public class MainController implements FrameController {
     }
 
     public void startRedPanelAnimation (Point location){
-        gameManager.increaseCurrency();
-        gameView.increase();
+        try {
+            gameManager.increaseCurrency();
+        } catch (BusinessException e) {
+            throw new RuntimeException(e);
+        }
+        gameView.updateCurrency(gameManager.getGameCurrency());
         gameView.startRedPanelAnimation(location);
     }
 

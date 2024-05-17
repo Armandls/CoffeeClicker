@@ -73,7 +73,7 @@ public class GameView extends JPanel implements MyView {
         clickButton.setContentAreaFilled(false);
         clickButton.setBorderPainted(false);
 
-        counter = new JLabel("Credit Counter: " + num);
+        counter = new JLabel("Credits: " + num);
         counter.setFont(MinecraftFont.getFont());
         counter.setForeground(new Color(24, 176, 0));
 
@@ -188,10 +188,6 @@ public class GameView extends JPanel implements MyView {
         layeredPane.add(overPanel);
         layeredPane.add(hoversPanel);
         add(layeredPane, BorderLayout.CENTER);
-    }
-
-    public void increase() {
-        counter.setText("Credit Counter: " + num++);
     }
 
     public void showProfile() {

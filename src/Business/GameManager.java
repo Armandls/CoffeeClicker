@@ -55,6 +55,11 @@ public class GameManager {
         if (generatorManager.generatorPurchaseAvailable(game.getCurrencyCount(), game.getIdGame(), type)) {
             generatorId = generatorManager.purchaseNewGenerator(type, game.getIdGame());
             game.addGeneratorToGame(type, generatorId);
+            try {
+                gameDAO.updateGame(game);
+            } catch (PersistenceException e) {
+                throw new BusinessException(e.getMessage());
+            }
             return true;
         }
         return false;
@@ -103,7 +108,12 @@ public class GameManager {
         return game2.getCurrencyCount();
     }
 
-    public void increaseCurrency() {
+    public void increaseCurrency() throws BusinessException{
         game.increaseCurrency();
+        try {
+            gameDAO.updateGame(this.game);
+        } catch (PersistenceException e) {
+            throw new BusinessException(e.getMessage());
+        }
     }
 }
