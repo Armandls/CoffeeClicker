@@ -165,33 +165,58 @@ public class GameManager extends Thread{
 
     public void updateImprovement(String improvement) throws GeneratorAddedException {
 
+        // Verificar si hay suficientes generadores del tipo específico
         if (improvement.equals("Pills")) {
-            game.getGameGenerators().get(0).incrementImprovementLevel();
-            try {
-                generatorManager.updateGenerator(game.getGameGenerators().get(0));
-            }catch (PersistenceException e) {
-                throw new GeneratorAddedException("Error updating generator with id <" + game.getGameGenerators().get(0).getIdGenerator() + ">. \" + e.getMessage()");
-            }
-        }
-        else {
-            if (improvement.equals("Glasses")) {
-                game.getGameGenerators().get(1).incrementImprovementLevel();
-                try {
-                    generatorManager.updateGenerator(game.getGameGenerators().get(1));
-                }catch (PersistenceException e) {
-                    throw new GeneratorAddedException("Error updating generator with id <" + game.getGameGenerators().get(1).getIdGenerator() + ">. \" + e.getMessage()");
+            if (game.getGameGenerators().size() > 0 && game.getGameGenerators().get(0).getNGens() > 0) {
+                if (game.getCurrencyCount() >= 10) {
+                    game.substractCurrency(10);
+                    game.getGameGenerators().get(0).incrementImprovementLevel();
+                    try {
+                        generatorManager.updateGenerator(game.getGameGenerators().get(0));
+                    } catch (PersistenceException e) {
+                        throw new GeneratorAddedException("Error updating generator with id <" + game.getGameGenerators().get(0).getIdGenerator() + ">. " + e.getMessage());
+                    }
+                } else {
+                    throw new GeneratorAddedException("Not enough currency to update generator with id <" + game.getGameGenerators().get(0).getIdGenerator() + ">");
                 }
+            } else {
+                throw new GeneratorAddedException("No generators of type 'Pills' found.");
             }
-            else {
-                if (improvement.equals("Carlos")) {
+        } else if (improvement.equals("Glasses")) {
+            if (game.getGameGenerators().size() > 1 && game.getGameGenerators().get(1).getNGens() > 0) {
+                if (game.getCurrencyCount() >= 20) {
+                    game.substractCurrency(20);
+                    game.getGameGenerators().get(1).incrementImprovementLevel();
+                    try {
+                        generatorManager.updateGenerator(game.getGameGenerators().get(1));
+                    } catch (PersistenceException e) {
+                        throw new GeneratorAddedException("Error updating generator with id <" + game.getGameGenerators().get(1).getIdGenerator() + ">. " + e.getMessage());
+                    }
+                } else {
+                    throw new GeneratorAddedException("Not enough currency to update generator with id <" + game.getGameGenerators().get(1).getIdGenerator() + ">");
+                }
+            } else {
+                throw new GeneratorAddedException("No generators of type 'Glasses' found.");
+            }
+        } else if (improvement.equals("Carlos")) {
+            if (game.getGameGenerators().size() > 2 && game.getGameGenerators().get(2).getNGens() > 0) {
+                if (game.getCurrencyCount() >= 30) {
+                    game.substractCurrency(30);
                     game.getGameGenerators().get(2).incrementImprovementLevel();
                     try {
                         generatorManager.updateGenerator(game.getGameGenerators().get(2));
-                    }catch (PersistenceException e) {
-                        throw new GeneratorAddedException("Error updating generator with id <" + game.getGameGenerators().get(2).getIdGenerator() + ">. \" + e.getMessage()");
+                    } catch (PersistenceException e) {
+                        throw new GeneratorAddedException("Error updating generator with id <" + game.getGameGenerators().get(2).getIdGenerator() + ">. " + e.getMessage());
                     }
+                } else {
+                    throw new GeneratorAddedException("Not enough currency to update generator with id <" + game.getGameGenerators().get(2).getIdGenerator() + ">");
                 }
+            } else {
+                throw new GeneratorAddedException("No generators of type 'Carlos' found.");
             }
+        } else {
+            throw new GeneratorAddedException("Unknown improvement type: " + improvement);
         }
     }
+
 }

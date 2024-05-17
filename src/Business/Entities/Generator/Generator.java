@@ -56,12 +56,15 @@ public abstract class Generator {
     public Generator(){
         this.n_gens = 0;
     }
+
     public float generateCurrency() {
         return 0;
     }
+
     public void increaseCurrency(float increaseVal) {
         n_currencies += increaseVal;
     }
+
     public int getIdGenerator() {
         return id_generator;
     }
