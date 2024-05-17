@@ -17,7 +17,6 @@ public class StoresController implements ActionListener {
             mainController.buyGenerator(e.getActionCommand().substring(14));
         }
         else if (e.getActionCommand().contains("improvementsBuy")) {
-            System.out.println(e.getActionCommand());
             String improvement = e.getActionCommand().substring(e.getActionCommand().indexOf("improvementsBuy:") + "improvementsBuy:".length());
             mainController.updateImprovement(improvement);
         }

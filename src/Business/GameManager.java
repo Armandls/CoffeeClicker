@@ -164,6 +164,7 @@ public class GameManager extends Thread{
     }
 
     public void updateImprovement(String improvement) throws GeneratorAddedException {
+
         if (improvement.equals("Pills")) {
             game.getGameGenerators().get(0).incrementImprovementLevel();
             try {
