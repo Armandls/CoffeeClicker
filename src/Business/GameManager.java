@@ -6,6 +6,7 @@ import Business.Exception.BusinessException;
 import Business.Exception.GeneratorException.NoGeneratorException;
 import Business.Exception.BusinessException;
 import Persistance.DAO.GameDAO;
+import Persistance.Exception.ConnectionErrorException;
 import Persistance.Exception.NotFoundException;
 import Persistance.Exception.PersistenceException;
 
@@ -29,6 +30,7 @@ public class GameManager {
 
     public void initGame(int gameId, int n_currencies, String user) throws BusinessException{
         List<Generator> generators;
+
         this.game = new Game(gameId, n_currencies, false, user);
         try {
             generators = generatorManager.getGenerators(gameId);
@@ -57,6 +59,16 @@ public class GameManager {
         }
         return false;
     }
+    public void createNewGame(String mail) throws BusinessException{
+        this.game = new Game(0, 0, false, mail);
+        try {
+            int generatedId = gameDAO.addGame(this.game);
+            this.game.setId_game(generatedId);
+        } catch (ConnectionErrorException e) {
+            throw new BusinessException(e.getMessage());
+        }
+    }
+
     public void addGame(int id, int currency_count, boolean finished, String mail_user) throws PersistenceException {
         game = new Game (id, currency_count, finished, mail_user);
         /*try {
@@ -80,10 +92,10 @@ public class GameManager {
         return creditsAndIds;
     }
 
-    public int getGameCurrencies() throws NotFoundException{
+    public int getGameCurrencies(int gameId) throws NotFoundException{
         Game game2;
         try{
-            game2 = gameDAO.getGame(game.getIdGame());
+            game2 = gameDAO.getGame(gameId);
         }
         catch(PersistenceException e) {
             throw new NotFoundException("ERROR: Couldn't get the solicited game.");

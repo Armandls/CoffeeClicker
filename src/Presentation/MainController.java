@@ -121,7 +121,7 @@ public class MainController implements FrameController {
         try {
             validPurchase = gameManager.buyGenerator(type);
             if (validPurchase) {
-                gameView.updateCurrency(gameManager.getGameCurrencies());
+                gameView.updateCurrency(gameManager.getGameCurrency());
                 updateStoresGeneratorsView();
             } else {
                 //Mostra missatge de que no es te suficient diners per comprar;
@@ -129,8 +129,6 @@ public class MainController implements FrameController {
             }
         } catch (BusinessException e) {
             //Printeja el missatge d'error on toqui.
-        } catch (NotFoundException e) {
-            throw new RuntimeException(e);
         }
     }
 
@@ -141,6 +139,14 @@ public class MainController implements FrameController {
 
     public void addGame(int id, int currency_count, boolean finished, String mail_user) throws PersistenceException {
         gameManager.addGame(id, currency_count, finished, mail_user);
+    }
+    public void createNewGame() throws PersistenceException {
+        try {
+            String email = getEmail_id();
+            gameManager.createNewGame(email);
+        } catch (BusinessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void registerUser(String username, String email, String password, String confirmPassword) throws BusinessException, ConnectionErrorException {
@@ -238,7 +244,7 @@ public class MainController implements FrameController {
 
         // 1. retreiem dades de la partida que es mostraran a les views
         try {
-            n_currencies = gameManager.getGameCurrencies();
+            n_currencies = gameManager.getGameCurrencies(gameId);
         } catch (NotFoundException e) {
             throw new RuntimeException(e);
         }
