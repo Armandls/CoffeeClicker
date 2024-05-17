@@ -28,6 +28,9 @@ public class Game {
         this.mail_user = mail_user;
         this.gameGenerators = new ArrayList<>();
     }
+    public void setId_game(int id_game) {
+        this.id_game = id_game;
+    }
     public int getIdGame() {
         return id_game;
     }

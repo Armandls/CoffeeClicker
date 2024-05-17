@@ -6,6 +6,7 @@ import Business.Exception.BusinessException;
 import Business.Exception.GeneratorException.NoGeneratorException;
 import Business.Exception.BusinessException;
 import Persistance.DAO.GameDAO;
+import Persistance.Exception.ConnectionErrorException;
 import Persistance.Exception.NotFoundException;
 import Persistance.Exception.PersistenceException;
 
@@ -57,6 +58,16 @@ public class GameManager {
         }
         return false;
     }
+    public void createNewGame(String mail) throws BusinessException{
+        this.game = new Game(0, 0, false, mail);
+        try {
+            int generatedId = gameDAO.addGame(this.game);
+            this.game.setId_game(generatedId);
+        } catch (ConnectionErrorException e) {
+            throw new BusinessException(e.getMessage());
+        }
+    }
+
     public void addGame(int id, int currency_count, boolean finished, String mail_user) throws PersistenceException {
         game = new Game (id, currency_count, finished, mail_user);
         /*try {

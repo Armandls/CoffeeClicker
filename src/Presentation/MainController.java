@@ -142,6 +142,14 @@ public class MainController implements FrameController {
     public void addGame(int id, int currency_count, boolean finished, String mail_user) throws PersistenceException {
         gameManager.addGame(id, currency_count, finished, mail_user);
     }
+    public void createNewGame() throws PersistenceException {
+        try {
+            String email = getEmail_id();
+            gameManager.createNewGame(email);
+        } catch (BusinessException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public void registerUser(String username, String email, String password, String confirmPassword) throws BusinessException, ConnectionErrorException {
         userManager.registerUser(username, email, password, confirmPassword);
