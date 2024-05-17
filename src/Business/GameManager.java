@@ -30,6 +30,7 @@ public class GameManager {
 
     public void initGame(int gameId, int n_currencies, String user) throws BusinessException{
         List<Generator> generators;
+
         this.game = new Game(gameId, n_currencies, false, user);
         try {
             generators = generatorManager.getGenerators(gameId);
@@ -91,10 +92,10 @@ public class GameManager {
         return creditsAndIds;
     }
 
-    public int getGameCurrencies() throws NotFoundException{
+    public int getGameCurrencies(int gameId) throws NotFoundException{
         Game game2;
         try{
-            game2 = gameDAO.getGame(game.getIdGame());
+            game2 = gameDAO.getGame(gameId);
         }
         catch(PersistenceException e) {
             throw new NotFoundException("ERROR: Couldn't get the solicited game.");
