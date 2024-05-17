@@ -1,6 +1,7 @@
 package Presentation;
 
 import Business.Exception.BusinessException;
+import Business.Exception.GeneratorException.NoGeneratorException;
 import Business.Exception.UserException.UserException;
 import Business.GameManager;
 import Business.GeneratorManager;
@@ -258,17 +259,22 @@ public class MainController implements FrameController {
                 n_generators[i] = generatorManager.getNumberOfGenerators(gameId, s);
                 boosts_lvl[i++] = generatorManager.getLevelOfGenerator(gameId, s);
             }
-        } catch (BusinessException e) {
-            throw new RuntimeException(e); // no generators exception/persistance exception
+        } catch (NoGeneratorException e) {
+            // no generators exception/persistance exception
+        }
+        catch (BusinessException e) {
+            throw new RuntimeException(e);
         }
 
         //2. Afegim a la classe game els generadors guardats a la partida que es vol restaurar
+
+        String user = userManager.getCurrentUser().getEmail();
         try {
-            String user = userManager.getCurrentUser().getEmail();
             gameManager.initGame(gameId, n_currencies, user);
         } catch (BusinessException e) {
-            throw new RuntimeException(e); // no generators exception/persistance exception
+            throw new RuntimeException(e);
         }
+
         gameView.initialize(n_currencies, n_generators[0], n_generators[1], n_generators[2], boosts_lvl[0], boosts_lvl[1], boosts_lvl[2]);
     }
 

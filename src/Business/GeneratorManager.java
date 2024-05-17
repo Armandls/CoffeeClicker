@@ -65,7 +65,7 @@ public class GeneratorManager {
         return generator_types;
     }
 
-    public boolean generatorPurchaseAvailable(int currency, int gameId, String type) throws BusinessException{
+    public boolean generatorPurchaseAvailable(float currency, int gameId, String type) throws BusinessException{
         try {
             Generator auxGen = getGeneratorFromGame(gameId, type);
             return (currency >= auxGen.getGeneratorPrice());
@@ -142,9 +142,9 @@ public class GeneratorManager {
         for(int i = 0; i < genTypes.length; i++) {
             try {
                 Generator auxGen = getGeneratorFromGame(gameId, genTypes[i]);
-                outputArr[i] = auxGen.getGeneratorPrice();
+                outputArr[i] = (int) Math.round(auxGen.getGeneratorPrice());
             } catch (NoGeneratorException e) {
-                outputArr[i] = getEmptyGenerator(genTypes[i]).getGeneratorPrice();
+                outputArr[i] = (int) Math.round(getEmptyGenerator(genTypes[i]).getGeneratorPrice());
             } catch (BusinessException e) {
                 throw new BusinessException(e.getMessage());
             }

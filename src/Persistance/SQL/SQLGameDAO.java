@@ -39,7 +39,7 @@ public class SQLGameDAO implements GameDAO {
         try {
             while (result.next()) {
                 Game aux = new Game(result.getInt(1),
-                        result.getInt(2), result.getBoolean(3), user.getEmail());
+                        result.getFloat(2), result.getBoolean(3), user.getEmail());
                 games.add(aux);
             }
             return games;

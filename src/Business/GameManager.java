@@ -18,14 +18,28 @@ import java.util.Map;
 /*Class to manage the different entities regarding the Game
  *  @Currency, @ImprovementStore, @Game
  */
-public class GameManager {
+public class GameManager extends Thread{
     GeneratorManager generatorManager;
     GameDAO gameDAO;
     Game game;
+    int threadCount;
     public GameManager (GameDAO gameDAO, GeneratorManager generatorManager) {
         this.gameDAO = gameDAO;
-        this.generatorManager =generatorManager;
+        this.generatorManager = generatorManager;
+        threadCount = 0;
         //this.game = new Game();
+    }
+
+    @Override
+    public void run() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        game.generatorsProduction();
+        threadCount++;
+
     }
 
     public void initGame(int gameId, int n_currencies, String user) throws BusinessException{
@@ -37,8 +51,8 @@ public class GameManager {
             for(Generator g: generators) {
                 game.initGenerator(g);
             }
-        } catch (BusinessException e) {
-            throw new NoGeneratorException("No generators were found for game with id ->" + "gameId");
+        } catch (NoGeneratorException e) {
+
         }
     }
     public int getGameId() {
@@ -49,7 +63,7 @@ public class GameManager {
      * Get del valor de currency que es te en temps real de la partida, no consulta la base de dades.
      * @return
      */
-    public int getGameCurrency() {return game.getCurrencyCount();}
+    public int getGameCurrency() {return Math.round(game.getCurrencyCount());}
     public boolean buyGenerator(String type) throws BusinessException {
         int generatorId;
         if (generatorManager.generatorPurchaseAvailable(game.getCurrencyCount(), game.getIdGame(), type)) {
@@ -91,7 +105,7 @@ public class GameManager {
             throw new PersistenceException("ERROR: Couldn't get the users' unfinished games from the database.");
         }
         for (Game game : games) {
-            creditsAndIds.put(game.getIdGame(), game.getCurrencyCount());
+            creditsAndIds.put(game.getIdGame(), Math.round(game.getCurrencyCount()));
         }
 
         return creditsAndIds;
@@ -105,7 +119,7 @@ public class GameManager {
         catch(PersistenceException e) {
             throw new NotFoundException("ERROR: Couldn't get the solicited game.");
         }
-        return game2.getCurrencyCount();
+        return Math.round(game2.getCurrencyCount());
     }
 
     public void increaseCurrency() throws BusinessException{

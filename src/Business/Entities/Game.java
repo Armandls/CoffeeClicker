@@ -12,7 +12,7 @@ import java.util.ArrayList;
 /*Class to save the necessary information of the every game the user initializes*/
 public class Game {
     private int id_game;
-    private int currency_count;
+    private float currency_count;
     private boolean finished;
     private String mail_user;
     private ArrayList<Generator> gameGenerators;
@@ -21,7 +21,7 @@ public class Game {
         this.gameGenerators = new ArrayList<>(); // necessari per evitar nullPOinter exception en inicialitzar generators
     }
 
-    public Game(int id_game, int currency_count, boolean finished, String mail_user) {
+    public Game(int id_game, float currency_count, boolean finished, String mail_user) {
         this.id_game = id_game;
         this.currency_count = currency_count;
         this.finished = finished;
@@ -34,10 +34,10 @@ public class Game {
     public int getIdGame() {
         return id_game;
     }
-    public int getCurrencyCount() {
+    public float getCurrencyCount() {
         return currency_count;
     }
-    public void substractCurrency(int amount) {
+    public void substractCurrency(float amount) {
         currency_count -= amount;
     }
     public String getUser() {
@@ -82,6 +82,14 @@ public class Game {
     }
 
     public void increaseCurrency() {
-        currency_count++;
+        currency_count += 0.5F;
+        //currency_count++;
+    }
+
+    public void generatorsProduction() {
+        int producedAmount = 0;
+        for (Generator aux : gameGenerators) {
+            //producedAmount += aux.get
+        }
     }
 }

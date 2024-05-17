@@ -5,14 +5,13 @@ import Business.Entities.Improvement.Improvement;
 public abstract class Generator {
     private int id_generator;
     private int n_gens;
-    private int n_currencies;
+    private float n_currencies;
     private int id_game;
     private Improvement improvement;
     private String imageUrl;
-
     private String description;
 
-    public Generator(int id_generator, int n_currencies, int id_game, int n_gens, Improvement improvement, String imageUrl) {
+    public Generator(int id_generator, float n_currencies, int id_game, int n_gens, Improvement improvement, String imageUrl) {
         this.id_generator = id_generator;
         this.n_currencies = n_currencies;
         this.id_game = id_game;
@@ -21,7 +20,7 @@ public abstract class Generator {
         this.imageUrl = imageUrl;
     }
 
-    public Generator(int id_generator, int n_currencies, int id_game, int n_gens, Improvement improvement, String imageUrl, String description) {
+    public Generator(int id_generator, float n_currencies, int id_game, int n_gens, Improvement improvement, String imageUrl, String description) {
         this.id_generator = id_generator;
         this.n_currencies = n_currencies;
         this.id_game = id_game;
@@ -57,7 +56,9 @@ public abstract class Generator {
     public Generator(){
         this.n_gens = 0;
     }
-
+    public float generateCurrency() {
+        return 0;
+    }
     public void increaseCurrency(float increaseVal) {
         n_currencies += increaseVal;
     }
@@ -89,7 +90,7 @@ public abstract class Generator {
         this.improvement = improvement;
     }
 
-    public int getNCurrencies() {
+    public float getNCurrencies() {
         return n_currencies;
     }
 
@@ -97,7 +98,7 @@ public abstract class Generator {
         this.n_currencies = n_currencies;
     }
 
-    public int getGeneratorPrice() {return 0;}
+    public float getGeneratorPrice() {return 0;}
     public void addGenerator() {
         n_gens++;
     }
