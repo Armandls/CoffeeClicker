@@ -6,7 +6,6 @@ import Business.Exception.GeneratorException.NoGeneratorException;
 import Business.Exception.UserException.UserException;
 import Business.GameManager;
 import Business.GeneratorManager;
-import Business.ImprovementManager;
 import Business.UserManager;
 import Persistance.Exception.ConnectionErrorException;
 import Persistance.Exception.NotFoundException;
@@ -25,7 +24,6 @@ public class MainController implements FrameController, ThreadController {
 
     private GameManager gameManager;
     private GeneratorManager generatorManager;
-    private ImprovementManager improvementManager;
     private UserManager userManager;
     private MainFrame mainFrame;
     private MyView currentView;
@@ -40,11 +38,10 @@ public class MainController implements FrameController, ThreadController {
     private ImprovementsView improvementsView;
 
 
-    public MainController(GameManager gameManager, GeneratorManager generatorManager, ImprovementManager improvementManager, UserManager userManager) throws IOException {
+    public MainController(GameManager gameManager, GeneratorManager generatorManager, UserManager userManager) throws IOException, BusinessException {
         this.gameManager = gameManager;
         this.gameManager.setThreadController(this);
         this.generatorManager = generatorManager;
-        this.improvementManager = improvementManager;
         this.userManager = userManager;
         init();
     }
@@ -56,11 +53,11 @@ public class MainController implements FrameController, ThreadController {
     }
 
     @Override
-    public void initializeGame(int currency, int basicGenerator, int midGenerator, int highGenerator, int lvlBasicImp, int lvlMidImp, int lvlHighImp) {
+    public void initializeGame(int currency, int basicGenerator, int midGenerator, int highGenerator, int lvlBasicImp, int lvlMidImp, int lvlHighImp) throws BusinessException {
         gameView.initialize(currency, basicGenerator, midGenerator, highGenerator, lvlBasicImp, lvlMidImp, lvlHighImp);
     }
 
-    void init() throws IOException {
+    void init() throws IOException, BusinessException {
         mainFrame = new MainFrame();
         views = new Hashtable<>();
 
@@ -121,6 +118,7 @@ public class MainController implements FrameController, ThreadController {
             validPurchase = gameManager.buyGenerator(type);
             if (validPurchase) {
                 gameView.updateCurrency(gameManager.getGameCurrency());
+                gameView.updateTable(generatorManager.getAllNumberOfGenerators(gameManager.getGameId()), generatorManager.getAllProductionPerSec(gameManager.getGameId()), generatorManager.getAllProductionPercentage(gameManager.getGameId(), gameManager.getGameCurrency()));
                 updateStoresGeneratorsView();
             } else {
                 //Mostra missatge de que no es te suficient diners per comprar;
@@ -142,6 +140,7 @@ public class MainController implements FrameController, ThreadController {
         try {
             String email = getEmail_id();
             gameManager.createNewGame(email);
+            gameManager.interrupt();
             gameManager.start();
         } catch (BusinessException e) {
             throw new RuntimeException(e);
@@ -258,7 +257,7 @@ public class MainController implements FrameController, ThreadController {
         return registerView.getInfo();
     }
 
-    public void resumeGame(int gameId) {
+    public void resumeGame(int gameId) throws BusinessException {
         int n_currencies = 0;
         int[] n_generators = {0,0,0}; //{n_basic, n_mid, n_high}
         int[] boosts_lvl = {0,0,0};   //{lvl_basic, lvl_mid, lvl_high}
@@ -267,7 +266,7 @@ public class MainController implements FrameController, ThreadController {
 
         // 1. retreiem dades de la partida que es mostraran a les views
         try {
-            n_currencies = gameManager.getGameCurrencies();
+            n_currencies = gameManager.getGameCurrencies(gameId);
         } catch (NotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -279,13 +278,11 @@ public class MainController implements FrameController, ThreadController {
             }
         } catch (NoGeneratorException e) {
             // no generators exception/persistance exception
-        }
-        catch (BusinessException e) {
+        } catch (BusinessException e) {
             throw new RuntimeException(e);
         }
 
         //2. Afegim a la classe game els generadors guardats a la partida que es vol restaurar
-
         String user = userManager.getCurrentUser().getEmail();
         try {
             gameManager.initGame(gameId, n_currencies, user);
@@ -294,6 +291,7 @@ public class MainController implements FrameController, ThreadController {
         }
 
         gameView.initialize(n_currencies, n_generators[0], n_generators[1], n_generators[2], boosts_lvl[0], boosts_lvl[1], boosts_lvl[2]);
+        gameView.updateTable(generatorManager.getAllNumberOfGenerators(gameManager.getGameId()), generatorManager.getAllProductionPerSec(gameManager.getGameId()), generatorManager.getAllProductionPercentage(gameManager.getGameId(), gameManager.getGameCurrency()));
         gameManager.start();
     }
 
@@ -310,8 +308,9 @@ public class MainController implements FrameController, ThreadController {
     public void updateImprovement (String improvement) {
         try {
             gameManager.updateImprovement(improvement);
+            storesView.updateImprovementsView(generatorManager.getLevelOfGenerator(gameManager.getGameId(), "Basic"), generatorManager.getLevelOfGenerator(gameManager.getGameId(), "Mid"),generatorManager.getLevelOfGenerator(gameManager.getGameId(), "High"));
         } catch (GeneratorAddedException e) {
-            // Avisar al usuario lo que ha de hacer.
+            storesView.noGenerators(improvement);
         }
     }
 
@@ -351,7 +350,7 @@ public class MainController implements FrameController, ThreadController {
     }
 
     @Override
-    public void updateStoreCurrency(int amount) {
+    public void updateStoreCurrency(float amount) {
         gameView.updateCurrency(gameManager.getGameCurrency());
     }
 }

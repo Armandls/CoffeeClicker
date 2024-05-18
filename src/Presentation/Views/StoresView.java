@@ -130,4 +130,14 @@ public class StoresView extends JPanel implements MyView {
         this.generatorsView.addGenerator(R.ENCHANTED_BOOK, "Notes", String.valueOf(generatorPrices[1]), String.valueOf(generatorQuantity[1]), GeneratorsView.midGenDesc);
         this.generatorsView.addGenerator(R.CEUS, "CEUS", String.valueOf(generatorPrices[2]), String.valueOf(generatorQuantity[2]), GeneratorsView.highGenDesc);
     }
+    public void updateImprovementsView(int basic, int mid, int high) {
+        this.improvementsView.removeImprovements();
+        this.improvementsView.addImprovement(R.PILLS, "Pills", "100", String.valueOf(basic), ImprovementsView.basicImprovementDesc);
+        this.improvementsView.addImprovement(R.GLASSES, "Glasses", "200", String.valueOf(mid), ImprovementsView.midImprovementDesc);
+        this.improvementsView.addImprovement(R.CARLOS, "Carlos", "300", String.valueOf(high), ImprovementsView.highImprovementDesc);
+    }
+
+    public void noGenerators(String improvement) {
+        JOptionPane.showMessageDialog(this, "You don't have generators to apply the improvement "+ improvement +" to.", "No Generators Error", JOptionPane.ERROR_MESSAGE);
+    }
 }

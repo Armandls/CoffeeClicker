@@ -1,5 +1,6 @@
 package Presentation.Controllers;
 
+import Business.Exception.BusinessException;
 import Persistance.Exception.PersistenceException;
 import Presentation.MainController;
 import Presentation.Views.HomeView;
@@ -36,26 +37,12 @@ public class HomeController implements ActionListener{
         } else if (command.startsWith("loadGame-")) {
             String gameIdStr = command.substring(9);
             int gameId = Integer.parseInt(gameIdStr);
-            mainController.resumeGame(gameId);
+            try {
+                mainController.resumeGame(gameId);
+            } catch (BusinessException ex) {
+                throw new RuntimeException(ex);
+            }
             mainController.swapPanel("game");
         }
-    }
-
-    public void addGame () throws PersistenceException {
-        String email = mainController.getEmail_id();
-        mainController.addGame(1, 0, false, email);
-    }
-
-    /*private void setupListeners() {
-        .addNewGameButtonListener(this);
-        this.homeView.addResumeGameButtonListener(e -> resumeGame());
-    }*/
-    public void resumeGame() {
-        /*try {
-            Map<Integer, Integer> games = gameManager.getUnfinishedGames(userManager.getCurrentUser().getEmail());
-            homeView.displayGames(games);
-        } catch (PersistenceException e) {
-            throw new RuntimeException(e);
-        }*/
     }
 }

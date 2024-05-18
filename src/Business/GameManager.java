@@ -94,7 +94,7 @@ public class GameManager extends Thread{
      * Get del valor de currency que es te en temps real de la partida, no consulta la base de dades.
      * @return
      */
-    public int getGameCurrency() {return game.getCurrencyCount();}
+    public float getGameCurrency() {return game.getCurrencyCount();}
     public boolean buyGenerator(String type) throws BusinessException {
         int generatorId;
         if (generatorManager.generatorPurchaseAvailable(game.getCurrencyCount(), game.getIdGame(), type)) {
@@ -158,9 +158,8 @@ public class GameManager extends Thread{
         game.increaseCurrency();
     }
 
-    public void updateCurrency(int nCurrencies) {
+    public void updateCurrency(int nCurrencies) throws BusinessException {
         game.updateCurrency(nCurrencies);
-    }
         try {
             gameDAO.updateGame(this.game);
         } catch (PersistenceException e) {
@@ -173,8 +172,8 @@ public class GameManager extends Thread{
         // Verificar si hay suficientes generadores del tipo específico
         if (improvement.equals("Pills")) {
             if (game.getGameGenerators().size() > 0 && game.getGameGenerators().get(0).getNGens() > 0) {
-                if (game.getCurrencyCount() >= 10) {
-                    game.substractCurrency(10);
+                if (game.getCurrencyCount() >= 100) {
+                    game.substractCurrency(100);
                     game.getGameGenerators().get(0).incrementImprovementLevel();
                     try {
                         generatorManager.updateGenerator(game.getGameGenerators().get(0));
@@ -189,8 +188,8 @@ public class GameManager extends Thread{
             }
         } else if (improvement.equals("Glasses")) {
             if (game.getGameGenerators().size() > 1 && game.getGameGenerators().get(1).getNGens() > 0) {
-                if (game.getCurrencyCount() >= 20) {
-                    game.substractCurrency(20);
+                if (game.getCurrencyCount() >= 200) {
+                    game.substractCurrency(200);
                     game.getGameGenerators().get(1).incrementImprovementLevel();
                     try {
                         generatorManager.updateGenerator(game.getGameGenerators().get(1));
@@ -205,8 +204,8 @@ public class GameManager extends Thread{
             }
         } else if (improvement.equals("Carlos")) {
             if (game.getGameGenerators().size() > 2 && game.getGameGenerators().get(2).getNGens() > 0) {
-                if (game.getCurrencyCount() >= 30) {
-                    game.substractCurrency(30);
+                if (game.getCurrencyCount() >= 300) {
+                    game.substractCurrency(300);
                     game.getGameGenerators().get(2).incrementImprovementLevel();
                     try {
                         generatorManager.updateGenerator(game.getGameGenerators().get(2));

@@ -7,6 +7,8 @@ import Presentation.JTexturedButton;
 import Presentation.R;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -21,21 +23,21 @@ public class GameView extends JPanel implements MyView {
     private JTexturedButton profileButton;
     private JButton phoneButton;
     private JButton clickButton;
-    private int num;
+    private float num;
     private JLabel counter;
     private ProfileView profileView;
     private ConfigView configView;
     private StoresView storesView;
     private JPanel overPanel;
     private JPanel hoversPanel;
-
-    private Hashtable<String, JPanel> hoverPanelList;
+    private JTable generatorsTable;
+    private DefaultTableModel tableModel;
+    private JPanel tablePanel;
 
 
     public GameView(ActionListener listener, StoresView storesView, int num) throws IOException {
         this.listener = listener;
         this.num = num;
-        //hoverPanelList = new Hashtable<>();
         setLayout(new BorderLayout());
         this.storesView = storesView;
         init();
@@ -72,6 +74,29 @@ public class GameView extends JPanel implements MyView {
         clickButton.setOpaque(false);
         clickButton.setContentAreaFilled(false);
         clickButton.setBorderPainted(false);
+
+        String[] columnNames = {"Generator", "Quantity", "Credits / s", "Total credits / s", "% global production"};
+        Object[][] data = {
+                {"Redbull", 0, "0.2 c/s", "0 c/s", "0 %"},
+                {"Notes", 0, "1.15 c/s", "0 c/s", "0 %"},
+                {"CEUS", 0, "15 c/s", "0 c/s", "0 %"}
+        };
+
+        tableModel = new DefaultTableModel(data, columnNames);
+        generatorsTable = new JTable(tableModel);
+        generatorsTable.setFont(MinecraftFont.getFont());
+        generatorsTable.setRowHeight(20);
+
+        JTableHeader tableHeader = generatorsTable.getTableHeader();
+        tableHeader.setFont(MinecraftFont.getFont());
+
+        JScrollPane scrollPane = new JScrollPane(generatorsTable);
+        scrollPane.setPreferredSize(new Dimension(700, 87));
+
+        tablePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        tablePanel.setOpaque(false);
+        tablePanel.add(scrollPane);
+        tablePanel.setPreferredSize(new Dimension(400, 100));
 
         counter = new JLabel("Credits: " + num);
         counter.setFont(MinecraftFont.getFont());
@@ -152,6 +177,12 @@ public class GameView extends JPanel implements MyView {
         mainPanel.add(bottomPanel, BorderLayout.SOUTH);
         mainPanel.add(clickButton, BorderLayout.CENTER);
 
+        JPanel centerPanel = new JPanel(new BorderLayout());
+        centerPanel.setOpaque(false);
+        centerPanel.add(tablePanel, BorderLayout.SOUTH);
+
+        mainPanel.add(centerPanel, BorderLayout.CENTER);
+
         JPanel panel = new JPanel(new GridLayout(1, 2));
         JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         leftPanel.setBackground(new Color(0, 0, 0, 0));
@@ -175,11 +206,12 @@ public class GameView extends JPanel implements MyView {
         background.setResolution(JImagePanel.EXTEND_RES_WIDTH);
 
         layeredPane.setLayer(background, 0);
-        layeredPane.setLayer(mainPanel, 1);
-        layeredPane.setLayer(panel, 2);
+        layeredPane.setLayer(panel, 1);
+        layeredPane.setLayer(mainPanel, 2);
         layeredPane.setLayer(storesView, 3);
         layeredPane.setLayer(overPanel, 4);
         layeredPane.setLayer(hoversPanel, 5);
+        layeredPane.setLayer(clickButton, 6);
 
         layeredPane.add(panel);
         layeredPane.add(mainPanel);
@@ -187,12 +219,12 @@ public class GameView extends JPanel implements MyView {
         layeredPane.add(background);
         layeredPane.add(overPanel);
         layeredPane.add(hoversPanel);
+        layeredPane.add(clickButton);
+
         add(layeredPane, BorderLayout.CENTER);
     }
 
-    public void increase() {
-        counter.setText("Credit Counter: " + num++);
-    }
+
 
     public void showProfile() {
         profileView.setVisible(true);
@@ -271,28 +303,20 @@ public class GameView extends JPanel implements MyView {
         }
     }
 
-    public void initialize (int currency, int basicGenerator, int midGenerator, int highGenerator, int lvlBasicImp, int lvlMidImp, int lvlHighImp) {
+    public void initialize (float currency, int basicGenerator, int midGenerator, int highGenerator, int lvlBasicImp, int lvlMidImp, int lvlHighImp) {
         this.num = currency;
         counter.setText("Credits: " + currency);
         storesView.initialize(basicGenerator, midGenerator, highGenerator, lvlBasicImp, lvlMidImp, lvlHighImp);
     }
-
-    public void addHoverPanel(JHoverPanel panel) {
-        this.hoverPanelList.put(panel.getId(), panel.getPanel());
-        this.hoversPanel.add(panel.getPanel());
-    }
-
-    public void updateCurrency(int gameCurrencies) {
-        counter.setText("Credits: " + gameCurrencies);
-    }
-
-    public void removeHoverPanel(String name) {
-        if (this.hoverPanelList.get(name) != null) {
-            this.hoversPanel.remove(this.hoverPanelList.get(name));
-            this.hoverPanelList.remove(name);
-            this.revalidate();
+    public void updateTable(int[] quantities, float[] totalCreditsPerSecond, float[] globalProductionPercentages) {
+        for (int i = 0; i < quantities.length; i++) {
+            tableModel.setValueAt(quantities[i], i, 1);
+            tableModel.setValueAt(String.format("%.2f c/s", totalCreditsPerSecond[i]), i, 3);
+            tableModel.setValueAt(String.format("%.2f %%", globalProductionPercentages[i]), i, 4);
         }
     }
-
+    public void updateCurrency(float gameCurrencies) {
+        counter.setText("Credits: " + gameCurrencies);
+    }
 
 }

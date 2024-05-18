@@ -211,6 +211,21 @@ public class GeneratorManager {
         }
         return n_gens;
     }
+    public int[] getAllNumberOfGenerators(int gameId) {
+        List<Generator> generators;
+        int[] n_gens = new int[3];
+        int i =0;
+        try {
+            generators = generatorDAO.getGeneratorsFromGame(gameId);
+        } catch (PersistenceException e) {
+            throw new RuntimeException(e); // Mètode es crida sobre generators previament consultats de la bbdd, per tant excepció mai es llançarà
+        }
+        for(Generator g: generators) {
+            n_gens[i] = g.getNGens();
+            i++;
+        }
+        return n_gens;
+    }
 
     /**
      * Return boost level of a specified generator in a given game
@@ -253,5 +268,24 @@ public class GeneratorManager {
             shopImages[i] = imageStr;
         }
         return shopImages;
+    }
+
+    public float[] getAllProductionPerSec(int gameId) throws BusinessException {
+        float[] productionPerSec = new float[3];
+        int i = 0;
+        for (Generator gen : getGenerators(gameId)) {
+            productionPerSec[i] = gen.getProductionPerSec();
+        }
+        return productionPerSec;
+    }
+
+
+    public float[] getAllProductionPercentage(int gameId, float totalCurrency) throws BusinessException {
+        float[] productionPercentage = new float[3];
+        int i = 0;
+        for (Generator gen : getGenerators(gameId)) {
+            productionPercentage[i] = gen.getProductionPercentage(totalCurrency);
+        }
+        return productionPercentage;
     }
 }

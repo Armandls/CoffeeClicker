@@ -1,7 +1,7 @@
 {
   "host": "localhost",
   "port": 3306,
-  "dbname": "dpoo-cookieclicker",
+  "dbname": "dpoo_cookieclicker",
   "username": "cc3",
   "password": "cc3"
 }

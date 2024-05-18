@@ -30,4 +30,7 @@ public class BasicGenerator extends Generator {
         return (float) 0.2 * super.getNGens();
     }
     public static String getGeneratorImage(){return REDBULL;}
+    public float getProductionPerSec() {
+        return (float) (0.2 * getNGens());
+    }
 }

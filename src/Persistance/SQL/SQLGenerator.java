@@ -8,6 +8,7 @@ import Business.Entities.Improvement.BasicImprovement;
 import Business.Entities.Improvement.HighImprovement;
 import Business.Entities.Improvement.Improvement;
 import Business.Entities.Improvement.MidImprovement;
+import Business.Exception.GeneratorException.NoGeneratorException;
 import Persistance.DAO.GeneratorDAO;
 import Persistance.Exception.ConnectionErrorException;
 import Persistance.Exception.NotFoundException;
@@ -156,9 +157,6 @@ public class SQLGenerator implements GeneratorDAO {
                 }
                 if (improvement!= null) generator.setImprovement(improvement);
                 if (generator != null) generators.add(generator);
-            }
-            if (generators.isEmpty()) {
-                throw new NotFoundException("Generators not found for game with id " + id_game);
             }
         } catch (SQLException e) {
             throw new ConnectionErrorException(e.getMessage());

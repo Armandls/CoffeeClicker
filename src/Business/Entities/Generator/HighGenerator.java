@@ -25,4 +25,7 @@ public class HighGenerator extends Generator{
         return 15 * super.getNGens();
     }
     public static String getGeneratorImage() {return CEUS;}
+    public float getProductionPerSec() {
+        return (float) (15 * getNGens());
+    }
 }

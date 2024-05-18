@@ -27,4 +27,7 @@ public class MidGenerator extends Generator {
         return super.getNGens();
     }
     public static String getGeneratorImage() {return NOTES;}
+    public float getProductionPerSec() {
+        return (float) (getNGens());
+    }
 }

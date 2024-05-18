@@ -112,4 +112,11 @@ public abstract class Generator {
     public void incrementImprovementLevel() {
         improvement.incrementImprovementLevel();
     }
+
+    public float getProductionPerSec() {
+        return 0;
+    }
+    public float getProductionPercentage(float totalCurrency) {
+        return (n_currencies/totalCurrency) * 100;
+    }
 }

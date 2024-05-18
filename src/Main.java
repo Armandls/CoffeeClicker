@@ -1,9 +1,7 @@
 import Business.Exception.BusinessException;
 import Business.GameManager;
 import Business.GeneratorManager;
-import Business.ImprovementManager;
 import Business.UserManager;
-import Persistance.DAO.GameDAO;
 import Persistance.DAO.GeneratorDAO;
 import Persistance.SQL.SQLGameDAO;
 import Persistance.SQL.SQLGenerator;
@@ -29,13 +27,11 @@ public class Main {
         // Create the different managers and the controller's instance
         GameManager gameManager = new GameManager(new SQLGameDAO(), generatorManager);
 
-
-        ImprovementManager improvementManager = new ImprovementManager();
         UserManager userManager = new UserManager(userDAO);
 
         // Create the controller and run it
         try {
-            MainController controller = new MainController(gameManager, generatorManager, improvementManager, userManager);
+            MainController controller = new MainController(gameManager, generatorManager, userManager);
         } catch (Exception e) {
             e.printStackTrace();
         }
