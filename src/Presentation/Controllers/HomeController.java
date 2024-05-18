@@ -21,7 +21,7 @@ public class HomeController implements ActionListener{
         String command = e.getActionCommand();
         if (command.equals("newGame")) {
             try {
-                addGame();
+                mainController.createNewGame();
             } catch (PersistenceException ex) {
                 throw new RuntimeException(ex);
             }

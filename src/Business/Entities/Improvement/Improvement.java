@@ -49,4 +49,8 @@ public abstract class Improvement {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
+    public void incrementImprovementLevel(){
+        level++;
+    }
 }

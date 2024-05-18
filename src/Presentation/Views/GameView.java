@@ -35,7 +35,7 @@ public class GameView extends JPanel implements MyView {
     public GameView(ActionListener listener, StoresView storesView, int num) throws IOException {
         this.listener = listener;
         this.num = num;
-        hoverPanelList = new Hashtable<>();
+        //hoverPanelList = new Hashtable<>();
         setLayout(new BorderLayout());
         this.storesView = storesView;
         init();
@@ -73,7 +73,7 @@ public class GameView extends JPanel implements MyView {
         clickButton.setContentAreaFilled(false);
         clickButton.setBorderPainted(false);
 
-        counter = new JLabel("Credit Counter: " + num);
+        counter = new JLabel("Credits: " + num);
         counter.setFont(MinecraftFont.getFont());
         counter.setForeground(new Color(24, 176, 0));
 
@@ -190,6 +190,9 @@ public class GameView extends JPanel implements MyView {
         add(layeredPane, BorderLayout.CENTER);
     }
 
+    public void increase() {
+        counter.setText("Credit Counter: " + num++);
+    }
 
     public void showProfile() {
         profileView.setVisible(true);

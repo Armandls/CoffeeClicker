@@ -78,4 +78,5 @@ public class GameController implements ActionListener {
     void deleteAccount() throws ConnectionErrorException {
         mainController.deleteUser();
     }
+
 }

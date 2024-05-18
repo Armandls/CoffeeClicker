@@ -118,7 +118,7 @@ public class SQLGenerator implements GeneratorDAO {
                 // Atributs generator
                 int id_generator = result.getInt("id_generator");
                 String type = result.getString("generator_type");
-                int n_currencies = result.getInt("n_currencies");
+                float n_currencies = result.getInt("n_currencies");
                 int n_gens = result.getInt("n_gens");
                 int id_improvement = result.getInt("improvement");
                 String imageUrl = result.getString("generator_photo");

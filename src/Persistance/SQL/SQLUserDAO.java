@@ -66,4 +66,19 @@ public class SQLUserDAO implements UserDAO {
             throw new ConnectionErrorException("Error updating user with email <" + user.getEmail() + ">. " + e.getMessage());
         }
     }
+
+    public boolean isUsernameAvailable(String username) throws ConnectionErrorException {
+        String query = "SELECT u.nickname FROM User AS u WHERE u.nickname = \"" + username + "\" ;";
+        ResultSet result = SQLConnector.getInstance().selectQuery(query);
+
+        try {
+            if (result.next()) {
+                return false; // Username exists
+            } else {
+                return true; // Username does not exist
+            }
+        } catch (SQLException e) {
+            throw new ConnectionErrorException(e.getMessage());
+        }
+    }
 }

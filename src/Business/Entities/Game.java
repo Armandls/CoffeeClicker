@@ -79,10 +79,19 @@ public class Game {
     }
 
     public void increaseCurrency() {
-        currency_count++;
+        currency_count += 100;
+        //currency_count++;
     }
 
     public void updateCurrency(int nCurrencies) {
         currency_count = nCurrencies;
     }
+
+    public void generatorsProduction() {
+        for (Generator aux : gameGenerators) {
+            currency_count += aux.generateCurrency();
+        }
+    }
+
+    public ArrayList<Generator> getGameGenerators() {return gameGenerators;}
 }

@@ -1,6 +1,8 @@
 package Presentation;
 
 import Business.Exception.BusinessException;
+import Business.Exception.GeneratorException.GeneratorAddedException;
+import Business.Exception.GeneratorException.NoGeneratorException;
 import Business.Exception.UserException.UserException;
 import Business.GameManager;
 import Business.GeneratorManager;
@@ -9,12 +11,8 @@ import Business.UserManager;
 import Persistance.Exception.ConnectionErrorException;
 import Persistance.Exception.NotFoundException;
 import Persistance.Exception.PersistenceException;
-import Presentation.Controllers.GameController;
-import Presentation.Controllers.HomeController;
-import Presentation.Controllers.LoginController;
-import Presentation.Controllers.RegisterController;
+import Presentation.Controllers.*;
 import Presentation.Views.*;
-import Presentation.Controllers.StoresController;
 
 import java.awt.*;
 import java.io.IOException;
@@ -23,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 /*Class to manage the interactions between the user interface (UI, the View) and the Manager classes*/
-public class MainController implements FrameController {
+public class MainController implements FrameController, ThreadController {
 
     private GameManager gameManager;
     private GeneratorManager generatorManager;
@@ -44,6 +42,7 @@ public class MainController implements FrameController {
 
     public MainController(GameManager gameManager, GeneratorManager generatorManager, ImprovementManager improvementManager, UserManager userManager) throws IOException {
         this.gameManager = gameManager;
+        this.gameManager.setThreadController(this);
         this.generatorManager = generatorManager;
         this.improvementManager = improvementManager;
         this.userManager = userManager;
@@ -132,13 +131,21 @@ public class MainController implements FrameController {
         }
     }
 
-
     public String getEmail_id() {
         return userManager.getCurrentUser().getEmail();
     }
 
     public void addGame(int id, int currency_count, boolean finished, String mail_user) throws PersistenceException {
         gameManager.addGame(id, currency_count, finished, mail_user);
+    }
+    public void createNewGame() throws PersistenceException {
+        try {
+            String email = getEmail_id();
+            gameManager.createNewGame(email);
+            gameManager.start();
+        } catch (BusinessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void registerUser(String username, String email, String password, String confirmPassword) throws BusinessException, ConnectionErrorException {
@@ -157,10 +164,30 @@ public class MainController implements FrameController {
         userManager.loginUser(userLoginMail, userLoginPass);
     }
     public void registerEnterValid (String what){
-        if (what.equals("email")) {
-            registerView.enterValidEmail();
+
+        if (what.equals("username")) {
+            registerView.enterValidUsername();
         } else {
-            registerView.enterValidPassword();
+            if (what.equals("email")) {
+                registerView.enterValidEmail();
+            } else {
+                if (what.equals("lengthPassword")) {
+                    registerView.enterValidPassword8C();
+                } else {
+                    if (what.equals("lowerCasePassword")) {
+                        registerView.enterValidPasswordLowerCase();
+                    } else {
+                        if (what.equals("upperCasePassword")) {
+                            registerView.enterValidPasswordUpperCase();
+                        } else {
+                            if (what.equals("minOneNumber")) {
+                                registerView.enterValidPasswordOneNumber();
+                            }
+
+                        }
+                    }
+                }
+            }
         }
     }
     public void loginEnterValid (String what){
@@ -208,7 +235,11 @@ public class MainController implements FrameController {
     }
 
     public void startRedPanelAnimation (Point location){
-        gameManager.increaseCurrency();
+        try {
+            gameManager.increaseCurrency();
+        } catch (BusinessException e) {
+            throw new RuntimeException(e);
+        }
         gameView.updateCurrency(gameManager.getGameCurrency());
         gameView.startRedPanelAnimation(location);
     }
@@ -236,29 +267,34 @@ public class MainController implements FrameController {
 
         // 1. retreiem dades de la partida que es mostraran a les views
         try {
+            n_currencies = gameManager.getGameCurrencies();
+        } catch (NotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        try {
             generator_types = generatorManager.getGeneratorsTypes(gameId);
             for(String s: generator_types){
                 n_generators[i] = generatorManager.getNumberOfGenerators(gameId, s);
                 boosts_lvl[i++] = generatorManager.getLevelOfGenerator(gameId, s);
             }
-        } catch (BusinessException e) {
-            throw new RuntimeException(e); // no generators exception/persistance exception
+        } catch (NoGeneratorException e) {
+            // no generators exception/persistance exception
+        }
+        catch (BusinessException e) {
+            throw new RuntimeException(e);
         }
 
         //2. Afegim a la classe game els generadors guardats a la partida que es vol restaurar
+
+        String user = userManager.getCurrentUser().getEmail();
         try {
-            String user = userManager.getCurrentUser().getEmail();
             gameManager.initGame(gameId, n_currencies, user);
-            try {
-                n_currencies = gameManager.getGameCurrencies();
-            } catch (NotFoundException e) {
-                throw new RuntimeException(e);
-            }
-            gameManager.updateCurrency(n_currencies);
         } catch (BusinessException e) {
-            throw new RuntimeException(e); // no generators exception/persistance exception
+            throw new RuntimeException(e);
         }
+
         gameView.initialize(n_currencies, n_generators[0], n_generators[1], n_generators[2], boosts_lvl[0], boosts_lvl[1], boosts_lvl[2]);
+        gameManager.start();
     }
 
     public void updateStoresGeneratorsView() {
@@ -271,18 +307,51 @@ public class MainController implements FrameController {
         }
     }
 
+    public void updateImprovement (String improvement) {
+        try {
+            gameManager.updateImprovement(improvement);
+        } catch (GeneratorAddedException e) {
+            // Avisar al usuario lo que ha de hacer.
+        }
+    }
+
+    public boolean checkLowerCaseCaracter(String password) {
+        return userManager.checkLowerCaseCaracter(password);
+    }
+
+    public boolean checkUpperCaseCaracter(String password) {
+        return userManager.checkUpperCaseCaracter(password);
+    }
+
+    public boolean checkMinOneNumber(String password) {
+        return userManager.checkMinOneNumber(password);
+    }
+
+    public boolean checkValidEmail(String email) {
+        return userManager.checkValidEmail(email);
+    }
+
+    public boolean checkValidUsername(String username) throws ConnectionErrorException {
+        return userManager.checkValidUsername(username);
+    }
+
     @Override
     public void removeHoverPanel(String name) {
-        gameView.removeHoverPanel(name);
+        //gameView.removeHoverPanel(name);
     }
 
     @Override
     public void addHoverPanel(JHoverPanel panel) {
-        ((GameView)views.get("game")).addHoverPanel(panel);
+        //((GameView)views.get("game")).addHoverPanel(panel);
     }
 
     @Override
     public void swapStore(String panelName) {
         ((StoresView)views.get("stores")).swapPanel(panelName);
+    }
+
+    @Override
+    public void updateStoreCurrency(int amount) {
+        gameView.updateCurrency(gameManager.getGameCurrency());
     }
 }
