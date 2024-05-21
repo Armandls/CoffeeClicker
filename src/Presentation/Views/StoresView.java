@@ -9,6 +9,7 @@ import Presentation.R;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -37,7 +38,7 @@ public class StoresView extends JPanel implements MyView {
     private void init() throws IOException {
         cardLayout = new CardLayout();
         background = new JImagePanel(R.STORES_BACKGROUND);
-        background.setResolution(JImagePanel.EXTEND_RES_HEIGHT);
+        background.setResolution(JImagePanel.EXTEND_RES_WIDTH);
         background.setVisible(true);
 
         generatorsButton = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
@@ -52,10 +53,11 @@ public class StoresView extends JPanel implements MyView {
         upgradesButton.addActionListener(listener);
         upgradesButton.setActionCommand("upgrades");
 
-        this.generatorsView = new GeneratorsView(this.listener, controller);
-        this.improvementsView = new ImprovementsView(this.listener, controller);
+       this.generatorsView = new GeneratorsView(this.listener, (ListSelectionListener)this.listener, controller);
+        this.improvementsView = new ImprovementsView(this.listener, (ListSelectionListener)this.listener, controller);
 
         this.storePanel = new JPanel();             //panell que conté les views de les dues botigues
+        storePanel.setBackground(Color.BLACK);
         storePanel.setLayout(this.cardLayout);
 
     }
@@ -65,13 +67,14 @@ public class StoresView extends JPanel implements MyView {
         JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setLayout(new OverlayLayout(layeredPane));
         JPanel mainPanel = new JPanel();
+        mainPanel.setBackground(Color.BLACK);
         mainPanel.setLayout(new FlowLayout());
         mainPanel.setOpaque(false);
 
         JPanel panel = new JPanel();    //panell que conté bottons i altres components
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBackground(Color.BLACK);
-        panel.setPreferredSize(new Dimension(250, 425));
+        panel.setPreferredSize(new Dimension(275, 450));
 
         JPanel buttonsPanel = new JPanel(new FlowLayout()); //panell que conté els botons
         buttonsPanel.setOpaque(false);
@@ -83,7 +86,7 @@ public class StoresView extends JPanel implements MyView {
         storePanel.add("upgrades", this.improvementsView);
 
         panel.add(storePanel);
-        mainPanel.setBorder(new EmptyBorder(49, 5, 0, 0));
+        mainPanel.setBorder(new EmptyBorder(25, 5, 0, 0));
         mainPanel.add(panel);
 
         layeredPane.setLayer(mainPanel, 1);
@@ -124,11 +127,8 @@ public class StoresView extends JPanel implements MyView {
 
     }
 
-    public void updateGeneratorsView(int[] generatorPrices, int[] generatorQuantity) {
-        this.generatorsView.removeGenerators();
-        this.generatorsView.addGenerator(R.REDBULL, "Redbull", String.valueOf(generatorPrices[0]), String.valueOf(generatorQuantity[0]), GeneratorsView.basicGenDesc);
-        this.generatorsView.addGenerator(R.ENCHANTED_BOOK, "Notes", String.valueOf(generatorPrices[1]), String.valueOf(generatorQuantity[1]), GeneratorsView.midGenDesc);
-        this.generatorsView.addGenerator(R.CEUS, "CEUS", String.valueOf(generatorPrices[2]), String.valueOf(generatorQuantity[2]), GeneratorsView.highGenDesc);
+    public void updateGeneratorsView(int[] quantities, float[] totalCreditsPerSecond, float[] globalProductionPercentages) {
+        generatorsView.updateTable(quantities, totalCreditsPerSecond, globalProductionPercentages);
     }
     public void updateImprovementsView(int basic, int mid, int high) {
         this.improvementsView.removeImprovements();

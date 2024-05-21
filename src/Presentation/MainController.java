@@ -19,7 +19,9 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
-/*Class to manage the interactions between the user interface (UI, the View) and the Manager classes*/
+/**
+ * Class to manage the interactions between the user interface (UI, the View) and the Manager classes
+ */
 public class MainController implements FrameController, ThreadController {
 
     private GameManager gameManager;
@@ -69,8 +71,6 @@ public class MainController implements FrameController, ThreadController {
 
         StoresController storesController = new StoresController(this);
         storesView = new StoresView(storesController, this);
-        generatorsView = new GeneratorsView(storesController, this);
-        improvementsView = new ImprovementsView(storesController, this);
 
         GameController gameController = new GameController(this);
         gameView = new GameView(gameController, storesView, 0);
@@ -81,7 +81,6 @@ public class MainController implements FrameController, ThreadController {
         mainFrame.addPanel(loginView, "login");
         mainFrame.addPanel(gameView, "game");
         mainFrame.addPanel(registerView, "register");
-        mainFrame.addPanel(gameView, "game");
         mainFrame.addPanel(homeView, "home");
         mainFrame.setVisible(true);
 
@@ -296,13 +295,13 @@ public class MainController implements FrameController, ThreadController {
     }
 
     public void updateStoresGeneratorsView() {
-        try {
+        /*try {
             //Pillar info dels generadors per passar.
             int auxGameId = gameManager.getGameId();
-            storesView.updateGeneratorsView(generatorManager.getShopPrices(auxGameId), generatorManager.getNumGeneratorsInShop(auxGameId));
+            //storesView.updateGeneratorsView(generatorManager.getShopPrices(auxGameId), generatorManager.getNumGeneratorsInShop(auxGameId));
         } catch (BusinessException e) {
             //Printejar el missatge d'error
-        }
+        }*/
     }
 
     public void updateImprovement (String improvement) {

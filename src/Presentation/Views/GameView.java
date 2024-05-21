@@ -1,7 +1,6 @@
 package Presentation.Views;
 
 import Presentation.Fonts.MinecraftFont;
-import Presentation.JHoverPanel;
 import Presentation.JImagePanel;
 import Presentation.JTexturedButton;
 import Presentation.R;
@@ -12,8 +11,6 @@ import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.Hashtable;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -27,12 +24,11 @@ public class GameView extends JPanel implements MyView {
     private JLabel counter;
     private ProfileView profileView;
     private ConfigView configView;
+    private JTexturedButton logout;
+    private JTexturedButton deleteAccount;
     private StoresView storesView;
     private JPanel overPanel;
     private JPanel hoversPanel;
-    private JTable generatorsTable;
-    private DefaultTableModel tableModel;
-    private JPanel tablePanel;
 
 
     public GameView(ActionListener listener, StoresView storesView, int num) throws IOException {
@@ -48,6 +44,16 @@ public class GameView extends JPanel implements MyView {
         hoversPanel = new JPanel(null);
         hoversPanel.setOpaque(false);
         hoversPanel.setVisible(true);
+
+        logout = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
+        logout.setText("Logout");
+        logout.addActionListener(this.listener);
+        logout.setActionCommand("logout");
+
+        deleteAccount = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
+        deleteAccount.setText("Delete Account");
+        deleteAccount.addActionListener(this.listener);
+        deleteAccount.setActionCommand("deleteAccount");
 
         overPanel = new JPanel();
         overPanel.setLayout(null);
@@ -75,28 +81,6 @@ public class GameView extends JPanel implements MyView {
         clickButton.setContentAreaFilled(false);
         clickButton.setBorderPainted(false);
 
-        String[] columnNames = {"Generator", "Quantity", "Credits / s", "Total credits / s", "% global production"};
-        Object[][] data = {
-                {"Redbull", 0, "0.2 c/s", "0 c/s", "0 %"},
-                {"Notes", 0, "1.15 c/s", "0 c/s", "0 %"},
-                {"CEUS", 0, "15 c/s", "0 c/s", "0 %"}
-        };
-
-        tableModel = new DefaultTableModel(data, columnNames);
-        generatorsTable = new JTable(tableModel);
-        generatorsTable.setFont(MinecraftFont.getFont());
-        generatorsTable.setRowHeight(20);
-
-        JTableHeader tableHeader = generatorsTable.getTableHeader();
-        tableHeader.setFont(MinecraftFont.getFont());
-
-        JScrollPane scrollPane = new JScrollPane(generatorsTable);
-        scrollPane.setPreferredSize(new Dimension(700, 87));
-
-        tablePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        tablePanel.setOpaque(false);
-        tablePanel.add(scrollPane);
-        tablePanel.setPreferredSize(new Dimension(400, 100));
 
         counter = new JLabel("Credits: " + num);
         counter.setFont(MinecraftFont.getFont());
@@ -148,7 +132,9 @@ public class GameView extends JPanel implements MyView {
 
         centerTopPanel.add(layeredPane1);
 
-        rightTopPanel.add(profileButton);
+        rightTopPanel.add(deleteAccount);
+        rightTopPanel.add(logout);
+
         topPanel.add(leftTopPanel);
         topPanel.add(centerTopPanel);
         topPanel.add(rightTopPanel);
@@ -173,15 +159,13 @@ public class GameView extends JPanel implements MyView {
         phonePanel.add(phone);
         phonePanel.add(phoneButtonPanel);
 
-        bottomPanel.add(phonePanel);
+        JPanel phoneAux = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        phoneAux.setOpaque(false);
+        phoneAux.add(phonePanel);
+
+        bottomPanel.add(phoneAux);
         mainPanel.add(bottomPanel, BorderLayout.SOUTH);
         mainPanel.add(clickButton, BorderLayout.CENTER);
-
-        JPanel centerPanel = new JPanel(new BorderLayout());
-        centerPanel.setOpaque(false);
-        centerPanel.add(tablePanel, BorderLayout.SOUTH);
-
-        mainPanel.add(centerPanel, BorderLayout.CENTER);
 
         JPanel panel = new JPanel(new GridLayout(1, 2));
         JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -205,21 +189,21 @@ public class GameView extends JPanel implements MyView {
         JImagePanel background = new JImagePanel(R.GAME_BACKGROUND);
         background.setResolution(JImagePanel.EXTEND_RES_WIDTH);
 
-        layeredPane.setLayer(background, 0);
-        layeredPane.setLayer(panel, 1);
-        layeredPane.setLayer(mainPanel, 2);
-        layeredPane.setLayer(storesView, 3);
-        layeredPane.setLayer(overPanel, 4);
-        layeredPane.setLayer(hoversPanel, 5);
-        layeredPane.setLayer(clickButton, 6);
 
-        layeredPane.add(panel);
-        layeredPane.add(mainPanel);
-        layeredPane.add(storesView);
+
+        layeredPane.setLayer(background, 0);    //background panel
+        layeredPane.setLayer(mainPanel, 1);     //view panel
+        layeredPane.setLayer(overPanel, 2);
+        layeredPane.setLayer(panel, 3);         // config i profile panel
+        layeredPane.setLayer(storesView, 4);    //store panel
+        layeredPane.setLayer(hoversPanel, 5);   //hovers panel
+
         layeredPane.add(background);
+        layeredPane.add(mainPanel);
         layeredPane.add(overPanel);
+        layeredPane.add(panel);
+        layeredPane.add(storesView);
         layeredPane.add(hoversPanel);
-        layeredPane.add(clickButton);
 
         add(layeredPane, BorderLayout.CENTER);
     }
@@ -309,11 +293,7 @@ public class GameView extends JPanel implements MyView {
         storesView.initialize(basicGenerator, midGenerator, highGenerator, lvlBasicImp, lvlMidImp, lvlHighImp);
     }
     public void updateTable(int[] quantities, float[] totalCreditsPerSecond, float[] globalProductionPercentages) {
-        for (int i = 0; i < quantities.length; i++) {
-            tableModel.setValueAt(quantities[i], i, 1);
-            tableModel.setValueAt(String.format("%.2f c/s", totalCreditsPerSecond[i]), i, 3);
-            tableModel.setValueAt(String.format("%.2f %%", globalProductionPercentages[i]), i, 4);
-        }
+        storesView.updateGeneratorsView(quantities, totalCreditsPerSecond, globalProductionPercentages);
     }
     public void updateCurrency(float gameCurrencies) {
         counter.setText("Credits: " + gameCurrencies);

@@ -98,13 +98,17 @@ public class HomeView extends JPanel implements MyView {
         resumeDialog.setSize(300, 400);
         resumeDialog.setLocationRelativeTo(this);
 
+        JLayeredPane panel = new JLayeredPane();
+        panel.setLayout(new OverlayLayout(panel));
+
         JPanel gameListPanel = new JPanel();
         gameListPanel.setLayout(new BoxLayout(gameListPanel, BoxLayout.Y_AXIS));
         JScrollPane scrollPane = new JScrollPane(gameListPanel);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         int i = 1;
         for (Map.Entry<Integer, Integer> entry : games.entrySet()) {
-            JButton gameButton = new JButton("Game "+i+" | " + entry.getValue() + " credits");
+            JTexturedButton gameButton = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
+            gameButton.setText("Game "+i+" | " + entry.getValue() + " credits");
             gameButton.setAlignmentX(Component.CENTER_ALIGNMENT);
             gameListPanel.add(gameButton);
             final int gameId = entry.getKey();

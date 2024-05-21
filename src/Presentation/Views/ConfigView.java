@@ -11,8 +11,7 @@ import java.awt.event.ActionListener;
 public class ConfigView extends JPanel implements MyView {
 
     private ActionListener listener;
-
-    private JTexturedButton save;
+    private JTexturedButton exit;
     private JTexturedButton options;
     private JTexturedButton close;
 
@@ -27,9 +26,9 @@ public class ConfigView extends JPanel implements MyView {
     }
 
     private void init() {
-        save = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
-        save.setText("Save");
-        save.setActionCommand("save");
+        exit = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
+        exit.setText("Exit");
+        exit.setActionCommand("exit");
 
         options = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
         options.setText("Options");
@@ -50,7 +49,7 @@ public class ConfigView extends JPanel implements MyView {
         aux.setLayout(new BoxLayout(aux, BoxLayout.Y_AXIS));
 
         topPanel.add(close);
-        aux.add(save);
+        aux.add(exit);
         aux.add(options);
         bottomPanel.add(aux);
         add(topPanel);
@@ -61,14 +60,14 @@ public class ConfigView extends JPanel implements MyView {
 
     @Override
     public void start() {
-        save.addActionListener(listener);
+        exit.addActionListener(listener);
         options.addActionListener(listener);
         close.addActionListener(listener);
     }
 
     @Override
     public void stop() {
-        save.removeActionListener(listener);
+        exit.removeActionListener(listener);
         options.removeActionListener(listener);
         close.removeActionListener(listener);
     }

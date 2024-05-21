@@ -7,6 +7,7 @@ import Presentation.Views.GameView;
 import Presentation.Views.LoginView;
 import Presentation.Views.StoresView;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
@@ -14,7 +15,6 @@ import java.util.Timer;
 
 public class GameController implements ActionListener {
     private MainController mainController;
-
 
     public GameController(MainController mainController) {
         this.mainController = mainController;
@@ -68,6 +68,19 @@ public class GameController implements ActionListener {
                 logout();
                 mainController.swapPanel("login");
                 break;
+            case "exit":
+                System.out.println("Exit");
+                finish(JOptionPane.showConfirmDialog(null, "Do you want to finish the game?", "Game", JOptionPane.OK_OPTION, JOptionPane.NO_OPTION));
+                break;
+        }
+    }
+
+    void finish(int response) {
+        if (response == JOptionPane.OK_OPTION) {
+            //Todo marcar partida com a finalitzada
+        }
+        else {
+            //Todo guardar partida i tornar a l'inici
         }
     }
 

@@ -6,6 +6,10 @@ import Presentation.JHoverPanel;
 
 import javax.swing.*;
 import javax.swing.border.StrokeBorder;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
@@ -15,12 +19,17 @@ public class GeneratorsView extends JPanel {
     public static final String highGenDesc = "En vistes de que res funciona i no tens\ntemps per estudiar, has decidit fer un\npacte amb el diable i apuntar-te a la CEUS.\n\nBenvingut a la foscor.";
 
     private ActionListener actionListener;
+    private ListSelectionListener listSelectionListener;
     private JScrollPane scrollPane;
     private JPanel mainPanel;
     private FrameController controller;
+    private JTable generatorsTable;
+    private DefaultTableModel tableModel;
+    private JPanel tablePanel;
 
-    public GeneratorsView(ActionListener listener, FrameController controller) {
+    public GeneratorsView(ActionListener listener, ListSelectionListener listSelectionListener, FrameController controller) {
         this.actionListener = listener;
+        this.listSelectionListener = listSelectionListener;
         this.controller = controller;
         init();
         mount();
@@ -32,6 +41,35 @@ public class GeneratorsView extends JPanel {
         this.mainPanel = new JPanel();
         this.mainPanel.setLayout(new BoxLayout(this.mainPanel, BoxLayout.Y_AXIS));
         this.mainPanel.setBackground(Color.BLACK);
+
+        String[] columnNames = {"Name", "Amount", "Price c/s", "Total credits/s", "% global production"};
+        Object[][] data = {
+                {"Redbull", 0, "0.2", "0", "0"},
+                {"Notes", 0, "1.15", "0", "0"},
+                {"CEUS", 0, "15", "0", "0"}
+        };
+
+        tableModel = new DefaultTableModel(data, columnNames);
+        generatorsTable = new JTable(tableModel);
+        generatorsTable.setBackground(Color.BLACK);
+        generatorsTable.setFont(MinecraftFont.getFont());
+        generatorsTable.setRowHeight(30);
+        generatorsTable.setDefaultRenderer(Object.class, new JTableRender());
+        generatorsTable.getSelectionModel().addListSelectionListener(this.listSelectionListener);
+
+        JTableHeader tableHeader = generatorsTable.getTableHeader();
+        tableHeader.setFont(MinecraftFont.getFont());
+        tableHeader.setBackground(Color.BLACK);
+        tableHeader.setForeground(Color.WHITE);
+
+        JScrollPane scrollPane = new JScrollPane(generatorsTable);
+        scrollPane.setBackground(Color.BLACK);
+        scrollPane.setPreferredSize(new Dimension(375, 117));
+
+        tablePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        tablePanel.setOpaque(true);
+        tablePanel.add(scrollPane);
+        tablePanel.setPreferredSize(new Dimension(400, 100));
     }
 
     private void mount() {
@@ -44,7 +82,7 @@ public class GeneratorsView extends JPanel {
         generatorsPanel.add(new JLabel("Price"));
         generatorsPanel.add(new JLabel("Amount"));
         mainPanel.add(generatorsPanel);
-        this.scrollPane = new JScrollPane(mainPanel);
+        this.scrollPane = new JScrollPane(tablePanel);
         add(scrollPane, BorderLayout.CENTER);
     }
 
@@ -134,5 +172,13 @@ public class GeneratorsView extends JPanel {
         mainPanel.add(generatorsPanel);
 
         scrollPane.revalidate();
+    }
+
+    public void updateTable(int[] quantities, float[] totalCreditsPerSecond, float[] globalProductionPercentages) {
+        for (int i = 0; i < quantities.length; i++) {
+            tableModel.setValueAt(quantities[i], i, 1);
+            tableModel.setValueAt(String.format("%.2f ", totalCreditsPerSecond[i]), i, 3);
+            tableModel.setValueAt(String.format("%.2f ", globalProductionPercentages[i]), i, 4);
+        }
     }
 }
