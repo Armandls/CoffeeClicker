@@ -72,6 +72,10 @@ public class GameController implements ActionListener {
                 System.out.println("Exit");
                 finish(JOptionPane.showConfirmDialog(null, "Do you want to finish the game?", "Game", JOptionPane.OK_OPTION, JOptionPane.NO_OPTION));
                 break;
+            case "statistics":
+                System.out.println("Statistics");
+                mainController.swapPanel("statistics");
+                break;
         }
     }
 

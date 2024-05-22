@@ -78,10 +78,14 @@ public class MainController implements FrameController, ThreadController {
         HomeController homeController = new HomeController(this);
         homeView = new HomeView(homeController);
 
+        StatisticsController statisticsController = new StatisticsController(this);
+        StatisticsView statisticsView = new StatisticsView(statisticsController);
+
         mainFrame.addPanel(loginView, "login");
         mainFrame.addPanel(gameView, "game");
         mainFrame.addPanel(registerView, "register");
         mainFrame.addPanel(homeView, "home");
+        mainFrame.addPanel(statisticsView, "statistics");
         mainFrame.setVisible(true);
 
         views.put("login", loginView);
@@ -89,6 +93,7 @@ public class MainController implements FrameController, ThreadController {
         views.put("game", gameView);
         views.put("home", homeView);
         views.put("stores", storesView);
+        views.put("statistics", statisticsView);
 
         currentView = loginView;
 

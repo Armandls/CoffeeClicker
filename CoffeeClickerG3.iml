@@ -32,5 +32,6 @@
     <orderEntry type="library" name="google.apis.api.services.gmail" level="project" />
     <orderEntry type="library" name="google.oauth.client" level="project" />
     <orderEntry type="library" name="google.oauth.client.java6" level="project" />
+    <orderEntry type="library" name="guicedee.services.jfreechart" level="project" />
   </component>
 </module>

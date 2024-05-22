@@ -31,8 +31,8 @@ public class ConfigView extends JPanel implements MyView {
         exit.setActionCommand("exit");
 
         options = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
-        options.setText("Options");
-        options.setActionCommand("options");
+        options.setText("Statistics");
+        options.setActionCommand("statistics");
 
         close = new JTexturedButton(R.SETTINGS_BUTTON, R.SETTINGS_BUTTON_PRESSED);
         close.setPreferredSize(new Dimension(35, 35));
