@@ -10,4 +10,6 @@ public interface FrameController {
 
     void removeHoverPanel(String name);
     void swapStore(String name);
+
+    void updateImprovement (String improvement);
 }
