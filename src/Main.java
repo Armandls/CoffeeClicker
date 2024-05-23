@@ -31,7 +31,7 @@ public class Main {
 
         // Create the controller and run it
         try {
-            MainController controller = new MainController(gameManager, generatorManager, userManager);
+            MainController controller = new MainController(generatorManager, userManager);
         } catch (Exception e) {
             e.printStackTrace();
         }

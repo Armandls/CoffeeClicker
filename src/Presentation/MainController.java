@@ -40,9 +40,9 @@ public class MainController implements FrameController, ThreadController {
     private ImprovementsView improvementsView;
 
 
-    public MainController(GameManager gameManager, GeneratorManager generatorManager, UserManager userManager) throws IOException, BusinessException {
-        this.gameManager = gameManager;
-        this.gameManager.setThreadController(this);
+    public MainController(GeneratorManager generatorManager, UserManager userManager) throws IOException, BusinessException {
+        //this.gameManager = gameManager;
+        //this.gameManager.setThreadController(this);
         this.generatorManager = generatorManager;
         this.userManager = userManager;
         init();
@@ -101,6 +101,8 @@ public class MainController implements FrameController, ThreadController {
     }
 
     public void resumeGameButton() throws PersistenceException {
+        this.gameManager = new GameManager(generatorManager);
+        this.gameManager.setThreadController(this);
         Map<Integer, Integer> games = getUnfinishedGames();
         homeView.displayGames(games);
     }
@@ -143,6 +145,8 @@ public class MainController implements FrameController, ThreadController {
     public void createNewGame() throws PersistenceException {
         try {
             String email = getEmail_id();
+            this.gameManager = new GameManager(generatorManager);
+            this.gameManager.setThreadController(this);
             gameManager.createNewGame(email);
             gameManager.setRunningGame(true);
             gameManager.interrupt();
