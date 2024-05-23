@@ -1,4 +1,5 @@
 package Presentation.Controllers;
+import Presentation.FrameController;
 import Presentation.MainController;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -7,11 +8,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class StoresController implements ActionListener, ListSelectionListener {
-    private MainController mainController;
+    private FrameController mainController;
 
     private boolean store;
 
-    public StoresController (MainController mainController) {
+    public StoresController (FrameController mainController) {
         this.mainController = mainController;
     }
     @Override
@@ -53,12 +54,15 @@ public class StoresController implements ActionListener, ListSelectionListener {
         }else {
             if (((DefaultListSelectionModel)e.getSource()).isSelectedIndex(0)) {
                 System.out.println("Pills");
+                mainController.updateImprovement("Pills");
             }
             else if (((DefaultListSelectionModel)e.getSource()).isSelectedIndex(1)) {
                 System.out.println("Glasses");
+                mainController.updateImprovement("Glasses");
             }
             else if (((DefaultListSelectionModel)e.getSource()).isSelectedIndex(2)) {
                 System.out.println("Carlos");
+                mainController.updateImprovement("Carlos");
             }
         }
     }

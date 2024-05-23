@@ -50,7 +50,7 @@ public class RegisterView extends JLayeredPane implements MyView {
 
         JPanel singupLabelPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         singupLabelPanel.setOpaque(false);
-        JLabel signUpLabel = new JLabel("Sing Up");
+        JLabel signUpLabel = new JLabel("Sign Up");
         signUpLabel.setFont(MinecraftFont.getFont().deriveFont(Font.PLAIN, 60));
         singupLabelPanel.add(signUpLabel);
 
@@ -173,7 +173,7 @@ public class RegisterView extends JLayeredPane implements MyView {
         loginButton.setFont(MinecraftFont.getFont());
 
         singUpButton = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
-        singUpButton.setText("Sing Up");
+        singUpButton.setText("Sign Up");
         singUpButton.setFont(MinecraftFont.getFont());
 
         start();
