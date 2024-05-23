@@ -98,4 +98,8 @@ public class Game {
     public void setId_game(int generatedId) {
         this.id_game = generatedId;
     }
+
+    public void setFinished(boolean finished) {
+        finished = finished;
+    }
 }

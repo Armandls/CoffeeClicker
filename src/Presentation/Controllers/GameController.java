@@ -1,6 +1,7 @@
 package Presentation.Controllers;
 import Business.UserManager;
 import Persistance.Exception.ConnectionErrorException;
+import Persistance.Exception.PersistenceException;
 import Presentation.FrameController;
 import Presentation.MainController;
 import Presentation.Views.GameView;
@@ -70,7 +71,11 @@ public class GameController implements ActionListener {
                 break;
             case "exit":
                 System.out.println("Exit");
-                finish(JOptionPane.showConfirmDialog(null, "Do you want to finish the game?", "Game", JOptionPane.OK_OPTION, JOptionPane.NO_OPTION));
+                try {
+                    finish(JOptionPane.showConfirmDialog(null, "Do you want to finish the game?", "Game", JOptionPane.OK_OPTION, JOptionPane.NO_OPTION));
+                } catch (PersistenceException ex) {
+                    throw new RuntimeException(ex);
+                }
                 break;
             case "statistics":
                 System.out.println("Statistics");
@@ -79,12 +84,12 @@ public class GameController implements ActionListener {
         }
     }
 
-    void finish(int response) {
+    void finish(int response) throws PersistenceException {
         if (response == JOptionPane.OK_OPTION) {
-            //Todo marcar partida com a finalitzada
+            mainController.saveGame(true);
         }
         else {
-            //Todo guardar partida i tornar a l'inici
+            mainController.saveGame(false);
         }
     }
 

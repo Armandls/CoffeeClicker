@@ -361,4 +361,8 @@ public class MainController implements FrameController, ThreadController {
     public void updateStoreCurrency(float amount) {
         gameView.updateCurrency(gameManager.getGameCurrency());
     }
+
+    public void saveGame(boolean finished) throws PersistenceException {
+        gameManager.saveGame(finished);
+    }
 }

@@ -232,4 +232,8 @@ public class GameManager extends Thread{
         }
     }
 
+    public void saveGame(boolean finished) throws PersistenceException {
+        game.setFinished(finished);
+        gameDAO.updateGame(game);
+    }
 }
