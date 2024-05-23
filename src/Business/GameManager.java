@@ -22,12 +22,13 @@ import java.util.Map;
  *  @Currency, @ImprovementStore, @Game
  */
 public class GameManager extends Thread{
-    GeneratorManager generatorManager;
-    ThreadController threadController;
-    GameDAO gameDAO;
-    Game game;
-    int threadCount;
-    int min;
+    private GeneratorManager generatorManager;
+    private ThreadController threadController;
+    private boolean runningGame;
+    private GameDAO gameDAO;
+    private Game game;
+    private int threadCount;
+    private int min;
     public GameManager (GameDAO gameDAO, GeneratorManager generatorManager) {
         this.gameDAO = gameDAO;
         this.generatorManager = generatorManager;
@@ -40,9 +41,14 @@ public class GameManager extends Thread{
         this.threadController = tc;
     }
 
+    public void setRunningGame(boolean value) {
+        runningGame = value;
+    }
+    public boolean isRunning() {return runningGame;}
+
     @Override
     public void run() {
-        while (!game.isFinished()){
+        while (runningGame){
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -74,6 +80,9 @@ public class GameManager extends Thread{
         }
     }
 
+    public void stopThread() {
+        currentThread().stop();
+    }
     public void initGame(int gameId, int n_currencies, String user) throws BusinessException{
         List<Generator> generators;
         this.game = new Game(gameId, n_currencies, false, user);

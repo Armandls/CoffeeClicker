@@ -90,6 +90,7 @@ public class GameController implements ActionListener {
 
     void logout() {
         mainController.restartValuesUser();
+
     }
 
     void deleteAccount() throws ConnectionErrorException {

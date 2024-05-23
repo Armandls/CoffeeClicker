@@ -97,6 +97,7 @@ public class UserManager {
     }
 
     public void restartValuesUser() {
+
         user.setNickname("null");
         user.setEmail("null");
         user.setPassword("null");

@@ -144,6 +144,7 @@ public class MainController implements FrameController, ThreadController {
         try {
             String email = getEmail_id();
             gameManager.createNewGame(email);
+            gameManager.setRunningGame(true);
             gameManager.interrupt();
             gameManager.start();
         } catch (BusinessException e) {
@@ -156,6 +157,8 @@ public class MainController implements FrameController, ThreadController {
     }
     public void restartValuesUser () {
         userManager.restartValuesUser();
+        gameManager.setRunningGame(false);
+        //gameManager.stopThread();
     }
     public void deleteUser () throws ConnectionErrorException, ConnectionErrorException {
         userManager.deleteUser();
@@ -296,6 +299,7 @@ public class MainController implements FrameController, ThreadController {
 
         gameView.initialize(n_currencies, n_generators[0], n_generators[1], n_generators[2], boosts_lvl[0], boosts_lvl[1], boosts_lvl[2]);
         gameView.updateTable(generatorManager.getAllNumberOfGenerators(gameManager.getGameId()), generatorManager.getAllProductionPerSec(gameManager.getGameId()), generatorManager.getAllProductionPercentage(gameManager.getGameId(), gameManager.getGameCurrency()));
+        gameManager.setRunningGame(true);
         gameManager.start();
     }
 
