@@ -10,6 +10,7 @@ import Persistance.DAO.GameDAO;
 import Persistance.Exception.ConnectionErrorException;
 import Persistance.Exception.NotFoundException;
 import Persistance.Exception.PersistenceException;
+import Persistance.SQL.SQLGameDAO;
 import Presentation.Controllers.ThreadController;
 import Presentation.MainController;
 
@@ -36,13 +37,20 @@ public class GameManager extends Thread{
         min = 0;
         //this.game = new Game();
     }
+    public GameManager(GeneratorManager generatorManager) {
+        this.gameDAO = new SQLGameDAO();
+        this.generatorManager = generatorManager;
+        threadCount = 0;
+        min = 0;
+        //this.game = new Game();
+    }
 
     public void setThreadController(ThreadController tc) {
         this.threadController = tc;
     }
 
     public void setRunningGame(boolean value) {
-        runningGame = value;
+        this.runningGame = value;
     }
     public boolean isRunning() {return runningGame;}
 
