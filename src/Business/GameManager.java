@@ -111,7 +111,7 @@ public class GameManager extends Thread{
      * Get del valor de currency que es te en temps real de la partida, no consulta la base de dades.
      * @return
      */
-    public float getGameCurrency() {return game.getCurrencyCount();}
+    public int getGameCurrency() {return (int) game.getCurrencyCount();}
     public boolean buyGenerator(String type) throws BusinessException {
         int generatorId;
         if (generatorManager.generatorPurchaseAvailable(game.getCurrencyCount(), game.getIdGame(), type)) {
