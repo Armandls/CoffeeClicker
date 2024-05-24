@@ -13,9 +13,6 @@ public class BasicGenerator extends Generator {
     }
     //Creació de generador buit per obtenir la instancia del generador i saber quin tipus de fill es
     public BasicGenerator(){super();}
-    public BasicGenerator(int id_game, String imageUrl) {
-        super(id_game, imageUrl);
-    }
 
     public BasicGenerator(int id_game) {
         super(id_game, new BasicImprovement());
@@ -29,7 +26,7 @@ public class BasicGenerator extends Generator {
         super.increaseCurrency((float) 0.2 * super.getNGens());
         return (float) 0.2 * super.getNGens();
     }
-    public static String getGeneratorImage(){return REDBULL;}
+    public String getGeneratorImage(){return REDBULL;}
     public float getProductionPerSec() {
         return (float) (0.2 * getNGens());
     }

@@ -15,7 +15,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class GameView extends JPanel implements MyView {
-    private ActionListener listener;
+    private final ActionListener listener;
     private JTexturedButton configButton;
     private JTexturedButton profileButton;
     private JButton phoneButton;
@@ -26,7 +26,7 @@ public class GameView extends JPanel implements MyView {
     private ConfigView configView;
     private JTexturedButton logout;
     private JTexturedButton deleteAccount;
-    private StoresView storesView;
+    private final StoresView storesView;
     private JPanel overPanel;
     private JPanel hoversPanel;
 
@@ -246,10 +246,6 @@ public class GameView extends JPanel implements MyView {
         clickButton.removeActionListener(listener);
     }
 
-    @Override
-    public void clear() {
-        //unimplemented
-    }
 
     public void startRedPanelAnimation(Point mousePosition) {
         // Create red panel

@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 import java.util.Map;
 
 public class HomeController implements ActionListener{
-    private MainController mainController;
+    private final MainController mainController;
 
     public HomeController(MainController mainController) {
         this.mainController = mainController;

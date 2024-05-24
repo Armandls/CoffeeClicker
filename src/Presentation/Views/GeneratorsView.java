@@ -18,19 +18,16 @@ public class GeneratorsView extends JPanel {
     public static final String midGenDesc = "Els teus companys són molt bones persones\ni et donen els seus apunts per tal que\npuguis entendre les assignatures.\n\nSpoiler: no ho entendràs igualment.";
     public static final String highGenDesc = "En vistes de que res funciona i no tens\ntemps per estudiar, has decidit fer un\npacte amb el diable i apuntar-te a la CEUS.\n\nBenvingut a la foscor.";
 
-    private ActionListener actionListener;
-    private ListSelectionListener listSelectionListener;
+    private final ActionListener actionListener;
+    private final ListSelectionListener listSelectionListener;
     private JScrollPane scrollPane;
     private JPanel mainPanel;
-    private FrameController controller;
-    private JTable generatorsTable;
     private DefaultTableModel tableModel;
     private JPanel tablePanel;
 
     public GeneratorsView(ActionListener listener, ListSelectionListener listSelectionListener, FrameController controller) {
         this.actionListener = listener;
         this.listSelectionListener = listSelectionListener;
-        this.controller = controller;
         init();
         mount();
         setVisible(true);
@@ -50,7 +47,7 @@ public class GeneratorsView extends JPanel {
         };
 
         tableModel = new DefaultTableModel(data, columnNames);
-        generatorsTable = new JTable(tableModel);
+        JTable generatorsTable = new JTable(tableModel);
         generatorsTable.setBackground(Color.BLACK);
         generatorsTable.setFont(MinecraftFont.getFont());
         generatorsTable.setRowHeight(30);
@@ -154,9 +151,6 @@ public class GeneratorsView extends JPanel {
         descriptionPanel.add(descriptionLabel);
         descriptionPanel.setBackground(Color.darkGray);
         descriptionPanel.setBorder(new StrokeBorder(new BasicStroke(1.0f), Color.YELLOW));
-        //JHoverPanel hoverPanel = new JHoverPanel(button, descriptionPanel, name);
-        this.controller.removeHoverPanel(name);
-        //controller.addHoverPanel(hoverPanel);
     }
 
     public void removeGenerators() {

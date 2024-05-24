@@ -1,6 +1,4 @@
 package Presentation.Views;
-import Business.Entities.Generator.BasicGenerator;
-import Presentation.Controllers.StoresController;
 import Presentation.Fonts.MinecraftFont;
 import Presentation.FrameController;
 import Presentation.JImagePanel;
@@ -22,8 +20,8 @@ public class StoresView extends JPanel implements MyView {
     private JImagePanel background;
     private GeneratorsView generatorsView;
     private ImprovementsView improvementsView;
-    private ActionListener listener;
-    private FrameController controller;
+    private final ActionListener listener;
+    private final FrameController controller;
 
     public StoresView(ActionListener listener, FrameController frameController) throws IOException {
         this.listener = listener;
@@ -62,7 +60,7 @@ public class StoresView extends JPanel implements MyView {
 
     }
 
-    private void mount() throws IOException {
+    private void mount() {
 
         JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setLayout(new OverlayLayout(layeredPane));
@@ -119,11 +117,6 @@ public class StoresView extends JPanel implements MyView {
 
     @Override
     public void stop() {
-
-    }
-
-    @Override
-    public void clear() {
 
     }
 

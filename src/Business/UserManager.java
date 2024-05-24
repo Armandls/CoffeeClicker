@@ -16,7 +16,7 @@ import Persistance.SQL.SQLUserDAO;
  */
 public class UserManager {
 
-    private UserDAO userDAO;
+    private final UserDAO userDAO;
     private User user;
 
     public UserManager(UserDAO userDAO) {

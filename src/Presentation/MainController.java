@@ -26,8 +26,8 @@ import java.util.Map;
 public class MainController implements FrameController, ThreadController {
 
     private GameManager gameManager;
-    private GeneratorManager generatorManager;
-    private UserManager userManager;
+    private final GeneratorManager generatorManager;
+    private final UserManager userManager;
     private MainFrame mainFrame;
     private MyView currentView;
     private Hashtable<String, MyView> views;
@@ -57,7 +57,7 @@ public class MainController implements FrameController, ThreadController {
     }
 
     @Override
-    public void initializeGame(int currency, int basicGenerator, int midGenerator, int highGenerator, int lvlBasicImp, int lvlMidImp, int lvlHighImp) throws BusinessException {
+    public void initializeGame(int currency, int basicGenerator, int midGenerator, int highGenerator, int lvlBasicImp, int lvlMidImp, int lvlHighImp) {
         gameView.initialize(currency, basicGenerator, midGenerator, highGenerator, lvlBasicImp, lvlMidImp, lvlHighImp);
     }
 
@@ -167,7 +167,7 @@ public class MainController implements FrameController, ThreadController {
         gameManager.setRunningGame(false);
         //gameManager.stopThread();
     }
-    public void deleteUser () throws ConnectionErrorException, ConnectionErrorException {
+    public void deleteUser () throws ConnectionErrorException {
         userManager.deleteUser();
     }
     public Map<Integer, Integer> getUnfinishedGames () throws PersistenceException {
@@ -248,11 +248,7 @@ public class MainController implements FrameController, ThreadController {
     }
 
     public void startRedPanelAnimation (Point location){
-        try {
-            gameManager.increaseCurrency();
-        } catch (BusinessException e) {
-            throw new RuntimeException(e);
-        }
+        gameManager.increaseCurrency();
         gameView.updateCurrency(gameManager.getGameCurrency());
         gameView.startRedPanelAnimation(location);
     }
@@ -350,16 +346,6 @@ public class MainController implements FrameController, ThreadController {
     }
 
     @Override
-    public void removeHoverPanel(String name) {
-        //gameView.removeHoverPanel(name);
-    }
-
-    @Override
-    public void addHoverPanel(JHoverPanel panel) {
-        //((GameView)views.get("game")).addHoverPanel(panel);
-    }
-
-    @Override
     public void swapStore(String panelName) {
         ((StoresView)views.get("stores")).swapPanel(panelName);
     }
@@ -388,7 +374,7 @@ public class MainController implements FrameController, ThreadController {
     public void displayGameStats(String gameId) {
         try {
             List<Integer> l = gameManager.getStatsFromGame(gameId);
-            String data[][] = new String[l.size()][2];
+            String[][] data = new String[l.size()][2];
             for(int i = 0; i < l.size(); i++) {
                 data[i][0] = String.valueOf(i);
                 data[i][1] = String.valueOf(l.get(i));

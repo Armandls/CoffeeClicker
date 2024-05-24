@@ -17,11 +17,9 @@ import java.util.Map;
 import java.util.Random;
 
 public class HomeView extends JPanel implements MyView {
-    private ActionListener listener;
+    private final ActionListener listener;
     private JTexturedButton newGame;
     private JTexturedButton resumeGame;
-    private JImagePanel background;
-    private JImagePanel form_background;
     private JLayeredPane layeredPane;
 
     public HomeView(ActionListener listener) {
@@ -54,8 +52,8 @@ public class HomeView extends JPanel implements MyView {
 
     private void setupBackground() {
         try {
-            background = new JImagePanel(R.MAIN_BACKGROUND);
-            form_background = new JImagePanel(R.FORM_BACKGROUND);
+            JImagePanel background = new JImagePanel(R.MAIN_BACKGROUND);
+            JImagePanel form_background = new JImagePanel(R.FORM_BACKGROUND);
             background.setOpaque(false);
             form_background.setOpaque(false);
 
@@ -108,7 +106,7 @@ public class HomeView extends JPanel implements MyView {
         int i = 1;
         for (Map.Entry<Integer, Integer> entry : games.entrySet()) {
             JTexturedButton gameButton = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
-            gameButton.setText("Game "+i+" | " + entry.getValue() + " credits");
+            gameButton.setText("Game " + i + " | " + entry.getValue() + " credits");
             gameButton.setAlignmentX(Component.CENTER_ALIGNMENT);
             gameListPanel.add(gameButton);
             final int gameId = entry.getKey();
@@ -129,13 +127,11 @@ public class HomeView extends JPanel implements MyView {
         newGame.addActionListener(listener);
         resumeGame.addActionListener(listener);
     }
+
     @Override
     public void stop() {
     }
 
-    @Override
-    public void clear() {
-    }
 }
 
 

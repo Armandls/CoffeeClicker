@@ -15,7 +15,7 @@ public class Game {
     private float currency_count;
     private boolean finished;
     private String mail_user;
-    private ArrayList<Generator> gameGenerators;
+    private final ArrayList<Generator> gameGenerators;
 
     public Game() {
         this.gameGenerators = new ArrayList<>(); // necessari per evitar nullPOinter exception en inicialitzar generators

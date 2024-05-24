@@ -20,16 +20,13 @@ import java.util.List;
  *  @Generator package
  */
 public class GeneratorManager {
-    GeneratorDAO generatorDAO;
-    GeneratorStore generatorStore;
+    final GeneratorDAO generatorDAO;
 
-    String[] genTypes = {"Basic", "Mid", "High"};
-    String[] generatorNames = {"REDBULL", "NOTES", "CEUS"};
+    final String[] genTypes = {"Basic", "Mid", "High"};
+    final String[] generatorNames = {"REDBULL", "NOTES", "CEUS"};
 
-    public GeneratorManager(GeneratorDAO generatorDAO) throws BusinessException{
+    public GeneratorManager(GeneratorDAO generatorDAO) {
         this.generatorDAO = generatorDAO;
-        //this.gameManager = gameManager;
-        //this.generatorStore = new GeneratorStore(getGenerators());  //Aqui faltaria passar-li la partida.
     }
     public GeneratorManager(){
      this.generatorDAO = new SQLGenerator();
@@ -88,7 +85,7 @@ public class GeneratorManager {
 
     public int[] getGeneratorIdFromGame(String type, int gameId){
         Generator auxGen = null;
-        int outputVal[] = new int[2];
+        int[] outputVal = new int[2];
         try {
             auxGen = getGeneratorFromGame(gameId, type);
             outputVal[0] = auxGen.getIdGenerator();
@@ -100,7 +97,7 @@ public class GeneratorManager {
     }
 
     public int[] purchaseNewGenerator(String type, int gameId) throws BusinessException{
-        int generatorId[] = new int[2];
+        int[] generatorId = new int[2];
         generatorId[0] = -1;
         generatorId[1] = -1;
         try {
@@ -267,28 +264,6 @@ public class GeneratorManager {
             }
         }
         return boost_lvl;
-    }
-
-
-
-    public String[] getShopImages() {
-        String[] shopImages = new String[genTypes.length];
-        String imageStr = "";
-        for(int i = 0; i < genTypes.length; i++) {
-            switch (i) {
-                case 0:
-                    imageStr = BasicGenerator.getGeneratorImage();
-                    break;
-                case 1:
-                    imageStr = MidGenerator.getGeneratorImage();
-                    break;
-                case 2:
-                    imageStr = HighGenerator.getGeneratorImage();
-                    break;
-            }
-            shopImages[i] = imageStr;
-        }
-        return shopImages;
     }
 
     public float[] getAllProductionPerSec(int gameId) throws BusinessException {

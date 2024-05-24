@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class MinecraftFont extends Font {
 
-    public  MinecraftFont() throws IOException, FontFormatException {
+    public  MinecraftFont() {
         super("Minecraft", Font.PLAIN, 12);
     }
 

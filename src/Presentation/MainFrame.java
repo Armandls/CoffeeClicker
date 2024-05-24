@@ -5,8 +5,8 @@ import java.awt.*;
 
 public class MainFrame extends JFrame {
 
-    private JPanel cardPanel;
-    private CardLayout cardLayout;
+    private final JPanel cardPanel;
+    private final CardLayout cardLayout;
 
     public MainFrame() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -15,7 +15,7 @@ import java.util.Objects;
 
 public class LoginView extends JLayeredPane implements MyView {
 
-    private ActionListener listener;
+    private final ActionListener listener;
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JButton forgotPassword;
@@ -207,10 +207,5 @@ public class LoginView extends JLayeredPane implements MyView {
     public void clearForm() {
         usernameField.setText("");
         passwordField.setText("");
-    }
-
-    @Override
-    public void clear() {
-
     }
 }

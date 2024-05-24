@@ -12,7 +12,7 @@ import java.util.List;
 /*Class to represent store where the user will be able to buy the different kinds of Generators of currency*/
 public class GeneratorStore {
     Game game;
-    List<Generator> generators;
+    final List<Generator> generators;
     public GeneratorStore(List<Generator> generators) {
         this.generators = new ArrayList<>(generators);
     }

@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.Timer;
 
 public class GameController implements ActionListener {
-    private MainController mainController;
+    private final MainController mainController;
 
     public GameController(MainController mainController) {
         this.mainController = mainController;
@@ -86,12 +86,7 @@ public class GameController implements ActionListener {
     }
 
     void finish(int response) throws PersistenceException {
-        if (response == JOptionPane.OK_OPTION) {
-            mainController.saveGame(true);
-        }
-        else {
-            mainController.saveGame(false);
-        }
+        mainController.saveGame(response == JOptionPane.OK_OPTION);
         mainController.swapPanel("home");
     }
 

@@ -16,7 +16,7 @@ import java.awt.event.ActionListener;
 
 public class StatisticsView extends JLayeredPane implements MyView {
 
-    private ActionListener listener;
+    private final ActionListener listener;
     private FrameController controller;
     private JTexturedButton back;
     private JTexturedButton logout;
@@ -160,11 +160,6 @@ public class StatisticsView extends JLayeredPane implements MyView {
 
     @Override
     public void stop() {
-
-    }
-
-    @Override
-    public void clear() {
 
     }
 }

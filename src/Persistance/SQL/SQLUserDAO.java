@@ -72,11 +72,8 @@ public class SQLUserDAO implements UserDAO {
         ResultSet result = SQLConnector.getInstance().selectQuery(query);
 
         try {
-            if (result.next()) {
-                return false; // Username exists
-            } else {
-                return true; // Username does not exist
-            }
+            // Username does not exist
+            return !result.next(); // Username exists
         } catch (SQLException e) {
             throw new ConnectionErrorException(e.getMessage());
         }

@@ -16,13 +16,8 @@ public class Main {
         GeneratorDAO generatorDAO = new SQLGenerator();
 
         GeneratorManager generatorManager = null;
-        try {
-            generatorManager = new GeneratorManager(generatorDAO);
-        } catch (BusinessException e) {
-            // Handle the exception
-            System.err.println("Failed to create GeneratorManager: " + e.getMessage());
-            e.printStackTrace(); // Print the stack trace for detailed error information
-        }
+        generatorManager = new GeneratorManager(generatorDAO);
+
 
         // Create the different managers and the controller's instance
         GameManager gameManager = new GameManager(new SQLGameDAO(), generatorManager);

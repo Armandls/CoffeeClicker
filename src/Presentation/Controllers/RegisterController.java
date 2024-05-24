@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
 
 public class RegisterController implements ActionListener {
 
-    private MainController mainController;
+    private final MainController mainController;
 
     public RegisterController(MainController mainController) {
         this.mainController = mainController;

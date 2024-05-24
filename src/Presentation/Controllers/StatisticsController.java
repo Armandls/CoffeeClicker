@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 
 public class StatisticsController implements ActionListener {
 
-    private MainController mainController;
+    private final MainController mainController;
 
     public StatisticsController(MainController mainController) {
         this.mainController = mainController;

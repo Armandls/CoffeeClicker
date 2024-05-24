@@ -15,7 +15,7 @@ import javax.swing.border.EmptyBorder;
 
 public class RegisterView extends JLayeredPane implements MyView {
 
-    private ActionListener listener;
+    private final ActionListener listener;
     private JTextField usernameField;
 
     private JTextField emailField;
@@ -249,10 +249,5 @@ public class RegisterView extends JLayeredPane implements MyView {
         emailField.setText("");
         passwordField.setText("");
         confirmPasswordField.setText("");
-    }
-
-    @Override
-    public void clear() {
-
     }
 }

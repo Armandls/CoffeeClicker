@@ -5,8 +5,6 @@ public abstract class Improvement {
     private int level;
     private String imageUrl;
 
-    private String description;
-
     public Improvement(int id_improvement, int level, String imageUrl) {
         this.id_improvement = id_improvement;
         this.level = level;
@@ -23,7 +21,6 @@ public abstract class Improvement {
         this.id_improvement = id_improvement;
         this.level = level;
         this.imageUrl = imageUrl;
-        this.description = description;
     }
 
     public int getIdImprovement() {

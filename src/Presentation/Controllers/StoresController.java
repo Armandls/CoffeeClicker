@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class StoresController implements ActionListener, ListSelectionListener {
-    private FrameController mainController;
+    private final FrameController mainController;
 
     private boolean store;
 

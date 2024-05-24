@@ -23,10 +23,10 @@ import java.util.Map;
  *  @Currency, @ImprovementStore, @Game
  */
 public class GameManager extends Thread{
-    private GeneratorManager generatorManager;
+    private final GeneratorManager generatorManager;
     private ThreadController threadController;
     private boolean runningGame;
-    private GameDAO gameDAO;
+    private final GameDAO gameDAO;
     private Game game;
     private int threadCount;
     private int min;
@@ -52,7 +52,6 @@ public class GameManager extends Thread{
     public void setRunningGame(boolean value) {
         this.runningGame = value;
     }
-    public boolean isRunning() {return runningGame;}
 
     @Override
     public void run() {
@@ -87,10 +86,6 @@ public class GameManager extends Thread{
             }
         }
     }
-
-    public void stopThread() {
-        currentThread().stop();
-    }
     public void initGame(int gameId, int n_currencies, String user) throws BusinessException{
         List<Generator> generators;
         this.game = new Game(gameId, n_currencies, false, user);
@@ -113,7 +108,7 @@ public class GameManager extends Thread{
      */
     public int getGameCurrency() {return (int) game.getCurrencyCount();}
     public boolean buyGenerator(String type) throws BusinessException {
-        int generatorId[] = new int[2];
+        int[] generatorId = new int[2];
         if (generatorManager.generatorPurchaseAvailable(game.getCurrencyCount(), game.getIdGame(), type)) {
             generatorId = generatorManager.purchaseNewGenerator(type, game.getIdGame());
             game.addGeneratorToGame(type, generatorId[0], generatorId[1]);
@@ -147,7 +142,7 @@ public class GameManager extends Thread{
     }
     public Map<Integer, Integer> getUnfinishedGames (String mail_user) throws PersistenceException {
         List<Game> games;
-        Map<Integer, Integer> creditsAndIds = new HashMap<>();;
+        Map<Integer, Integer> creditsAndIds = new HashMap<>();
         try {
             games = gameDAO.getUnfinishedGamesFromUser(mail_user);
         }catch (PersistenceException exception) {
@@ -162,7 +157,7 @@ public class GameManager extends Thread{
 
     public Map<Integer, Integer> getFinishedGames (String mail_user) throws PersistenceException {
         List<Game> games;
-        Map<Integer, Integer> creditsAndIds = new HashMap<>();;
+        Map<Integer, Integer> creditsAndIds = new HashMap<>();
         try {
             games = gameDAO.getFinishedGamesFromUser(mail_user);
         }catch (PersistenceException exception) {
@@ -185,7 +180,7 @@ public class GameManager extends Thread{
         return Math.round(game2.getCurrencyCount());
     }
 
-    public void increaseCurrency() throws BusinessException{
+    public void increaseCurrency() {
         game.increaseCurrency();
     }
 

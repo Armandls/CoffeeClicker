@@ -18,18 +18,15 @@ public class ImprovementsView extends JPanel {
     public static final String basicImprovementDesc = "Aquestes pastilles combinades amb el teu RedBull\nson una bomba d'hiperactivitat que et permet\nestudiar a nivells inimaginables.\n\nNo et preocupis, no et faran mal.";
     public static final String midImprovementDesc = "Tantes hores llegint fan mal.\nMillor posa't unes ulleres que els oculistes\nsón cars!";
     public static final String highImprovementDesc = "Que cols que t'hi digui, si no fós \nper aquest home, molta gent suspendria Mates.";
-    private ActionListener actionListener;
-    private FrameController controller;
+    private final ActionListener actionListener;
     private JScrollPane scrollPane;
     private JPanel mainPanel;
-    private JTable generatorsTable;
     private DefaultTableModel tableModel;
     private JPanel tablePanel;
-    private ListSelectionListener listSelectionListener;
+    private final ListSelectionListener listSelectionListener;
 
     public ImprovementsView(ActionListener listener, ListSelectionListener listSelectionListener, FrameController controller) {
         this.actionListener = listener;
-        this.controller = controller;
         this.listSelectionListener = listSelectionListener;
         init();
         mount();
@@ -50,7 +47,7 @@ public class ImprovementsView extends JPanel {
         };
 
         tableModel = new DefaultTableModel(data, columnNames);
-        generatorsTable = new JTable(tableModel);
+        JTable generatorsTable = new JTable(tableModel);
         generatorsTable.setBackground(Color.BLACK);
         generatorsTable.setFont(MinecraftFont.getFont());
         generatorsTable.setRowHeight(30);
@@ -153,9 +150,6 @@ public class ImprovementsView extends JPanel {
         descriptionPanel.add(descriptionLabel);
         descriptionPanel.setBackground(Color.darkGray);
         descriptionPanel.setBorder(new StrokeBorder(new BasicStroke(1.0f), Color.YELLOW));
-
-        //JHoverPanel hoverPanel = new JHoverPanel(button, descriptionPanel);
-        //controller.addHoverPanel(hoverPanel);
 
         mainPanel.add(generatorPanel);
         mainPanel.revalidate();

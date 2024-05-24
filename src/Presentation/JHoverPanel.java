@@ -12,7 +12,7 @@ public class JHoverPanel extends JPanel {
     private int height;
     private int width;
 
-    private JPanel panel;
+    private final JPanel panel;
 
     public JHoverPanel(JComponent component) {
         setLayout(null);

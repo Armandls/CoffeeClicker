@@ -26,7 +26,7 @@ public class MidGenerator extends Generator {
         super.increaseCurrency(super.getNGens());
         return super.getNGens();
     }
-    public static String getGeneratorImage() {return NOTES;}
+    public String getGeneratorImage() {return NOTES;}
     public float getProductionPerSec() {
         return (float) (getNGens());
     }

@@ -13,7 +13,6 @@ import java.io.IOException;
 
 public class JImagePanel extends JPanel {
 
-    private int currentFrameIndex;
     private BufferedImage image;
     private int res;
 
@@ -38,7 +37,7 @@ public class JImagePanel extends JPanel {
 
     public JImagePanel(String path) throws IOException {
         this.alpha = 1.0f;
-        currentFrameIndex = 0;
+        int currentFrameIndex = 0;
         setOpaque(false);
         this.image = loadImage(path);
     }

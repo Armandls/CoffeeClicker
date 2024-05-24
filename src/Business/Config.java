@@ -4,11 +4,11 @@ package Business;
  * This i sthe class that stores the information of the config file in RAM.
  */
 public class Config {
-    private int port;
-    private String ip;
-    private String dataBaseName;
-    private String user;
-    private String pwd;
+    private final int port;
+    private final String ip;
+    private final String dataBaseName;
+    private final String user;
+    private final String pwd;
 
     public Config(int port, String ip, String dataBaseName, String user, String pwd) {
         this.port = port;

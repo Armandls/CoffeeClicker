@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class LoginController implements ActionListener {
-    private MainController mainController;
+    private final MainController mainController;
 
     public LoginController(MainController mainController) {
         this.mainController = mainController;
@@ -81,11 +81,6 @@ public class LoginController implements ActionListener {
                         mainController.adviceMessage(e.getMessage(), "Database Error", "login");
                     }
 
-                /*
-                if (info[0].split(":")[1].equalsIgnoreCase("admin")) {
-                    mainController.swapPanel("game");
-                }
-                */
             }
         }
     }

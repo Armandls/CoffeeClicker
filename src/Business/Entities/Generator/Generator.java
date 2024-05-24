@@ -9,7 +9,6 @@ public abstract class Generator {
     private int id_game;
     private Improvement improvement;
     private String imageUrl;
-    private String description;
 
     public Generator(int id_generator, float n_currencies, int id_game, int n_gens, Improvement improvement, String imageUrl) {
         this.id_generator = id_generator;
@@ -27,7 +26,6 @@ public abstract class Generator {
         this.n_gens = n_gens;
         this.improvement = improvement;
         this.imageUrl = imageUrl;
-        this.description = description;
     }
 
     public Generator(int id_game) {
@@ -85,9 +83,6 @@ public abstract class Generator {
         return n_gens;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
 
     public Improvement getImprovement() {
         return improvement;
@@ -101,17 +96,13 @@ public abstract class Generator {
         return n_currencies;
     }
 
-    public void setNCurrencies(int n_currencies) {
-        this.n_currencies = n_currencies;
-    }
-
     public float getGeneratorPrice() {return 0;}
 
     public void addGenerator() {
         n_gens++;
     }
 
-    public static String getGeneratorImage(){return null;}
+    public String getGeneratorImage(){return null;}
 
     public void incrementImprovementLevel() {
         improvement.incrementImprovementLevel();

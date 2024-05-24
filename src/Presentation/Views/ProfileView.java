@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 
 public class ProfileView extends JPanel implements MyView {
 
-    private ActionListener listener;
+    private final ActionListener listener;
     private JTexturedButton logout;
     private JTexturedButton deleteAccount;
     private JTexturedButton close;
@@ -69,10 +69,5 @@ public class ProfileView extends JPanel implements MyView {
         deleteAccount.removeActionListener(listener);
         logout.removeActionListener(listener);
         close.removeActionListener(listener);
-    }
-
-    @Override
-    public void clear() {
-        //unimplemented
     }
 }

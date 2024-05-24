@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 
 public class ConfigView extends JPanel implements MyView {
 
-    private ActionListener listener;
+    private final ActionListener listener;
     private JTexturedButton exit;
     private JTexturedButton options;
     private JTexturedButton close;
@@ -72,8 +72,4 @@ public class ConfigView extends JPanel implements MyView {
         close.removeActionListener(listener);
     }
 
-    @Override
-    public void clear() {
-        //unimplemented
-    }
 }
