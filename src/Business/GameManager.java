@@ -156,7 +156,21 @@ public class GameManager extends Thread{
         for (Game game : games) {
             creditsAndIds.put(game.getIdGame(), Math.round(game.getCurrencyCount()));
         }
+        return creditsAndIds;
+    }
 
+
+    public Map<Integer, Integer> getFinishedGames (String mail_user) throws PersistenceException {
+        List<Game> games;
+        Map<Integer, Integer> creditsAndIds = new HashMap<>();;
+        try {
+            games = gameDAO.getFinishedGamesFromUser(mail_user);
+        }catch (PersistenceException exception) {
+            throw new PersistenceException("ERROR: Couldn't get the users' unfinished games from the database.");
+        }
+        for (Game game : games) {
+            creditsAndIds.put(game.getIdGame(), Math.round(game.getCurrencyCount()));
+        }
         return creditsAndIds;
     }
 
@@ -243,5 +257,13 @@ public class GameManager extends Thread{
     public void saveGame(boolean finished) throws PersistenceException {
         game.setFinished(finished);
         gameDAO.updateGame(game);
+    }
+
+    public List<Integer> getStatsFromGame(String id) throws BusinessException {
+        try {
+            return gameDAO.getGameStatistics(id);
+        } catch (PersistenceException e) {
+            throw new BusinessException("Could not fetch game with id " + id);
+        }
     }
 }

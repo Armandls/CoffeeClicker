@@ -79,6 +79,7 @@ public class GameController implements ActionListener {
                 break;
             case "statistics":
                 System.out.println("Statistics");
+                mainController.fetchGames();
                 mainController.swapPanel("statistics");
                 break;
         }
@@ -91,11 +92,11 @@ public class GameController implements ActionListener {
         else {
             mainController.saveGame(false);
         }
+        mainController.swapPanel("home");
     }
 
     void logout() {
         mainController.restartValuesUser();
-
     }
 
     void deleteAccount() throws ConnectionErrorException {

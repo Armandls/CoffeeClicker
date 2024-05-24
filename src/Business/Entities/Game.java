@@ -100,6 +100,6 @@ public class Game {
     }
 
     public void setFinished(boolean finished) {
-        finished = finished;
+        this.finished = finished;
     }
 }

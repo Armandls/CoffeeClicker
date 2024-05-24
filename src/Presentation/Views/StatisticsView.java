@@ -128,11 +128,11 @@ public class StatisticsView extends JLayeredPane implements MyView {
         add(panel);
     }
 
-    public void addGame(String gameID) {
+    public void addGame(String gameID, String n_currencies) {
         chartTitle = "Game: " + gameID;
         JTexturedButton button = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
         button.setPreferredSize(new Dimension(150, 25));
-        button.setText(gameID);
+        button.setText(gameID + " - " + n_currencies);
         button.setActionCommand(gameID);
         button.addActionListener(listener);
         this.games.add(button);
@@ -151,7 +151,6 @@ public class StatisticsView extends JLayeredPane implements MyView {
         chartPanel.getChart().getCategoryPlot().getDomainAxis().setTickLabelFont(MinecraftFont.getFont());
         chartPanel.getChart().getCategoryPlot().getRangeAxis().setLabelFont(MinecraftFont.getFont());
         chartPanel.getChart().getCategoryPlot().getRangeAxis().setTickLabelFont(MinecraftFont.getFont());
-
     }
 
     @Override

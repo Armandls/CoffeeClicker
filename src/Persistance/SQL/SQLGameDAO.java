@@ -67,11 +67,30 @@ public class SQLGameDAO implements GameDAO {
     }
 
     @Override
-    public List<Integer> getGameStatistics(Game game) throws PersistenceException{
+    public List<Game> getFinishedGamesFromUser(String mail_user) throws PersistenceException {
+        ArrayList<Game> games = new ArrayList<>();
+        String query = "SELECT id_game, currency_count, finished FROM Game AS g, User AS u " +
+                "WHERE g.user = u.mail AND u.mail = '" + mail_user + "' AND g.finished = 1";
+
+        ResultSet result = SQLConnector.getInstance().selectQuery(query);
+        try {
+            while (result.next()) {
+                Game aux = new Game(result.getInt(1),
+                        result.getInt(2), result.getBoolean(3), mail_user);
+                games.add(aux);
+            }
+            return games;
+        } catch (SQLException e) {
+            throw new ConnectionErrorException(e.getMessage());
+        }
+    }
+
+    @Override
+    public List<Integer> getGameStatistics(String id) throws PersistenceException{
 
         ArrayList<Integer> currencies = new ArrayList<>();
         String query = "SELECT s.current_currency FROM Game AS g, Statistics AS s WHERE g.id_game = s.id_game AND " +
-                "s.id_game = " + game.getIdGame() + " ORDER BY s.game_min ASC" +";";
+                "s.id_game = " + id + " ORDER BY s.game_min ASC" +";";
         ResultSet result = SQLConnector.getInstance().selectQuery(query);
 
         try {

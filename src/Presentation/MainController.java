@@ -15,6 +15,7 @@ import Presentation.Views.*;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +36,7 @@ public class MainController implements FrameController, ThreadController {
     private StoresView storesView;
     private HomeView homeView;
     private GameView gameView;
+    private StatisticsView statisticsView;
 
     private GeneratorsView generatorsView;
     private ImprovementsView improvementsView;
@@ -79,7 +81,7 @@ public class MainController implements FrameController, ThreadController {
         homeView = new HomeView(homeController);
 
         StatisticsController statisticsController = new StatisticsController(this);
-        StatisticsView statisticsView = new StatisticsView(statisticsController);
+        statisticsView = new StatisticsView(statisticsController);
 
         mainFrame.addPanel(loginView, "login");
         mainFrame.addPanel(gameView, "game");
@@ -128,12 +130,13 @@ public class MainController implements FrameController, ThreadController {
                 updateStoresGeneratorsView();
             } else {
                 //Mostra missatge de que no es te suficient diners per comprar;
-                System.out.println("Not enough money, you have " + gameManager.getGameCurrency());
+                storesView.noEnoughMoney(gameManager.getGameCurrency());
             }
         } catch (BusinessException e) {
             //Printeja el missatge d'error on toqui.
         }
     }
+
 
     public String getEmail_id() {
         return userManager.getCurrentUser().getEmail();
@@ -368,5 +371,31 @@ public class MainController implements FrameController, ThreadController {
 
     public void saveGame(boolean finished) throws PersistenceException {
         gameManager.saveGame(finished);
+    }
+    public void fetchGames() {
+        try {
+            Map<Integer, Integer> games = gameManager.getFinishedGames(userManager.getCurrentUser().getEmail());
+            for (Map.Entry<Integer, Integer> entry : games.entrySet()) {
+                Integer gameId = entry.getKey();
+                Integer currencies = entry.getValue();
+                statisticsView.addGame(gameId.toString(), String.valueOf(currencies));
+            }
+        } catch (PersistenceException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void displayGameStats(String gameId) {
+        try {
+            List<Integer> l = gameManager.getStatsFromGame(gameId);
+            String data[][] = new String[l.size()][2];
+            for(int i = 0; i < l.size(); i++) {
+                data[i][0] = String.valueOf(i);
+                data[i][1] = String.valueOf(l.get(i));
+            }
+            statisticsView.updateGraphic(data);
+        } catch (BusinessException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

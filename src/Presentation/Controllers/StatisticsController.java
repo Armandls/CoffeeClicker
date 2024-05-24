@@ -26,7 +26,8 @@ public class StatisticsController implements ActionListener {
                 System.out.println("deleteAccount");
                 break;
             default:
-                //todo canviar les dades del grafic
+                String gameId = e.getActionCommand();
+                mainController.displayGameStats(gameId);
                 break;
         }
     }
