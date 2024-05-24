@@ -8,10 +8,8 @@ import Business.Entities.Improvement.BasicImprovement;
 import Business.Entities.Improvement.HighImprovement;
 import Business.Entities.Improvement.Improvement;
 import Business.Entities.Improvement.MidImprovement;
-import Business.Exception.GeneratorException.NoGeneratorException;
 import Persistance.DAO.GeneratorDAO;
 import Persistance.Exception.ConnectionErrorException;
-import Persistance.Exception.NotFoundException;
 import Persistance.Exception.PersistenceException;
 
 import java.sql.ResultSet;

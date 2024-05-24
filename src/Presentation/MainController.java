@@ -15,7 +15,6 @@ import Presentation.Views.*;
 
 import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +36,6 @@ public class MainController implements FrameController, ThreadController {
     private HomeView homeView;
     private GameView gameView;
     private StatisticsView statisticsView;
-
     private GeneratorsView generatorsView;
     private ImprovementsView improvementsView;
 
@@ -61,7 +59,7 @@ public class MainController implements FrameController, ThreadController {
         gameView.initialize(currency, basicGenerator, midGenerator, highGenerator, lvlBasicImp, lvlMidImp, lvlHighImp);
     }
 
-    void init() throws IOException, BusinessException {
+    void init() throws IOException {
         mainFrame = new MainFrame();
         views = new Hashtable<>();
 
@@ -140,10 +138,6 @@ public class MainController implements FrameController, ThreadController {
 
     public String getEmail_id() {
         return userManager.getCurrentUser().getEmail();
-    }
-
-    public void addGame(int id, int currency_count, boolean finished, String mail_user) throws PersistenceException {
-        gameManager.addGame(id, currency_count, finished, mail_user);
     }
     public void createNewGame() throws PersistenceException {
         try {
