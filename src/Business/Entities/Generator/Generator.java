@@ -73,6 +73,10 @@ public abstract class Generator {
         this.id_generator = id_generator;
     }
 
+    public void setIdImprovement(int id) {
+        this.improvement.setIdImprovement(id);
+    }
+
     public int getIdGame() {
         return id_game;
     }

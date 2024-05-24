@@ -113,10 +113,10 @@ public class GameManager extends Thread{
      */
     public int getGameCurrency() {return (int) game.getCurrencyCount();}
     public boolean buyGenerator(String type) throws BusinessException {
-        int generatorId;
+        int generatorId[] = new int[2];
         if (generatorManager.generatorPurchaseAvailable(game.getCurrencyCount(), game.getIdGame(), type)) {
             generatorId = generatorManager.purchaseNewGenerator(type, game.getIdGame());
-            game.addGeneratorToGame(type, generatorId);
+            game.addGeneratorToGame(type, generatorId[0], generatorId[1]);
             try {
                 gameDAO.updateGame(game);
             } catch (PersistenceException e) {

@@ -86,23 +86,27 @@ public class GeneratorManager {
         return false;
     }
 
-    public int getGeneratorIdFromGame(String type, int gameId){
+    public int[] getGeneratorIdFromGame(String type, int gameId){
         Generator auxGen = null;
-        int outputVal = -1;
+        int outputVal[] = new int[2];
         try {
             auxGen = getGeneratorFromGame(gameId, type);
-            outputVal = auxGen.getIdGenerator();
+            outputVal[0] = auxGen.getIdGenerator();
+            outputVal[1] = auxGen.getImprovement().getIdImprovement();
+
         } catch (BusinessException e) {
         }
         return outputVal;
     }
 
-    public int purchaseNewGenerator(String type, int gameId) throws BusinessException{
-        int generatorId = -1;
+    public int[] purchaseNewGenerator(String type, int gameId) throws BusinessException{
+        int generatorId[] = new int[2];
+        generatorId[0] = -1;
+        generatorId[1] = -1;
         try {
             Generator auxGen = getGeneratorFromGame(gameId, type);
             auxGen.addGenerator();
-            generatorId = auxGen.getIdGenerator();
+            generatorId[0] = auxGen.getIdGenerator();
             generatorDAO.updateGenerator(auxGen);
         }
         catch (NoGeneratorException e) {

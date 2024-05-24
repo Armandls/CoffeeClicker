@@ -59,6 +59,8 @@ public class SQLGenerator implements GeneratorDAO {
         idAddedImprovement +
         //generator.getImprovement().getIdImprovement() +
         "');"; // Include improvement
+
+
         SQLConnector.getInstance().insertQuery(generatorQuery);
     }
     @Override

@@ -43,7 +43,7 @@ public class Game {
     public boolean isFinished() {
         return finished;
     }
-    public void addGeneratorToGame(String type, int idGenerator) {
+    public void addGeneratorToGame(String type, int idGenerator, int improvementId) {
         Generator toAdd;
         for (Generator auxGen : gameGenerators) {
             if (auxGen.getClass().getSimpleName().contains(type)) {
@@ -67,6 +67,7 @@ public class Game {
                 break;
         }
         toAdd.setIdGenerator(idGenerator);
+        toAdd.setIdImprovement(improvementId);
         currency_count -= toAdd.getGeneratorPrice();
         gameGenerators.add(toAdd);
     }
