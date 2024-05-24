@@ -43,13 +43,16 @@ public class StoresController implements ActionListener, ListSelectionListener {
 
         if (store) {
             if (((DefaultListSelectionModel)e.getSource()).isSelectedIndex(0)) {
-                System.out.println("redbull");
+                System.out.println("Redbull");
+                mainController.buyGenerator("Redbull");
             }
             else if (((DefaultListSelectionModel)e.getSource()).isSelectedIndex(1)) {
                 System.out.println("notes");
+                mainController.buyGenerator("Notes");
             }
             else if (((DefaultListSelectionModel)e.getSource()).isSelectedIndex(2)) {
                 System.out.println("CEUS");
+                mainController.buyGenerator("CEUS");
             }
         }else {
             if (((DefaultListSelectionModel)e.getSource()).isSelectedIndex(0)) {

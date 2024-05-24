@@ -12,4 +12,6 @@ public interface FrameController {
     void swapStore(String name);
 
     void updateImprovement (String improvement);
+
+    void buyGenerator(String generator);
 }
