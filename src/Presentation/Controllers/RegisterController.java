@@ -23,7 +23,6 @@ public class RegisterController implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
             case "singUp":
-                System.out.println("Sign Up");
                 try {
                     signUp();
                 } catch (ConnectionErrorException ex) {
@@ -31,7 +30,6 @@ public class RegisterController implements ActionListener {
                 }
                 break;
             case "login":
-                System.out.println("Login");
                 mainController.swapPanel("login");
                 break;
 
@@ -47,73 +45,82 @@ public class RegisterController implements ActionListener {
         }
     }
 
-    public void signUp() throws ConnectionErrorException{
+    public void signUp() throws ConnectionErrorException {
         String[] info = mainController.getRegisterInfo();
+        String username = info[0];
+        String email = info[1];
+        String password = info[2];
+        String confirmPassword = info[3];
 
-        if (!mainController.checkValidUsername(info[0])) {
-            mainController.registerEnterValid("username");
+        try {
+            if (!isUsernameValid(username)) return;
+            if (!isEmailValid(email)) return;
+            if (!isPasswordValid(password)) return;
+
+            mainController.registerUser(username, email, password, confirmPassword);
+            finishSignUp(true);
+        } catch (InvalidLoginEmailException e) {
+            mainController.adviceMessage(e.getMessage(), "Wrong Email Format", "register");
             finishSignUp(false);
-        }
-        else {
-            if (info[1].isEmpty()) {
-                mainController.registerEnterValid("email");
-                finishSignUp(false);
-            }
-            else {
-                if (!mainController.checkValidEmail(info[1])) {
-                    mainController.registerEnterValid("email");
-                    finishSignUp(false);
-                }
-                else {
-                    if (info[2].length() < 8) {
-                        mainController.registerEnterValid("lengthPassword");
-                        finishSignUp(false);
-                    }
-                    else {
-                        if (!mainController.checkLowerCaseCaracter(info[2])) {
-                            mainController.registerEnterValid("lowerCasePassword");
-                            finishSignUp(false);
-                        }
-                        else {
-                            if (!mainController.checkUpperCaseCaracter(info[2])) {
-                                mainController.registerEnterValid("upperCasePassword");
-                                finishSignUp(false);
-                            }
-                            else {
-                                if (!mainController.checkMinOneNumber(info[2])) {
-                                    mainController.registerEnterValid("minOneNumber");
-                                    finishSignUp(false);
-                                }
-                                else {
-                                    String username = info[0];
-                                    String email = info[1];
-                                    String password = info[2];
-                                    String confirmPassword = info[3];
-
-                                    try {
-                                        mainController.registerUser(username, email, password, confirmPassword);
-                                        finishSignUp(true);
-                                    } catch (InvalidLoginEmailException e) {
-                                        mainController.adviceMessage(e.getMessage(), "Wrong Email Format", "register");
-                                        finishSignUp(false);
-                                    } catch (InvalidPasswordException e) {
-                                        mainController.adviceMessage(e.getMessage(), "Invalid Password", "register");
-                                        finishSignUp(false);
-                                    } catch (UserAlreadyExistsException e) {
-                                        mainController.adviceMessage(e.getMessage(), "User Already Exists", "register");
-                                        finishSignUp(false);
-                                    } catch (UserException e) {
-                                        mainController.adviceMessage(e.getMessage(), "Database Error", "register");
-                                        finishSignUp(false);
-                                    } catch (BusinessException e) {
-                                        throw new RuntimeException(e);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        } catch (InvalidPasswordException e) {
+            mainController.adviceMessage(e.getMessage(), "Invalid Password", "register");
+            finishSignUp(false);
+        } catch (UserAlreadyExistsException e) {
+            mainController.adviceMessage(e.getMessage(), "User Already Exists", "register");
+            finishSignUp(false);
+        } catch (UserException e) {
+            mainController.adviceMessage(e.getMessage(), "Database Error", "register");
+            finishSignUp(false);
+        } catch (BusinessException e) {
+            throw new RuntimeException(e);
         }
     }
+
+    private boolean isUsernameValid(String username) throws ConnectionErrorException {
+        if (!mainController.checkValidUsername(username)) {
+            mainController.registerEnterValid("username");
+            finishSignUp(false);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isEmailValid(String email) {
+        if (email.isEmpty()) {
+            mainController.registerEnterValid("email");
+            finishSignUp(false);
+            return false;
+        }
+        if (!mainController.checkValidEmail(email)) {
+            mainController.registerEnterValid("email");
+            finishSignUp(false);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isPasswordValid(String password) {
+        if (password.length() < 8) {
+            mainController.registerEnterValid("lengthPassword");
+            finishSignUp(false);
+            return false;
+        }
+        if (!mainController.checkLowerCaseCaracter(password)) {
+            mainController.registerEnterValid("lowerCasePassword");
+            finishSignUp(false);
+            return false;
+        }
+        if (!mainController.checkUpperCaseCaracter(password)) {
+            mainController.registerEnterValid("upperCasePassword");
+            finishSignUp(false);
+            return false;
+        }
+        if (!mainController.checkMinOneNumber(password)) {
+            mainController.registerEnterValid("minOneNumber");
+            finishSignUp(false);
+            return false;
+        }
+        return true;
+    }
+
 }

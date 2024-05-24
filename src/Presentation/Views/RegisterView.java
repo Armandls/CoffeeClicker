@@ -27,87 +27,101 @@ public class RegisterView extends JLayeredPane implements MyView {
 
     public RegisterView(ActionListener listener) {
         setLayout(new OverlayLayout(this));
-
-
         this.listener = listener;
 
         init();
 
+        JPanel gridBagPanel = createGridBagPanel();
+        JPanel mainPanel = createMainPanel();
+
+        gridBagPanel.add(mainPanel, createGridBagConstraints());
+
+        try {
+            JImagePanel background = createImagePanel(R.MAIN_BACKGROUND, JImagePanel.EXTEND_RES_WIDTH, 0);
+            JImagePanel form_background = createImagePanel(R.FORM_BACKGROUND, -1, 1);
+
+            add(background);
+            add(form_background);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        setLayer(gridBagPanel, 2);
+        add(gridBagPanel);
+    }
+
+    private JPanel createGridBagPanel() {
         JPanel gridBagPanel = new JPanel(new GridBagLayout());
         gridBagPanel.setOpaque(false);
+        return gridBagPanel;
+    }
+
+    private GridBagConstraints createGridBagConstraints() {
         GridBagConstraints c = new GridBagConstraints();
         c.gridy = 0;
         c.gridheight = 1;
         c.gridx = 0;
         c.fill = GridBagConstraints.NONE;
         c.anchor = GridBagConstraints.CENTER;
+        return c;
+    }
 
+    private JPanel createMainPanel() {
         JPanel mainPanel = new JPanel();
         mainPanel.setOpaque(false);
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setSize(300, 500);
 
+        mainPanel.add(createLabelPanel("Sign Up", 60, FlowLayout.CENTER, new EmptyBorder(0, 0, 40, 0)));
+        mainPanel.add(createFieldPanel("Username:", usernameField));
+        mainPanel.add(createFieldPanel("Email:", emailField));
+        mainPanel.add(createFieldPanel("Password:", passwordField));
+        mainPanel.add(createFieldPanel("Confirm Password:", confirmPasswordField));
+        mainPanel.add(createButtonPanel(singUpButton, new EmptyBorder(0, 0, 25, 0)));
+        mainPanel.add(createRegisterPanel());
 
-        JPanel singupLabelPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        singupLabelPanel.setOpaque(false);
-        JLabel signUpLabel = new JLabel("Sign Up");
-        signUpLabel.setFont(MinecraftFont.getFont().deriveFont(Font.PLAIN, 60));
-        singupLabelPanel.add(signUpLabel);
+        return mainPanel;
+    }
 
-        singupLabelPanel.setBorder(new EmptyBorder(0, 0, 40, 0));
+    private JPanel createLabelPanel(String text, int fontSize, int alignment, EmptyBorder border) {
+        JPanel labelPanel = new JPanel(new FlowLayout(alignment));
+        labelPanel.setOpaque(false);
+        JLabel label = new JLabel(text);
+        label.setFont(MinecraftFont.getFont().deriveFont(Font.PLAIN, fontSize));
+        labelPanel.add(label);
+        labelPanel.setBorder(border);
+        return labelPanel;
+    }
 
-        mainPanel.add(singupLabelPanel);
+    private JPanel createFieldPanel(String labelText, JComponent field) {
+        JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        labelPanel.setOpaque(false);
+        JLabel label = new JLabel(labelText);
+        label.setFont(MinecraftFont.getFont());
+        labelPanel.add(label);
 
-        JPanel usernameLabelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        usernameLabelPanel.setOpaque(false);
-        JLabel usernameLabel = new JLabel("Username:");
-        usernameLabel.setFont(MinecraftFont.getFont());
-        usernameLabelPanel.add(usernameLabel);
-        mainPanel.add(usernameLabelPanel);
-        JPanel usernamePanel = new JPanel();
-        usernamePanel.setOpaque(false);
-        usernamePanel.add(usernameField);
-        mainPanel.add(usernamePanel);
+        JPanel fieldPanel = new JPanel();
+        fieldPanel.setOpaque(false);
+        fieldPanel.add(field);
 
-        JPanel emailLabelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        emailLabelPanel.setOpaque(false);
-        JLabel emailLabel = new JLabel("Email:");
-        emailLabel.setFont(MinecraftFont.getFont());
-        emailLabelPanel.add(emailLabel);
-        mainPanel.add(emailLabelPanel);
-        JPanel emailPanel = new JPanel();
-        emailPanel.setOpaque(false);
-        emailPanel.add(emailField);
-        mainPanel.add(emailPanel);
+        JPanel panel = new JPanel();
+        panel.setOpaque(false);
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.add(labelPanel);
+        panel.add(fieldPanel);
 
-        JPanel passwordLabelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        passwordLabelPanel.setOpaque(false);
-        JLabel passwordLabel = new JLabel("Password:");
-        passwordLabel.setFont(MinecraftFont.getFont());
-        passwordLabelPanel.add(passwordLabel);
-        mainPanel.add(passwordLabelPanel);
-        JPanel passwordPanel = new JPanel();
-        passwordPanel.setOpaque(false);
-        passwordPanel.add(passwordField);
-        mainPanel.add(passwordPanel);
+        return panel;
+    }
 
-        JPanel confirmPasswordLabelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        confirmPasswordLabelPanel.setOpaque(false);
-        JLabel confirmPasswordLabel = new JLabel("Confirm Password:");
-        confirmPasswordLabel.setFont(MinecraftFont.getFont());
-        confirmPasswordLabelPanel.add(confirmPasswordLabel);
-        mainPanel.add(confirmPasswordLabelPanel);
-        JPanel confirmPasswordPanel = new JPanel();
-        confirmPasswordPanel.setOpaque(false);
-        confirmPasswordPanel.add(confirmPasswordField);
-        mainPanel.add(confirmPasswordPanel);
+    private JPanel createButtonPanel(JButton button, EmptyBorder border) {
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.setOpaque(false);
+        buttonPanel.add(button);
+        buttonPanel.setBorder(border);
+        return buttonPanel;
+    }
 
-        JPanel singUpPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        singUpPanel.setOpaque(false);
-        singUpPanel.add(singUpButton);
-        singUpPanel.setBorder(new EmptyBorder(0, 0, 25, 0));
-        mainPanel.add(singUpPanel);
-
+    private JPanel createRegisterPanel() {
         JPanel registerPanel = new JPanel();
         registerPanel.setOpaque(false);
         registerPanel.setLayout(new BoxLayout(registerPanel, BoxLayout.X_AXIS));
@@ -116,38 +130,18 @@ public class RegisterView extends JLayeredPane implements MyView {
         registerPanel.add(alreadyHaveAccount);
         registerPanel.add(loginButton);
         registerPanel.setBorder(new EmptyBorder(30, 0, 20, 0));
-
-        mainPanel.add(registerPanel);
-
-        gridBagPanel.add(mainPanel, c);
-
-        JImagePanel background = new JImagePanel();
-        JImagePanel form_background = new JImagePanel();
-
-        //image pannels
-        try {
-            background = new JImagePanel(R.MAIN_BACKGROUND);
-            background.setResolution(JImagePanel.EXTEND_RES_WIDTH);
-            setLayer(background, 0);
-        } catch (IOException ignored) {
-
-        }
-
-        try {
-            form_background = new JImagePanel(R.FORM_BACKGROUND);
-            setLayer(form_background, 1);
-        } catch (IOException ignored) {
-
-        }
-
-        //set layouts
-        setLayer(gridBagPanel, 2);
-
-        add(background);
-        add(form_background);
-        add(gridBagPanel);
-
+        return registerPanel;
     }
+
+    private JImagePanel createImagePanel(String resourcePath, int resolution, int layer) throws IOException {
+        JImagePanel imagePanel = new JImagePanel(resourcePath);
+        if (resolution != -1) {
+            imagePanel.setResolution(resolution);
+        }
+        setLayer(imagePanel, layer);
+        return imagePanel;
+    }
+
 
     void init() {
         usernameField = new JTextField();
@@ -162,11 +156,9 @@ public class RegisterView extends JLayeredPane implements MyView {
 
         passwordField = new JPasswordField();
         passwordField.setPreferredSize(new Dimension(200, 20));
-        //passwordField.setFont(MinecraftFont.getFont().deriveFont(Font.PLAIN, 18));
 
         confirmPasswordField = new JPasswordField();
         confirmPasswordField.setPreferredSize(new Dimension(200, 20));
-        //confirmPasswordField.setFont(MinecraftFont.getFont().deriveFont(Font.PLAIN, 18));
 
         loginButton = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
         loginButton.setText("Login");
@@ -207,15 +199,6 @@ public class RegisterView extends JLayeredPane implements MyView {
                 confirmPassword
         };
     }
-
-    public void passwordDoesntMatch() {
-        JOptionPane.showMessageDialog(this, "Passwords do not match. Please try again.", "Password Error", JOptionPane.ERROR_MESSAGE);
-    }
-
-    public void userAlreadyExists() {
-        JOptionPane.showMessageDialog(this, "Mail is already being used. Please use another mail address or log in if you already have an account.", "Mail Error", JOptionPane.ERROR_MESSAGE);
-    }
-
     public void adviceMessage(String message, String title) {
         JOptionPane.showMessageDialog(this, message, title, JOptionPane.ERROR_MESSAGE);
     }

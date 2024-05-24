@@ -84,55 +84,13 @@ public class GeneratorsView extends JPanel {
     }
 
     public void addGenerator(String picture, String name, String price, String amount, String description) {
-        JLayeredPane generatorPanel = new JLayeredPane();
-        generatorPanel.setLayout(new OverlayLayout(generatorPanel));
-        generatorPanel.setPreferredSize(new Dimension(245, 50));
+        JLayeredPane generatorPanel = createGeneratorPanel();
 
-        JPanel panel = new JPanel(new GridLayout(1, 4));
-        panel.setBackground(Color.BLACK);
-        panel.setOpaque(false);
-
-        ImageIcon image = new ImageIcon(System.getProperty("user.dir") + picture);
-        int value = image.getIconWidth() - image.getIconHeight();
-        if (value >= 0) {
-
-            image = new ImageIcon(image.getImage().getScaledInstance(50, (image.getIconHeight()*50)/image.getIconWidth(), Image.SCALE_DEFAULT));
-        }
-        else {
-            image = new ImageIcon(image.getImage().getScaledInstance((image.getIconWidth()*50)/image.getIconHeight(), 50, Image.SCALE_DEFAULT));
-        }
-        panel.add(new JLabel(image));
-
-        JLabel nameLabel = new JLabel(name);
-        nameLabel.setFont(MinecraftFont.getFont());
-        nameLabel.setForeground(new Color(24, 176, 0));
-        panel.add(nameLabel);
-
-        JLabel priceLabel = new JLabel(price);
-        priceLabel.setFont(MinecraftFont.getFont());
-        priceLabel.setForeground(new Color(0, 102, 204));
-        panel.add(priceLabel);
-
-        JLabel amountLabel = new JLabel(amount);
-        amountLabel.setFont(MinecraftFont.getFont());
-        amountLabel.setForeground(Color.WHITE);
-        panel.add(amountLabel);
-
+        JPanel panel = createInfoPanel(picture, name, price, amount);
         generatorPanel.setLayer(panel, 0);
         generatorPanel.add(panel);
 
-        JPanel buttonPanel = new JPanel(new BorderLayout());
-        buttonPanel.setOpaque(false);
-        JButton button = new JButton();
-
-        button.addActionListener(actionListener);
-        button.setActionCommand("generatorsBuy:" + name);
-
-        button.setOpaque(false);
-        button.setContentAreaFilled(false);
-        button.setBorderPainted(false);
-        buttonPanel.add(button, BorderLayout.CENTER);
-
+        JPanel buttonPanel = createButtonPanel(name);
         generatorPanel.setLayer(buttonPanel, 1);
         generatorPanel.add(buttonPanel);
 
@@ -140,18 +98,86 @@ public class GeneratorsView extends JPanel {
         mainPanel.revalidate();
         scrollPane.revalidate();
 
+        JPanel descriptionPanel = createDescriptionPanel(description);
+    }
+
+    private JLayeredPane createGeneratorPanel() {
+        JLayeredPane generatorPanel = new JLayeredPane();
+        generatorPanel.setLayout(new OverlayLayout(generatorPanel));
+        generatorPanel.setPreferredSize(new Dimension(245, 50));
+        return generatorPanel;
+    }
+
+    private JPanel createInfoPanel(String picture, String name, String price, String amount) {
+        JPanel panel = new JPanel(new GridLayout(1, 4));
+        panel.setBackground(Color.BLACK);
+        panel.setOpaque(false);
+
+        ImageIcon image = loadImage(picture);
+        panel.add(new JLabel(image));
+
+        JLabel nameLabel = createLabel(name, new Color(24, 176, 0));
+        panel.add(nameLabel);
+
+        JLabel priceLabel = createLabel(price, new Color(238, 255, 20));
+        panel.add(priceLabel);
+
+        JLabel amountLabel = createLabel(amount, Color.WHITE);
+        panel.add(amountLabel);
+
+        return panel;
+    }
+
+    private ImageIcon loadImage(String picture) {
+        ImageIcon image = new ImageIcon(System.getProperty("user.dir") + picture);
+        int value = image.getIconWidth() - image.getIconHeight();
+        if (value >= 0) {
+            image = new ImageIcon(image.getImage().getScaledInstance(50, (image.getIconHeight() * 50) / image.getIconWidth(), Image.SCALE_DEFAULT));
+        } else {
+            image = new ImageIcon(image.getImage().getScaledInstance((image.getIconWidth() * 50) / image.getIconHeight(), 50, Image.SCALE_DEFAULT));
+        }
+        return image;
+    }
+
+    private JLabel createLabel(String text, Color color) {
+        JLabel label = new JLabel(text);
+        label.setFont(MinecraftFont.getFont());
+        label.setForeground(color);
+        return label;
+    }
+
+    private JPanel createButtonPanel(String name) {
+        JPanel buttonPanel = new JPanel(new BorderLayout());
+        buttonPanel.setOpaque(false);
+
+        JButton button = new JButton();
+        button.addActionListener(actionListener);
+        button.setActionCommand("generatorsBuy:" + name);
+        button.setOpaque(false);
+        button.setContentAreaFilled(false);
+        button.setBorderPainted(false);
+
+        buttonPanel.add(button, BorderLayout.CENTER);
+        return buttonPanel;
+    }
+
+    private JPanel createDescriptionPanel(String description) {
         JPanel descriptionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         descriptionPanel.setOpaque(true);
         descriptionPanel.setSize(300, 100);
+        descriptionPanel.setBackground(Color.darkGray);
+        descriptionPanel.setBorder(new StrokeBorder(new BasicStroke(1.0f), Color.YELLOW));
+
         JTextArea descriptionLabel = new JTextArea(description);
         descriptionLabel.setBackground(Color.darkGray);
         descriptionLabel.setPreferredSize(new Dimension(290, 90));
         descriptionLabel.setFont(MinecraftFont.getFontWithSize(16));
-        descriptionLabel.setForeground(Color.cyan);
+        descriptionLabel.setForeground(Color.yellow);
         descriptionPanel.add(descriptionLabel);
-        descriptionPanel.setBackground(Color.darkGray);
-        descriptionPanel.setBorder(new StrokeBorder(new BasicStroke(1.0f), Color.YELLOW));
+
+        return descriptionPanel;
     }
+
 
     public void removeGenerators() {
         this.mainPanel.removeAll();

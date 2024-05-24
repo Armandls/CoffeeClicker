@@ -58,81 +58,68 @@ public class JImagePanel extends JPanel {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g.create();
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
-        if (res == 0) {
-            // Set the panel to be transparent
-            setOpaque(false);
 
-            int panelWidth = getWidth();
-            int panelHeight = getHeight();
+        setOpaque(res != 0);
 
-            // Get the image's original width and height
-            int imageWidth = image.getWidth();
-            int imageHeight = image.getHeight();
-
-            // Calculate the scale to fit the image to the panel size
-            double scaleFactor = Math.min((double) panelWidth / imageWidth, (double) panelHeight / imageHeight);
-
-            // Calculate the new image dimensions
-            int newImageWidth = (int) (imageWidth * scaleFactor);
-            int newImageHeight = (int) (imageHeight * scaleFactor);
-
-            // Calculate the offset for centered positioning
-            int xOffset = (panelWidth - newImageWidth) / 2;
-            int yOffset = (panelHeight - newImageHeight) / 2;
-
-            // Draw the scaled image centered onto the panel
-            g2d.drawImage(image, xOffset, yOffset, newImageWidth, newImageHeight, this);
+        if (image == null) {
+            return;
         }
-        else if (res == 1) {
-            int panelWidth = getWidth();
-            int panelHeight = getHeight();
 
-            // Get the image's original width and height
-            int imageWidth = image.getWidth();
-            int imageHeight = image.getHeight();
+        int panelWidth = getWidth();
+        int panelHeight = getHeight();
+        int imageWidth = image.getWidth();
+        int imageHeight = image.getHeight();
 
-            // Calculate the scale to fit the extended image width to the panel size
-            double scaleFactor = (double) panelWidth / imageWidth;
-
-            // Calculate the new image dimensions
-            int newImageWidth = panelWidth;
-            int newImageHeight = (int) (imageHeight * scaleFactor);
-
-            // Calculate the offset for centered positioning
-            int xOffset = 0;
-            int yOffset = (panelHeight - newImageHeight) / 2;
-
-            // Draw the scaled image centered onto the panel
-            g.drawImage(image, xOffset, yOffset, newImageWidth, newImageHeight, this);
-
+        switch (res) {
+            case 0:
+                drawCenteredImage(g2d, panelWidth, panelHeight, imageWidth, imageHeight);
+                break;
+            case 1:
+                drawStretchedImage(g2d, panelWidth, panelHeight, imageWidth, imageHeight);
+                break;
+            case 2:
+                drawOffsetStretchedImage(g2d, panelWidth, panelHeight, imageWidth, imageHeight);
+                break;
+            default:
+                break;
         }
-        else if (res == 2) {
-            int panelWidth = getWidth();
-            int panelHeight = getHeight();
 
-            // Get the image's original width and height
-            int imageWidth = image.getWidth(null);
-            int imageHeight = image.getHeight(null);
-
-            // Calculate the scale to fit the extended image width to the panel size
-            double scaleFactor = (double) panelWidth / imageWidth;
-
-            // Calculate the new image dimensions
-            int newImageWidth = panelWidth;
-            int newImageHeight = (int) (imageHeight * scaleFactor);
-
-            // Calculate the offset for centered positioning
-            int xOffset = 0;
-            int yOffset = (panelHeight - newImageHeight) / 2;
-
-            // Draw the scaled image centered onto the panel
-            g.drawImage(image, xOffset+50, yOffset+60, newImageWidth-100, newImageHeight-100, null);
-        }
+        g2d.dispose();
     }
+
+    private void drawCenteredImage(Graphics2D g2d, int panelWidth, int panelHeight, int imageWidth, int imageHeight) {
+        double scaleFactor = Math.min((double) panelWidth / imageWidth, (double) panelHeight / imageHeight);
+        int newImageWidth = (int) (imageWidth * scaleFactor);
+        int newImageHeight = (int) (imageHeight * scaleFactor);
+        int xOffset = (panelWidth - newImageWidth) / 2;
+        int yOffset = (panelHeight - newImageHeight) / 2;
+        g2d.drawImage(image, xOffset, yOffset, newImageWidth, newImageHeight, this);
+    }
+
+    private void drawStretchedImage(Graphics2D g2d, int panelWidth, int panelHeight, int imageWidth, int imageHeight) {
+        double scaleFactor = (double) panelWidth / imageWidth;
+        int newImageWidth = panelWidth;
+        int newImageHeight = (int) (imageHeight * scaleFactor);
+        int xOffset = 0;
+        int yOffset = (panelHeight - newImageHeight) / 2;
+        g2d.drawImage(image, xOffset, yOffset, newImageWidth, newImageHeight, this);
+    }
+
+    private void drawOffsetStretchedImage(Graphics2D g2d, int panelWidth, int panelHeight, int imageWidth, int imageHeight) {
+        double scaleFactor = (double) panelWidth / imageWidth;
+        int newImageWidth = panelWidth;
+        int newImageHeight = (int) (imageHeight * scaleFactor);
+        int xOffset = 50;
+        int yOffset = 60;
+        int adjustedWidth = newImageWidth - 100;
+        int adjustedHeight = newImageHeight - 100;
+        g2d.drawImage(image, xOffset, yOffset, adjustedWidth, adjustedHeight, this);
+    }
+
 
     public void setAlpha(float alpha) {
         this.alpha = alpha;
-        repaint(); // Repaint the panel to reflect the alpha change
+        repaint();
     }
 
     @Override

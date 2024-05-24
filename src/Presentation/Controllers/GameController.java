@@ -25,37 +25,30 @@ public class GameController implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         switch(e.getActionCommand()) {
             case "profile":
-                System.out.println("profile");
                 mainController.showProfile();
                 break;
 
             case "config":
-                System.out.println("config");
                 mainController.showConfig();
                 break;
 
             case "phone":
-                System.out.println("phone");
                 mainController.toggleStore();
                 break;
 
             case "click":
-                System.out.println("click");
                 mainController.startRedPanelAnimation(MouseInfo.getPointerInfo().getLocation());
                 break;
 
             case "profileClose":
-                System.out.println("profileClose");
                 mainController.hideProfile();
                 break;
 
             case "configClose":
-                System.out.println("configClose");
                 mainController.hideConfig();
                 break;
 
             case "deleteAccount":
-                System.out.println("Delete Account");
                 try {
                     deleteAccount();
                 } catch (ConnectionErrorException ex) {
@@ -65,12 +58,10 @@ public class GameController implements ActionListener {
                 break;
 
             case "logout":
-                System.out.println("Logout");
                 logout();
                 mainController.swapPanel("login");
                 break;
             case "exit":
-                System.out.println("Exit");
                 try {
                     finish(JOptionPane.showConfirmDialog(null, "Do you want to finish the game?", "Game", JOptionPane.OK_OPTION, JOptionPane.NO_OPTION));
                 } catch (PersistenceException ex) {
@@ -78,7 +69,6 @@ public class GameController implements ActionListener {
                 }
                 break;
             case "statistics":
-                System.out.println("Statistics");
                 mainController.fetchGames();
                 mainController.swapPanel("statistics");
                 break;

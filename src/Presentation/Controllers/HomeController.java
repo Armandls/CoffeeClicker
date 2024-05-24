@@ -28,7 +28,6 @@ public class HomeController implements ActionListener{
             }
             mainController.swapPanel("game");
         } else if (command.equals("resumeGame")) {
-            System.out.println("Resume Game");
             try {
                 mainController.resumeGameButton();
             } catch (PersistenceException ex) {

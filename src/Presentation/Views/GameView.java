@@ -39,77 +39,132 @@ public class GameView extends JPanel implements MyView {
     }
 
     private void init() {
+        initHoversPanel();
+        initButtons();
+        initOverPanel();
+        initCounter();
+        initProfileAndConfigViews();
+        start();
+    }
+
+    private void initHoversPanel() {
         hoversPanel = new JPanel(null);
         hoversPanel.setOpaque(false);
         hoversPanel.setVisible(true);
+    }
 
-        logout = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
-        logout.setText("Logout");
-        logout.addActionListener(this.listener);
-        logout.setActionCommand("logout");
+    private void initButtons() {
+        logout = createTexturedButton("Logout", "logout");
+        deleteAccount = createTexturedButton("Delete Account", "deleteAccount");
 
-        deleteAccount = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
-        deleteAccount.setText("Delete Account");
-        deleteAccount.addActionListener(this.listener);
-        deleteAccount.setActionCommand("deleteAccount");
+        configButton = createIconButton(R.SETTINGS_BUTTON, R.SETTINGS_BUTTON_PRESSED, "config", 35, 35);
+        profileButton = createIconButton(R.GAME_BUTTON, R.GAME_BUTTON_PRESSED, "profile", 35, 35);
 
-        overPanel = new JPanel();
-        overPanel.setLayout(null);
+        phoneButton = createInvisibleButton("phone");
+        clickButton = createInvisibleButton("click");
+    }
+
+    private JTexturedButton createTexturedButton(String text, String actionCommand) {
+        JTexturedButton button = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
+        button.setText(text);
+        button.addActionListener(this.listener);
+        button.setActionCommand(actionCommand);
+        return button;
+    }
+
+    private JTexturedButton createIconButton(String defaultIcon, String pressedIcon, String actionCommand, int width, int height) {
+        JTexturedButton button = new JTexturedButton(defaultIcon, pressedIcon);
+        button.setActionCommand(actionCommand);
+        button.setPreferredSize(new Dimension(width, height));
+        return button;
+    }
+
+    private JButton createInvisibleButton(String actionCommand) {
+        JButton button = new JButton();
+        button.setOpaque(false);
+        button.setContentAreaFilled(false);
+        button.setBorderPainted(false);
+        button.setActionCommand(actionCommand);
+        return button;
+    }
+
+    private void initOverPanel() {
+        overPanel = new JPanel(null);
         overPanel.setOpaque(false);
         overPanel.setVisible(true);
+    }
 
+    private void initCounter() {
         num = 0;
-        configButton = new JTexturedButton(R.SETTINGS_BUTTON, R.SETTINGS_BUTTON_PRESSED);
-        configButton.setActionCommand("config");
-        configButton.setPreferredSize(new Dimension(35, 35));
-
-        profileButton = new JTexturedButton(R.GAME_BUTTON, R.GAME_BUTTON_PRESSED);
-        profileButton.setActionCommand("profile");
-        profileButton.setPreferredSize(new Dimension(35, 35));
-
-        phoneButton = new JButton();
-        phoneButton.setOpaque(false);
-        phoneButton.setContentAreaFilled(false);
-        phoneButton.setBorderPainted(false);
-        phoneButton.setActionCommand("phone");
-
-        clickButton = new JButton();
-        clickButton.setActionCommand("click");
-        clickButton.setOpaque(false);
-        clickButton.setContentAreaFilled(false);
-        clickButton.setBorderPainted(false);
-
-
         counter = new JLabel("Credits: " + num);
         counter.setFont(MinecraftFont.getFont());
         counter.setForeground(new Color(24, 176, 0));
+    }
 
+    private void initProfileAndConfigViews() {
         profileView = new ProfileView(listener);
         profileView.setVisible(false);
 
         configView = new ConfigView(listener);
-        start();
     }
 
+
     private void mount() throws IOException {
+        JLayeredPane layeredPane = createLayeredPane();
+
+        JPanel mainPanel = createMainPanel();
+        JPanel topPanel = createTopPanel();
+        mainPanel.add(topPanel, BorderLayout.NORTH);
+
+        JPanel bottomPanel = createBottomPanel();
+        mainPanel.add(bottomPanel, BorderLayout.SOUTH);
+        mainPanel.add(clickButton, BorderLayout.CENTER);
+
+        JPanel configProfilePanel = createConfigProfilePanel();
+
+        addComponentsToLayeredPane(layeredPane, mainPanel, configProfilePanel);
+        add(layeredPane, BorderLayout.CENTER);
+    }
+
+    private JLayeredPane createLayeredPane() {
         JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setLayout(new OverlayLayout(layeredPane));
+        return layeredPane;
+    }
 
+    private JPanel createMainPanel() {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
         mainPanel.setOpaque(false);
+        return mainPanel;
+    }
 
+    private JPanel createTopPanel() throws IOException {
         JPanel topPanel = new JPanel(new GridLayout(1, 3));
         topPanel.setOpaque(false);
+
         JPanel leftTopPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         leftTopPanel.setOpaque(false);
-        JPanel rightTopPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        rightTopPanel.setOpaque(false);
-        JPanel centerTopPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        centerTopPanel.setOpaque(false);
-
         leftTopPanel.add(configButton);
 
+        JPanel centerTopPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        centerTopPanel.setOpaque(false);
+        JLayeredPane layeredPane1 = createCounterPanel();
+        centerTopPanel.add(layeredPane1);
+
+        JPanel rightTopPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        rightTopPanel.setOpaque(false);
+        rightTopPanel.add(deleteAccount);
+        rightTopPanel.add(logout);
+
+        topPanel.add(leftTopPanel);
+        topPanel.add(centerTopPanel);
+        topPanel.add(rightTopPanel);
+
+        return topPanel;
+    }
+
+    private JLayeredPane createCounterPanel() throws IOException {
         JLayeredPane layeredPane1 = new JLayeredPane();
         layeredPane1.setPreferredSize(new Dimension(200, 40));
         layeredPane1.setLayout(new OverlayLayout(layeredPane1));
@@ -122,89 +177,92 @@ public class GameView extends JPanel implements MyView {
 
         layeredPane1.setLayer(counterPanel, 1);
         layeredPane1.add(counterPanel);
+
         JImagePanel lcd = new JImagePanel(R.LCD);
         lcd.setResolution(JImagePanel.EXTEND_RES_WIDTH);
 
         layeredPane1.setLayer(lcd, 0);
         layeredPane1.add(lcd);
 
-        centerTopPanel.add(layeredPane1);
+        return layeredPane1;
+    }
 
-        rightTopPanel.add(deleteAccount);
-        rightTopPanel.add(logout);
-
-        topPanel.add(leftTopPanel);
-        topPanel.add(centerTopPanel);
-        topPanel.add(rightTopPanel);
-        mainPanel.add(topPanel, BorderLayout.NORTH);
-
+    private JPanel createBottomPanel() throws IOException {
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         bottomPanel.setOpaque(false);
 
+        JLayeredPane phonePanel = createPhonePanel();
+        JPanel phoneAux = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        phoneAux.setOpaque(false);
+        phoneAux.add(phonePanel);
+
+        bottomPanel.add(phoneAux);
+        return bottomPanel;
+    }
+
+    private JLayeredPane createPhonePanel() throws IOException {
         JLayeredPane phonePanel = new JLayeredPane();
         phonePanel.setPreferredSize(new Dimension(100, 100));
         phonePanel.setLayout(new OverlayLayout(phonePanel));
+        phonePanel.setOpaque(false);
 
         JImagePanel phone = new JImagePanel(R.STORES_BACKGROUND);
         phone.setResolution(JImagePanel.EXTEND_RES_WIDTH);
+
         JPanel phoneButtonPanel = new JPanel(new BorderLayout());
         phoneButtonPanel.setOpaque(false);
         phoneButtonPanel.add(phoneButton, BorderLayout.CENTER);
 
         phonePanel.setLayer(phone, 0);
         phonePanel.setLayer(phoneButtonPanel, 1);
-
         phonePanel.add(phone);
         phonePanel.add(phoneButtonPanel);
 
-        JPanel phoneAux = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        phoneAux.setOpaque(false);
-        phoneAux.add(phonePanel);
+        return phonePanel;
+    }
 
-        bottomPanel.add(phoneAux);
-        mainPanel.add(bottomPanel, BorderLayout.SOUTH);
-        mainPanel.add(clickButton, BorderLayout.CENTER);
-
+    private JPanel createConfigProfilePanel() {
         JPanel panel = new JPanel(new GridLayout(1, 2));
+        panel.setBackground(new Color(0, 0, 0, 0));
+        panel.setOpaque(false);
+
         JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         leftPanel.setBackground(new Color(0, 0, 0, 0));
         leftPanel.setOpaque(false);
+        leftPanel.add(configView);
+
         JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         rightPanel.setOpaque(false);
-
-        panel.setBackground(new Color(0, 0, 0, 0));
         rightPanel.add(profileView);
-        leftPanel.add(configView);
-        panel.add(leftPanel);
 
         storesView.setVisible(false);
         storesView.setOpaque(false);
+        panel.add(leftPanel);
         panel.add(storesView);
-
         panel.add(rightPanel);
-        panel.setOpaque(false);
 
+        return panel;
+    }
+
+    private void addComponentsToLayeredPane(JLayeredPane layeredPane, JPanel mainPanel, JPanel configProfilePanel) throws IOException {
         JImagePanel background = new JImagePanel(R.GAME_BACKGROUND);
         background.setResolution(JImagePanel.EXTEND_RES_WIDTH);
 
-
-
-        layeredPane.setLayer(background, 0);    //background panel
-        layeredPane.setLayer(mainPanel, 1);     //view panel
+        layeredPane.setLayer(background, 0);
+        layeredPane.setLayer(mainPanel, 1);
         layeredPane.setLayer(overPanel, 2);
-        layeredPane.setLayer(panel, 3);         // config i profile panel
-        layeredPane.setLayer(storesView, 4);    //store panel
-        layeredPane.setLayer(hoversPanel, 5);   //hovers panel
+        layeredPane.setLayer(configProfilePanel, 3);
+        layeredPane.setLayer(storesView, 4);
+        layeredPane.setLayer(hoversPanel, 5);
 
         layeredPane.add(background);
         layeredPane.add(mainPanel);
         layeredPane.add(overPanel);
-        layeredPane.add(panel);
+        layeredPane.add(configProfilePanel);
         layeredPane.add(storesView);
         layeredPane.add(hoversPanel);
-
-        add(layeredPane, BorderLayout.CENTER);
     }
+
 
 
 

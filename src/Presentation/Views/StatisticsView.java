@@ -36,28 +36,36 @@ public class StatisticsView extends JLayeredPane implements MyView {
 
     private void init() {
         chartTitle = "Game: ID";
+        initializeBackground();
+        initializeButtons();
+        initializeChartPanel();
+        initializeGamesPanel();
+    }
+
+    private void initializeBackground() {
         try {
             background = new JImagePanel(R.GAME_BACKGROUND);
             background.setResolution(JImagePanel.WIDTH);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
-        back = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
-        back.setText("Back");
-        back.addActionListener(listener);
-        back.setActionCommand("back");
+    private void initializeButtons() {
+        back = createButton("Back", "back");
+        logout = createButton("Logout", "logout");
+        deleteAccount = createButton("Delete Account", "deleteAccount");
+    }
 
-        logout = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
-        logout.setText("Logout");
-        logout.addActionListener(listener);
-        logout.setActionCommand("logout");
+    private JTexturedButton createButton(String text, String actionCommand) {
+        JTexturedButton button = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
+        button.setText(text);
+        button.addActionListener(listener);
+        button.setActionCommand(actionCommand);
+        return button;
+    }
 
-        deleteAccount = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
-        deleteAccount.setText("Delete Account");
-        deleteAccount.addActionListener(listener);
-        deleteAccount.setActionCommand("deleteAccount");
-
+    private void initializeChartPanel() {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         String xAxisLabel = "Minute";
         String yAxisLabel = "Credits";
@@ -66,10 +74,16 @@ public class StatisticsView extends JLayeredPane implements MyView {
         );
         chartPanel.setPreferredSize(new Dimension(400, 300));
         chartPanel.setOpaque(false);
+        setChartFonts(chartPanel);
+    }
+
+    private void setChartFonts(ChartPanel chartPanel) {
         chartPanel.getChart().getTitle().setFont(MinecraftFont.getFont());
         chartPanel.getChart().getCategoryPlot().getDomainAxis().setLabelFont(MinecraftFont.getFont());
         chartPanel.getChart().getCategoryPlot().getRangeAxis().setLabelFont(MinecraftFont.getFont());
+    }
 
+    private void initializeGamesPanel() {
         games = new JPanel();
         games.setPreferredSize(new Dimension(200, 600));
         games.setOpaque(false);
@@ -81,41 +95,10 @@ public class StatisticsView extends JLayeredPane implements MyView {
     }
 
     private void mount() {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.setOpaque(false);
-
-        JPanel topPanel = new JPanel(new BorderLayout());
-        topPanel.setOpaque(false);
-
-        JPanel topPanelLeft = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        topPanelLeft.setOpaque(false);
-        topPanelLeft.add(back);
-
-        JPanel topPanelRight = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        topPanelRight.setOpaque(false);
-        topPanelRight.add(logout);
-        topPanelRight.add(deleteAccount);
-
-        topPanel.add(topPanelLeft, BorderLayout.WEST);
-        topPanel.add(topPanelRight, BorderLayout.EAST);
-
-        JPanel chartAux = new JPanel();
-        chartAux.setLayout(new BoxLayout(chartAux, BoxLayout.Y_AXIS));
-        chartAux.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
-        chartAux.setOpaque(false);
-        chartAux.add(chartPanel);
-
-        JPanel scrollPaneAux = new JPanel(new BorderLayout());
-        scrollPaneAux.setOpaque(false);
-        scrollPaneAux.add(scrollPane, BorderLayout.CENTER);
-
-        JPanel scrollPanelAuxTop = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        scrollPanelAuxTop.setBackground(Color.darkGray);
-        JLabel label = new JLabel("Games");
-        label.setFont(MinecraftFont.getFont());
-        label.setForeground(Color.YELLOW);
-        scrollPanelAuxTop.add(label);
-        scrollPaneAux.add(scrollPanelAuxTop, BorderLayout.NORTH);
+        JPanel panel = createMainPanel();
+        JPanel topPanel = createTopPanel();
+        JPanel chartAux = createChartAuxPanel();
+        JPanel scrollPaneAux = createScrollPaneAuxPanel();
 
         panel.add(topPanel, BorderLayout.NORTH);
         panel.add(chartAux, BorderLayout.CENTER);
@@ -127,6 +110,71 @@ public class StatisticsView extends JLayeredPane implements MyView {
         add(this.background);
         add(panel);
     }
+
+    private JPanel createMainPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setOpaque(false);
+        return panel;
+    }
+
+    private JPanel createTopPanel() {
+        JPanel topPanel = new JPanel(new BorderLayout());
+        topPanel.setOpaque(false);
+
+        JPanel topPanelLeft = createTopPanelLeft();
+        JPanel topPanelRight = createTopPanelRight();
+
+        topPanel.add(topPanelLeft, BorderLayout.WEST);
+        topPanel.add(topPanelRight, BorderLayout.EAST);
+
+        return topPanel;
+    }
+
+    private JPanel createTopPanelLeft() {
+        JPanel topPanelLeft = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        topPanelLeft.setOpaque(false);
+        topPanelLeft.add(back);
+        return topPanelLeft;
+    }
+
+    private JPanel createTopPanelRight() {
+        JPanel topPanelRight = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        topPanelRight.setOpaque(false);
+        topPanelRight.add(logout);
+        topPanelRight.add(deleteAccount);
+        return topPanelRight;
+    }
+
+    private JPanel createChartAuxPanel() {
+        JPanel chartAux = new JPanel();
+        chartAux.setLayout(new BoxLayout(chartAux, BoxLayout.Y_AXIS));
+        chartAux.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
+        chartAux.setOpaque(false);
+        chartAux.add(chartPanel);
+        return chartAux;
+    }
+
+    private JPanel createScrollPaneAuxPanel() {
+        JPanel scrollPaneAux = new JPanel(new BorderLayout());
+        scrollPaneAux.setOpaque(false);
+        scrollPaneAux.add(scrollPane, BorderLayout.CENTER);
+
+        JPanel scrollPanelAuxTop = createScrollPanelAuxTop();
+        scrollPaneAux.add(scrollPanelAuxTop, BorderLayout.NORTH);
+
+        return scrollPaneAux;
+    }
+
+    private JPanel createScrollPanelAuxTop() {
+        JPanel scrollPanelAuxTop = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        scrollPanelAuxTop.setBackground(Color.darkGray);
+        JLabel label = new JLabel("Games");
+        label.setFont(MinecraftFont.getFont());
+        label.setForeground(Color.YELLOW);
+        scrollPanelAuxTop.add(label);
+        return scrollPanelAuxTop;
+    }
+
 
     public void addGame(String gameID, String n_currencies) {
         chartTitle = "Game: " + gameID;

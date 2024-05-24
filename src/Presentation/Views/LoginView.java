@@ -34,70 +34,104 @@ public class LoginView extends JLayeredPane implements MyView {
     }
 
     void mount() {
-        //creating a panel for the form
+        JPanel gridBagPanel = createGridBagPanel();
+        JPanel mainPanel = createMainPanel();
+
+        gridBagPanel.add(mainPanel, createGridBagConstraints());
+
+        try {
+            background = createImagePanel(R.MAIN_BACKGROUND, JImagePanel.EXTEND_RES_WIDTH, 0);
+            form_background = createImagePanel(R.FORM_BACKGROUND, -1, 1); // -1 indicates no resolution setting
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle exception appropriately
+        }
+
+        setLayer(gridBagPanel, 2);
+        add(background);
+        add(form_background);
+        add(gridBagPanel);
+    }
+
+    private JPanel createGridBagPanel() {
         JPanel gridBagPanel = new JPanel(new GridBagLayout());
         gridBagPanel.setOpaque(false);
+        return gridBagPanel;
+    }
+
+    private GridBagConstraints createGridBagConstraints() {
         GridBagConstraints c = new GridBagConstraints();
         c.gridy = 0;
         c.gridheight = 1;
         c.gridx = 0;
         c.fill = GridBagConstraints.NONE;
         c.anchor = GridBagConstraints.CENTER;
+        return c;
+    }
 
-        //main panel for the layout
+    private JPanel createMainPanel() {
         JPanel mainPanel = new JPanel();
         mainPanel.setOpaque(false);
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setSize(300, 500);
 
+        mainPanel.add(createLoginLabelPanel());
+        mainPanel.add(createLabelPanel("E-mail:", FlowLayout.LEFT));
+        mainPanel.add(createFieldPanel(usernameField, new EmptyBorder(0, 0, 20, 0)));
+        mainPanel.add(createLabelPanel("Password:", FlowLayout.LEFT));
+        mainPanel.add(createFieldPanel(passwordField, new EmptyBorder(0, 0, 20, 0)));
+        mainPanel.add(createRememberMePanel());
+        mainPanel.add(createButtonPanel(loginButton, new EmptyBorder(10, 0, 50, 0)));
+        mainPanel.add(createRegisterPanel());
+
+        return mainPanel;
+    }
+
+    private JPanel createLoginLabelPanel() {
         JPanel loginLabel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         loginLabel.setOpaque(false);
         JLabel label = new JLabel("Login");
         label.setFont(Objects.requireNonNull(MinecraftFont.getFont()).deriveFont(Font.PLAIN, 60));
         loginLabel.add(label);
         loginLabel.setBorder(new EmptyBorder(20, 0, 50, 0));
-        mainPanel.add(loginLabel);
+        return loginLabel;
+    }
 
-        JPanel usernameLabel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        usernameLabel.setOpaque(false);
-        JLabel emailLabel = new JLabel("E-mail:");
-        emailLabel.setFont(MinecraftFont.getFont());
-        usernameLabel.add(emailLabel);
-        mainPanel.add(usernameLabel);
+    private JPanel createLabelPanel(String text, int alignment) {
+        JPanel labelPanel = new JPanel(new FlowLayout(alignment));
+        labelPanel.setOpaque(false);
+        JLabel label = new JLabel(text);
+        label.setFont(MinecraftFont.getFont());
+        labelPanel.add(label);
+        return labelPanel;
+    }
 
-        JPanel usernamePanel = new JPanel();
-        usernamePanel.setOpaque(false);
-        usernamePanel.add(usernameField);
-        usernamePanel.setBorder(new EmptyBorder(0, 0, 20, 0));
-        mainPanel.add(usernamePanel);
+    private JPanel createFieldPanel(JComponent field, EmptyBorder border) {
+        JPanel fieldPanel = new JPanel();
+        fieldPanel.setOpaque(false);
+        fieldPanel.add(field);
+        fieldPanel.setBorder(border);
+        return fieldPanel;
+    }
 
-        JPanel passwordLabel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        passwordLabel.setOpaque(false);
-        JLabel pl = new JLabel("Password:");
-        pl.setFont(MinecraftFont.getFont());
-        passwordLabel.add(pl);
-        mainPanel.add(passwordLabel);
-        JPanel passwordPanel = new JPanel();
-        passwordPanel.setOpaque(false);
-        passwordPanel.add(passwordField);
-        passwordPanel.setBorder(new EmptyBorder(0, 0, 20, 0));
-        mainPanel.add(passwordPanel);
-
+    private JPanel createRememberMePanel() {
         JPanel panel = new JPanel();
         panel.setOpaque(false);
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
         panel.add(rememberMe);
         panel.add(forgotPassword);
         panel.setBorder(new EmptyBorder(10, 0, 10, 0));
-        mainPanel.add(panel);
+        return panel;
+    }
 
+    private JPanel createButtonPanel(JButton button, EmptyBorder border) {
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.setOpaque(false);
+        buttonPanel.add(button);
+        buttonPanel.setBorder(border);
+        return buttonPanel;
+    }
 
-        JPanel loginPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        loginPanel.setOpaque(false);
-        loginPanel.add(loginButton);
-        loginPanel.setBorder(new EmptyBorder(10, 0, 50, 0));
-        mainPanel.add(loginPanel);
-
+    private JPanel createRegisterPanel() {
         JPanel registerPanel = new JPanel();
         registerPanel.setOpaque(false);
         registerPanel.setLayout(new BoxLayout(registerPanel, BoxLayout.X_AXIS));
@@ -106,36 +140,18 @@ public class LoginView extends JLayeredPane implements MyView {
         registerPanel.add(dha);
         registerPanel.add(registerButton);
         registerPanel.setBorder(new EmptyBorder(15, 0, 40, 0));
-        mainPanel.add(registerPanel);
-        gridBagPanel.add(mainPanel, c);
-
-
-
-        //image pannels
-        try {
-            background = new JImagePanel(R.MAIN_BACKGROUND);
-            background.setResolution(JImagePanel.EXTEND_RES_WIDTH);
-            setLayer(background, 0);
-        } catch (IOException ignored) {
-
-        }
-
-        try {
-            form_background = new JImagePanel(R.FORM_BACKGROUND);
-            setLayer(form_background, 1);
-        } catch (IOException ignored) {
-
-        }
-
-        //setting layers
-        setLayer(gridBagPanel, 2);
-
-        //adding panels
-        add(background);
-        add(form_background);
-        add(gridBagPanel);
-
+        return registerPanel;
     }
+
+    private JImagePanel createImagePanel(String resourcePath, int resolution, int layer) throws IOException {
+        JImagePanel imagePanel = new JImagePanel(resourcePath);
+        if (resolution != -1) {
+            imagePanel.setResolution(resolution);
+        }
+        setLayer(imagePanel, layer);
+        return imagePanel;
+    }
+
     void init() {
         background = new JImagePanel();
         form_background = new JImagePanel();
@@ -208,4 +224,6 @@ public class LoginView extends JLayeredPane implements MyView {
         usernameField.setText("");
         passwordField.setText("");
     }
+
+
 }

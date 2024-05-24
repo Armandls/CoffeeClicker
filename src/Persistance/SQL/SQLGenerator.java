@@ -89,61 +89,20 @@ public class SQLGenerator implements GeneratorDAO {
             throw new ConnectionErrorException("Error updating generator with id <" + generator.getIdGenerator() + ">. " + e.getMessage());
         }
     }
-
     @Override
-    public List<Generator> getGeneratorsFromGame(int id_game) throws PersistenceException{
+    public List<Generator> getGeneratorsFromGame(int id_game) throws PersistenceException {
         List<Generator> generators = new ArrayList<>();
-
         String query = "SELECT g.id_generator, g.type AS generator_type, g.n_currencies, g.n_gens, g.photo AS generator_photo, g.improvement, " +
                 "i.improvement_level, i.photo AS improvement_photo, i.improvement_type " +
                 "FROM generator AS g INNER JOIN improvements AS i ON g.improvement = i.id_improvement " +
                 "WHERE g.id_game = " + id_game;
 
-        ResultSet result = SQLConnector.getInstance().selectQuery(query);
-
-        try {
+        try (ResultSet result = SQLConnector.getInstance().selectQuery(query)) {
             while (result.next()) {
-                // Atributs generator
-                int id_generator = result.getInt("id_generator");
-                String type = result.getString("generator_type");
-                float n_currencies = result.getInt("n_currencies");
-                int n_gens = result.getInt("n_gens");
-                int id_improvement = result.getInt("improvement");
-                String imageUrl = result.getString("generator_photo");
-                // Atributs improvement
-                int improvement_level = result.getInt("improvement_level");
-                String improvementImageUrl = result.getString("improvement_photo");
-                String improvementType = result.getString("improvement_type");
-
-                Improvement improvement = null;
-
-                // Es poden juntar switches però de moment ho deixem així per si escalem millores en un futur
-                switch (improvementType) {
-                    case "Basic":
-                        improvement = new BasicImprovement(id_improvement, improvement_level, improvementImageUrl);
-                        break;
-                    case "Mid":
-                        improvement = new MidImprovement(id_improvement, improvement_level, improvementImageUrl);
-                        break;
-                    case "High":
-                        improvement = new HighImprovement(id_improvement, improvement_level, improvementImageUrl);
-                        break;
+                Generator generator = createGeneratorFromResult(result, id_game);
+                if (generator != null) {
+                    generators.add(generator);
                 }
-
-                Generator generator = null;
-                switch (type) {
-                    case "Basic":
-                    generator = new BasicGenerator(id_generator, n_currencies, id_game, n_gens, improvement, imageUrl);
-                        break;
-                    case "Mid":
-                         generator = new MidGenerator(id_generator, n_currencies, id_game, n_gens, improvement, imageUrl);
-                         break;
-                    case "High":
-                         generator = new HighGenerator(id_generator, n_currencies, id_game, n_gens, improvement, imageUrl);
-                         break;
-                }
-                if (improvement!= null) generator.setImprovement(improvement);
-                if (generator != null) generators.add(generator);
             }
         } catch (SQLException e) {
             throw new ConnectionErrorException(e.getMessage());
@@ -151,5 +110,47 @@ public class SQLGenerator implements GeneratorDAO {
 
         return generators;
     }
+
+    private Generator createGeneratorFromResult(ResultSet result, int id_game) throws SQLException {
+        int id_generator = result.getInt("id_generator");
+        String type = result.getString("generator_type");
+        float n_currencies = result.getInt("n_currencies");
+        int n_gens = result.getInt("n_gens");
+        String imageUrl = result.getString("generator_photo");
+        Improvement improvement = createImprovementFromResult(result);
+
+        Generator generator = null;
+        switch (type) {
+            case "Basic":
+                generator = new BasicGenerator(id_generator, n_currencies, id_game, n_gens, improvement, imageUrl);
+                break;
+            case "Mid":
+                generator = new MidGenerator(id_generator, n_currencies, id_game, n_gens, improvement, imageUrl);
+                break;
+            case "High":
+                generator = new HighGenerator(id_generator, n_currencies, id_game, n_gens, improvement, imageUrl);
+                break;
+        }
+        return generator;
+    }
+
+    private Improvement createImprovementFromResult(ResultSet result) throws SQLException {
+        int id_improvement = result.getInt("improvement");
+        int improvement_level = result.getInt("improvement_level");
+        String improvementImageUrl = result.getString("improvement_photo");
+        String improvementType = result.getString("improvement_type");
+
+        switch (improvementType) {
+            case "Basic":
+                return new BasicImprovement(id_improvement, improvement_level, improvementImageUrl);
+            case "Mid":
+                return new MidImprovement(id_improvement, improvement_level, improvementImageUrl);
+            case "High":
+                return new HighImprovement(id_improvement, improvement_level, improvementImageUrl);
+            default:
+                return null;
+        }
+    }
+
 
 }
