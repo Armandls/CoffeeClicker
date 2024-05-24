@@ -126,7 +126,7 @@ public class MainController implements FrameController, ThreadController {
             validPurchase = gameManager.buyGenerator(type);
             if (validPurchase) {
                 gameView.updateCurrency(gameManager.getGameCurrency());
-                gameView.updateTable(generatorManager.getAllNumberOfGenerators(gameManager.getGameId()), generatorManager.getAllProductionPerSec(gameManager.getGameId()), generatorManager.getAllProductionPercentage(gameManager.getGameId(), gameManager.getGameCurrency()), generatorManager.getShopPrices(gameManager.getGameId()));
+                gameView.updateTable(generatorManager.getAllNumberOfGenerators(gameManager.getGameId()), generatorManager.getAllProductionPerSec(gameManager.getGameId()), generatorManager.getAllProductionPercentage(gameManager.getGameId()), generatorManager.getShopPrices(gameManager.getGameId()));
                 updateStoresGeneratorsView();
             } else {
                 //Mostra missatge de que no es te suficient diners per comprar;
@@ -305,7 +305,7 @@ public class MainController implements FrameController, ThreadController {
         }
 
         gameView.initialize(n_currencies, n_generators[0], n_generators[1], n_generators[2], boosts_lvl[0], boosts_lvl[1], boosts_lvl[2]);
-        gameView.updateTable(generatorManager.getAllNumberOfGenerators(gameManager.getGameId()), generatorManager.getAllProductionPerSec(gameManager.getGameId()), generatorManager.getAllProductionPercentage(gameManager.getGameId(), gameManager.getGameCurrency()), generatorManager.getShopPrices(gameManager.getGameId()));
+        gameView.updateTable(generatorManager.getAllNumberOfGenerators(gameManager.getGameId()), generatorManager.getAllProductionPerSec(gameManager.getGameId()), generatorManager.getAllProductionPercentage(gameManager.getGameId()), generatorManager.getShopPrices(gameManager.getGameId()));
         gameManager.setRunningGame(true);
         gameManager.start();
     }
