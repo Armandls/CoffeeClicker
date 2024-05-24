@@ -292,8 +292,8 @@ public class GameView extends JPanel implements MyView {
         counter.setText("Credits: " + currency);
         storesView.initialize(basicGenerator, midGenerator, highGenerator, lvlBasicImp, lvlMidImp, lvlHighImp);
     }
-    public void updateTable(int[] quantities, float[] totalCreditsPerSecond, float[] globalProductionPercentages) {
-        storesView.updateGeneratorsView(quantities, totalCreditsPerSecond, globalProductionPercentages);
+    public void updateTable(int[] quantities, float[] totalCreditsPerSecond, float[] globalProductionPercentages, int[] generatorAmount) {
+        storesView.updateGeneratorsView(quantities, totalCreditsPerSecond, globalProductionPercentages, generatorAmount);
     }
     public void updateCurrency(float gameCurrencies) {
         counter.setText("Credits: " + gameCurrencies);

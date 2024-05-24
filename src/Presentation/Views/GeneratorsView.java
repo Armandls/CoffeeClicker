@@ -174,8 +174,9 @@ public class GeneratorsView extends JPanel {
         scrollPane.revalidate();
     }
 
-    public void updateTable(int[] quantities, float[] totalCreditsPerSecond, float[] globalProductionPercentages) {
+    public void updateTable(int[] quantities, float[] totalCreditsPerSecond, float[] globalProductionPercentages, int[] prices) {
         for (int i = 0; i < quantities.length; i++) {
+            tableModel.setValueAt(prices[i], i, 2);
             tableModel.setValueAt(quantities[i], i, 1);
             tableModel.setValueAt(String.format("%.2f ", totalCreditsPerSecond[i]), i, 3);
             tableModel.setValueAt(String.format("%.2f ", globalProductionPercentages[i]), i, 4);

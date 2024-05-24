@@ -127,8 +127,8 @@ public class StoresView extends JPanel implements MyView {
 
     }
 
-    public void updateGeneratorsView(int[] quantities, float[] totalCreditsPerSecond, float[] globalProductionPercentages) {
-        generatorsView.updateTable(quantities, totalCreditsPerSecond, globalProductionPercentages);
+    public void updateGeneratorsView(int[] quantities, float[] totalCreditsPerSecond, float[] globalProductionPercentages, int[] prices) {
+        generatorsView.updateTable(quantities, totalCreditsPerSecond, globalProductionPercentages, prices);
     }
     public void updateImprovementsView(int basic, int mid, int high) {
         this.improvementsView.removeImprovements();
