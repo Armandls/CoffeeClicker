@@ -253,28 +253,25 @@ public class GameView extends JPanel implements MyView {
             JImagePanel redPanel = new JImagePanel(R.COIN);
             redPanel.setOpaque(false);
 
-            redPanel.setSize(50, 50); // Set the size as desired
+            redPanel.setSize(50, 50);
             redPanel.setLocation(mousePosition.x - 10 - this.getLocationOnScreen().x, mousePosition.y - 50 - this.getLocationOnScreen().y); // Set its initial position
-            overPanel.add(redPanel); // Add red panel to the view
+            overPanel.add(redPanel);
 
-            // Implement fading animation
             Timer timer = new Timer();
             timer.scheduleAtFixedRate(new TimerTask() {
-                private float alpha = 1.0f; // Initial opacity
+                private float alpha = 1.0f;
 
                 @Override
                 public void run() {
-                    alpha -= 0.05f; // Adjust opacity (you can change this value for speed)
+                    alpha -= 0.05f;
                     if (alpha <= 0.0f) {
-                        // Animation finished, remove red panel from the view
                         overPanel.remove(redPanel);
-                        overPanel.repaint(); // Refresh the overPanel
-                        overPanel.revalidate(); // Revalidate the overPanel to reflect changes
-                        cancel(); // Stop the timer
+                        overPanel.repaint();
+                        overPanel.revalidate();
+                        cancel();
                     } else {
-                        // Set new opacity for the red panel
-                        redPanel.setLocation(redPanel.getLocation().x, redPanel.getLocation().y - 5); // Move the panel up (you can change this value for speed)
-                        redPanel.setAlpha(alpha); // Red color with variable alpha
+                        redPanel.setLocation(redPanel.getLocation().x, redPanel.getLocation().y - 5);
+                        redPanel.setAlpha(alpha);
                     }
                 }
             }, 0, 30);

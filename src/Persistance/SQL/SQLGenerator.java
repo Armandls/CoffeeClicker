@@ -92,19 +92,6 @@ public class SQLGenerator implements GeneratorDAO {
         }
     }
 
-
-    @Override
-    public boolean deleteGenerator(int id_generator) throws ConnectionErrorException {
-        // Delete cascade elimina millora associada al generador
-        String query = "DELETE FROM generator WHERE id_generator = '" + id_generator + "';";
-        try  {
-            return SQLConnector.getInstance().deleteQuery(query);
-        } catch (ConnectionErrorException e) {
-            throw new ConnectionErrorException("Error deleting generator with id <" + id_generator + ">" + e.getMessage());
-        }
-    }
-
-
     @Override
     public List<Generator> getGeneratorsFromGame(int id_game) throws PersistenceException{
         List<Generator> generators = new ArrayList<>();

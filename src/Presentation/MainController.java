@@ -165,7 +165,6 @@ public class MainController implements FrameController, ThreadController {
     public void restartValuesUser () {
         userManager.restartValuesUser();
         gameManager.setRunningGame(false);
-        //gameManager.stopThread();
     }
     public void deleteUser () throws ConnectionErrorException {
         userManager.deleteUser();
@@ -357,6 +356,7 @@ public class MainController implements FrameController, ThreadController {
 
     public void saveGame(boolean finished) throws PersistenceException {
         gameManager.saveGame(finished);
+        gameManager.setRunningGame(false);
     }
     public void fetchGames() {
         try {
