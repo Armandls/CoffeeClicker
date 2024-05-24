@@ -253,6 +253,23 @@ public class GeneratorManager {
         return gen_lvl;
     }
 
+    public int getLevelOfImprovement(int gameId, String type) {
+        List<Generator> generators = new ArrayList<>();
+        int boost_lvl = 0;
+        try {
+            generators = generatorDAO.getGeneratorsFromGame(gameId);
+        } catch (PersistenceException e) {
+            throw new RuntimeException(e); // Mètode es crida sobre generators previament consultats de la bbdd, per tant excepció mai es llançarà
+        }
+        for(Generator g: generators) {
+            if (g.getClass().getSimpleName().contains(type)) { //simpleName: BasicGenerator, MidGenerator, HighGenerator
+                boost_lvl= g.getImprovement().getLevel();
+            }
+        }
+        return boost_lvl;
+    }
+
+
 
     public String[] getShopImages() {
         String[] shopImages = new String[genTypes.length];

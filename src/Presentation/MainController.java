@@ -323,7 +323,7 @@ public class MainController implements FrameController, ThreadController {
     public void updateImprovement (String improvement) {
         try {
             gameManager.updateImprovement(improvement);
-            storesView.updateImprovementsView(generatorManager.getLevelOfGenerator(gameManager.getGameId(), "Basic"), generatorManager.getLevelOfGenerator(gameManager.getGameId(), "Mid"),generatorManager.getLevelOfGenerator(gameManager.getGameId(), "High"));
+            storesView.updateImprovementsView(generatorManager.getLevelOfImprovement(gameManager.getGameId(), "Basic"), generatorManager.getLevelOfImprovement(gameManager.getGameId(), "Mid"),generatorManager.getLevelOfImprovement(gameManager.getGameId(), "High"));
         } catch (GeneratorAddedException e) {
             storesView.noGenerators(improvement);
         }
