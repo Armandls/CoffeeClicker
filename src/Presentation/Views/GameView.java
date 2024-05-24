@@ -28,7 +28,6 @@ public class GameView extends JPanel implements MyView {
     private JPanel overPanel;
     private JPanel hoversPanel;
 
-
     public GameView(ActionListener listener, StoresView storesView, int num) throws IOException {
         this.listener = listener;
         this.num = num;
@@ -89,7 +88,8 @@ public class GameView extends JPanel implements MyView {
     }
 
     private void initOverPanel() {
-        overPanel = new JPanel(null);
+        overPanel = new JPanel();
+        overPanel.setLayout(null);
         overPanel.setOpaque(false);
         overPanel.setVisible(true);
     }
@@ -107,7 +107,6 @@ public class GameView extends JPanel implements MyView {
 
         configView = new ConfigView(listener);
     }
-
 
     private void mount() throws IOException {
         JLayeredPane layeredPane = createLayeredPane();
@@ -263,9 +262,6 @@ public class GameView extends JPanel implements MyView {
         layeredPane.add(hoversPanel);
     }
 
-
-
-
     public void showProfile() {
         profileView.setVisible(true);
     }
@@ -302,7 +298,6 @@ public class GameView extends JPanel implements MyView {
         clickButton.removeActionListener(listener);
     }
 
-
     public void startRedPanelAnimation(Point mousePosition) {
         // Create red panel
         try {
@@ -331,21 +326,23 @@ public class GameView extends JPanel implements MyView {
                     }
                 }
             }, 0, 30);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void initialize (float currency, int basicGenerator, int midGenerator, int highGenerator, int lvlBasicImp, int lvlMidImp, int lvlHighImp) {
+    public void initialize(float currency, int basicGenerator, int midGenerator, int highGenerator, int lvlBasicImp, int lvlMidImp, int lvlHighImp) {
         this.num = currency;
         counter.setText("Credits: " + currency);
         storesView.initialize(basicGenerator, midGenerator, highGenerator, lvlBasicImp, lvlMidImp, lvlHighImp);
     }
-    public void updateTable(int[] quantities, float[] totalCreditsPerSecond, float[] globalProductionPercentages, int[] generatorAmount) {
+
+    public void updateTable(int[] quantities, float[] totalCreditsPerSecond, float[] globalProductionPercentages, int[] generatorAmount, int[] improvements_lvl) {
         storesView.updateGeneratorsView(quantities, totalCreditsPerSecond, globalProductionPercentages, generatorAmount);
+        storesView.updateImprovementsView(improvements_lvl);
     }
+
     public void updateCurrency(float gameCurrencies) {
         counter.setText("Credits: " + gameCurrencies);
     }
-
 }

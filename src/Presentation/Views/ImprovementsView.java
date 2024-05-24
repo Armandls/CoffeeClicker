@@ -1,12 +1,10 @@
 package Presentation.Views;
 
 import Presentation.Fonts.MinecraftFont;
-import Presentation.FrameController;
 
 import javax.swing.*;
 import javax.swing.border.StrokeBorder;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -19,11 +17,11 @@ public class ImprovementsView extends JPanel {
     private final ActionListener actionListener;
     private JScrollPane scrollPane;
     private JPanel mainPanel;
-    private DefaultTableModel tableModel;
+    private JTable improvementsTable;
     private JPanel tablePanel;
     private final ListSelectionListener listSelectionListener;
 
-    public ImprovementsView(ActionListener listener, ListSelectionListener listSelectionListener, FrameController controller) {
+    public ImprovementsView(ActionListener listener, ListSelectionListener listSelectionListener) {
         this.actionListener = listener;
         this.listSelectionListener = listSelectionListener;
         init();
@@ -37,27 +35,26 @@ public class ImprovementsView extends JPanel {
         this.mainPanel.setLayout(new BoxLayout(this.mainPanel, BoxLayout.Y_AXIS));
         this.mainPanel.setBackground(Color.BLACK);
 
-        String[] columnNames = {"Name", "Amount", "Price c/s", "Total credits/s", "% global production"};
+        String[] columnNames = {"Name", "Amount", "Price"};
         Object[][] data = {
-                {"Pills", 0, "0.2", "0", "0"},
-                {"Glasses", 0, "1.15", "0", "0"},
-                {"Carlos", 0, "15", "0", "0"}
+                {"Pills", 0, "100"},
+                {"Glasses", 0, "250"},
+                {"Carlos", 0, "500"}
         };
 
-        tableModel = new DefaultTableModel(data, columnNames);
-        JTable generatorsTable = new JTable(tableModel);
-        generatorsTable.setBackground(Color.BLACK);
-        generatorsTable.setFont(MinecraftFont.getFont());
-        generatorsTable.setRowHeight(30);
-        generatorsTable.setDefaultRenderer(Object.class, new JTableRender());
-        generatorsTable.getSelectionModel().addListSelectionListener(this.listSelectionListener);
+        improvementsTable = new JTable(data, columnNames);
+        improvementsTable.setBackground(Color.BLACK);
+        improvementsTable.setFont(MinecraftFont.getFont());
+        improvementsTable.setRowHeight(30);
+        improvementsTable.setDefaultRenderer(Object.class, new JTableRender());
+        improvementsTable.getSelectionModel().addListSelectionListener(this.listSelectionListener);
 
-        JTableHeader tableHeader = generatorsTable.getTableHeader();
+        JTableHeader tableHeader = improvementsTable.getTableHeader();
         tableHeader.setFont(MinecraftFont.getFont());
         tableHeader.setBackground(Color.BLACK);
         tableHeader.setForeground(Color.WHITE);
 
-        JScrollPane scrollPane = new JScrollPane(generatorsTable);
+        scrollPane = new JScrollPane(improvementsTable);
         scrollPane.setBackground(Color.BLACK);
         scrollPane.setPreferredSize(new Dimension(375, 117));
 
@@ -68,42 +65,42 @@ public class ImprovementsView extends JPanel {
     }
 
     private void mount() {
-        JPanel generatorsPanel = new JPanel(new GridLayout(1, 4));
-        generatorsPanel.setBackground(Color.BLACK);
+        JPanel improvementsPanel = new JPanel(new GridLayout(1, 4));
+        improvementsPanel.setBackground(Color.BLACK);
         JPanel emptyPanel = new JPanel();
         emptyPanel.setOpaque(false);
-        generatorsPanel.add(emptyPanel);
-        generatorsPanel.add(new JLabel("Name"));
-        generatorsPanel.add(new JLabel("Price"));
-        generatorsPanel.add(new JLabel("Amount"));
-        mainPanel.add(generatorsPanel);
+        improvementsPanel.add(emptyPanel);
+        improvementsPanel.add(new JLabel("Name"));
+        improvementsPanel.add(new JLabel("Price"));
+        improvementsPanel.add(new JLabel("Amount"));
+        mainPanel.add(improvementsPanel);
         this.scrollPane = new JScrollPane(tablePanel);
         add(scrollPane, BorderLayout.CENTER);
     }
 
     public void addImprovement(String picture, String name, String price, String amount, String description) {
-        JLayeredPane generatorPanel = createGeneratorPanel();
+        JLayeredPane improvementPanel = createImprovementPanel();
 
         JPanel panel = createInfoPanel(picture, name, price, amount);
-        generatorPanel.setLayer(panel, 0);
-        generatorPanel.add(panel);
+        improvementPanel.setLayer(panel, 0);
+        improvementPanel.add(panel);
 
         JPanel buttonPanel = createButtonPanel(name, "improvementsBuy");
-        generatorPanel.setLayer(buttonPanel, 1);
-        generatorPanel.add(buttonPanel);
+        improvementPanel.setLayer(buttonPanel, 1);
+        improvementPanel.add(buttonPanel);
 
-        mainPanel.add(generatorPanel);
+        mainPanel.add(improvementPanel);
         mainPanel.revalidate();
         scrollPane.revalidate();
 
         JPanel descriptionPanel = createDescriptionPanel(description);
     }
 
-    private JLayeredPane createGeneratorPanel() {
-        JLayeredPane generatorPanel = new JLayeredPane();
-        generatorPanel.setLayout(new OverlayLayout(generatorPanel));
-        generatorPanel.setPreferredSize(new Dimension(245, 50));
-        return generatorPanel;
+    private JLayeredPane createImprovementPanel() {
+        JLayeredPane improvementPanel = new JLayeredPane();
+        improvementPanel.setLayout(new OverlayLayout(improvementPanel));
+        improvementPanel.setPreferredSize(new Dimension(245, 50));
+        return improvementPanel;
     }
 
     private JPanel createInfoPanel(String picture, String name, String price, String amount) {
@@ -176,28 +173,25 @@ public class ImprovementsView extends JPanel {
         return descriptionPanel;
     }
 
-
     public void removeImprovements() {
         this.mainPanel.removeAll();
 
-        JPanel generatorsPanel = new JPanel(new GridLayout(1, 4));
-        generatorsPanel.setBackground(Color.BLACK);
+        JPanel improvementsPanel = new JPanel(new GridLayout(1, 4));
+        improvementsPanel.setBackground(Color.BLACK);
         JPanel emptyPanel = new JPanel();
         emptyPanel.setOpaque(false);
-        generatorsPanel.add(emptyPanel);
-        generatorsPanel.add(new JLabel("Name"));
-        generatorsPanel.add(new JLabel("Price"));
-        generatorsPanel.add(new JLabel("Amount"));
-        mainPanel.add(generatorsPanel);
+        improvementsPanel.add(emptyPanel);
+        improvementsPanel.add(new JLabel("Name"));
+        improvementsPanel.add(new JLabel("Price"));
+        improvementsPanel.add(new JLabel("Amount"));
+        mainPanel.add(improvementsPanel);
 
         scrollPane.revalidate();
     }
 
-    public void updateTable(int[] quantities, float[] totalCreditsPerSecond, float[] globalProductionPercentages) {
+    public void updateTable(int[] quantities) {
         for (int i = 0; i < quantities.length; i++) {
-            tableModel.setValueAt(quantities[i], i, 1);
-            tableModel.setValueAt(String.format("%.2f ", totalCreditsPerSecond[i]), i, 3);
-            tableModel.setValueAt(String.format("%.2f ", globalProductionPercentages[i]), i, 4);
+            improvementsTable.setValueAt(quantities[i], i, 1);
         }
     }
 }

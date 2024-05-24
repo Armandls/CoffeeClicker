@@ -156,25 +156,6 @@ public class GeneratorManager {
         return outputArr;
     }
 
-    public String[] getShopNames() {
-        return generatorNames.clone();
-    }
-
-    public int[] getNumGeneratorsInShop(int gameId) throws BusinessException {
-        int[] outputArr = new int[genTypes.length];
-        for(int i = 0; i < genTypes.length; i++) {
-            try {
-                Generator auxGen = getGeneratorFromGame(gameId, genTypes[i]);
-                outputArr[i] = auxGen.getNGens();
-            } catch (NoGeneratorException e) {
-                outputArr[i] = 0;
-            } catch (BusinessException e) {
-                throw new BusinessException(e.getMessage());
-            }
-        }
-        return outputArr;
-    }
-
 
     public Generator getGeneratorFromGame(int gameId, String type) throws BusinessException{
         try {
@@ -250,22 +231,6 @@ public class GeneratorManager {
         return gen_lvl;
     }
 
-    public int getLevelOfImprovement(int gameId, String type) {
-        List<Generator> generators = new ArrayList<>();
-        int boost_lvl = 0;
-        try {
-            generators = generatorDAO.getGeneratorsFromGame(gameId);
-        } catch (PersistenceException e) {
-            throw new RuntimeException(e); // Mètode es crida sobre generators previament consultats de la bbdd, per tant excepció mai es llançarà
-        }
-        for(Generator g: generators) {
-            if (g.getClass().getSimpleName().contains(type)) { //simpleName: BasicGenerator, MidGenerator, HighGenerator
-                boost_lvl= g.getImprovement().getLevel();
-            }
-        }
-        return boost_lvl;
-    }
-
     public float[] getAllProductionPerSec(int gameId) throws BusinessException {
         float[] productionPerSec = new float[3];
         int i = 0;
@@ -295,5 +260,21 @@ public class GeneratorManager {
             i++;
         }
         return productionPercentage;
+    }
+
+    public int[] getImprovementLevels(int gameId) {
+        List<Generator> generators = new ArrayList<>();
+        int[] gen_lvl = new int[3];
+        int i = 0;
+        try {
+            generators = generatorDAO.getGeneratorsFromGame(gameId);
+        } catch (PersistenceException e) {
+            throw new RuntimeException(e); // Mètode es crida sobre generators previament consultats de la bbdd, per tant excepció mai es llançarà
+        }
+        for (Generator g : generators) {
+            gen_lvl[i] = g.getImprovement().getLevel();
+            i++;
+        }
+        return gen_lvl;
     }
 }

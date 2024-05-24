@@ -1,12 +1,10 @@
 package Presentation.Views;
 
 import Presentation.Fonts.MinecraftFont;
-import Presentation.FrameController;
 
 import javax.swing.*;
 import javax.swing.border.StrokeBorder;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -18,12 +16,12 @@ public class GeneratorsView extends JPanel {
 
     private final ActionListener actionListener;
     private final ListSelectionListener listSelectionListener;
+    private JTable generatorsTable;
     private JScrollPane scrollPane;
     private JPanel mainPanel;
-    private DefaultTableModel tableModel;
     private JPanel tablePanel;
 
-    public GeneratorsView(ActionListener listener, ListSelectionListener listSelectionListener, FrameController controller) {
+    public GeneratorsView(ActionListener listener, ListSelectionListener listSelectionListener) {
         this.actionListener = listener;
         this.listSelectionListener = listSelectionListener;
         init();
@@ -44,8 +42,7 @@ public class GeneratorsView extends JPanel {
                 {"CEUS", 0, "15", "0", "0"}
         };
 
-        tableModel = new DefaultTableModel(data, columnNames);
-        JTable generatorsTable = new JTable(tableModel);
+        generatorsTable = new JTable(data, columnNames);
         generatorsTable.setBackground(Color.BLACK);
         generatorsTable.setFont(MinecraftFont.getFont());
         generatorsTable.setRowHeight(30);
@@ -57,7 +54,7 @@ public class GeneratorsView extends JPanel {
         tableHeader.setBackground(Color.BLACK);
         tableHeader.setForeground(Color.WHITE);
 
-        JScrollPane scrollPane = new JScrollPane(generatorsTable);
+        scrollPane = new JScrollPane(generatorsTable);
         scrollPane.setBackground(Color.BLACK);
         scrollPane.setPreferredSize(new Dimension(375, 117));
 
@@ -176,7 +173,6 @@ public class GeneratorsView extends JPanel {
         return descriptionPanel;
     }
 
-
     public void removeGenerators() {
         this.mainPanel.removeAll();
         JPanel generatorsPanel = new JPanel(new GridLayout(1, 4));
@@ -194,10 +190,10 @@ public class GeneratorsView extends JPanel {
 
     public void updateTable(int[] quantities, float[] totalCreditsPerSecond, float[] globalProductionPercentages, int[] prices) {
         for (int i = 0; i < quantities.length; i++) {
-            tableModel.setValueAt(prices[i], i, 2);
-            tableModel.setValueAt(quantities[i], i, 1);
-            tableModel.setValueAt(String.format("%.2f ", totalCreditsPerSecond[i]), i, 3);
-            tableModel.setValueAt(String.format("%.2f ", globalProductionPercentages[i]), i, 4);
+            generatorsTable.setValueAt(quantities[i], i, 1);
+            generatorsTable.setValueAt(prices[i], i, 2);
+            generatorsTable.setValueAt(String.format("%.2f", totalCreditsPerSecond[i]), i, 3);
+            generatorsTable.setValueAt(String.format("%.2f", globalProductionPercentages[i]), i, 4);
         }
     }
 }

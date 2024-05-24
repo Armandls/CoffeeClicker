@@ -1,4 +1,6 @@
 package Presentation.Views;
+import Business.Entities.Generator.BasicGenerator;
+import Presentation.Controllers.StoresController;
 import Presentation.Fonts.MinecraftFont;
 import Presentation.FrameController;
 import Presentation.JImagePanel;
@@ -20,12 +22,10 @@ public class StoresView extends JPanel implements MyView {
     private JImagePanel background;
     private GeneratorsView generatorsView;
     private ImprovementsView improvementsView;
-    private final ActionListener listener;
-    private final FrameController controller;
+    private ActionListener listener;
 
-    public StoresView(ActionListener listener, FrameController frameController) throws IOException {
+    public StoresView(ActionListener listener) throws IOException {
         this.listener = listener;
-        this.controller = frameController;
         setSize(800, 600);
         setLayout(new OverlayLayout(this));
         setOpaque(false);
@@ -51,8 +51,8 @@ public class StoresView extends JPanel implements MyView {
         upgradesButton.addActionListener(listener);
         upgradesButton.setActionCommand("upgrades");
 
-       this.generatorsView = new GeneratorsView(this.listener, (ListSelectionListener)this.listener, controller);
-        this.improvementsView = new ImprovementsView(this.listener, (ListSelectionListener)this.listener, controller);
+        this.generatorsView = new GeneratorsView(this.listener, (ListSelectionListener)this.listener);
+        this.improvementsView = new ImprovementsView(this.listener, (ListSelectionListener)this.listener);
 
         this.storePanel = new JPanel();             //panell que conté les views de les dues botigues
         storePanel.setBackground(Color.BLACK);
@@ -60,7 +60,7 @@ public class StoresView extends JPanel implements MyView {
 
     }
 
-    private void mount() {
+    private void mount() throws IOException {
 
         JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setLayout(new OverlayLayout(layeredPane));
@@ -119,22 +119,19 @@ public class StoresView extends JPanel implements MyView {
     public void stop() {
 
     }
-
     public void updateGeneratorsView(int[] quantities, float[] totalCreditsPerSecond, float[] globalProductionPercentages, int[] prices) {
         generatorsView.updateTable(quantities, totalCreditsPerSecond, globalProductionPercentages, prices);
     }
-    public void updateImprovementsView(int basic, int mid, int high) {
-        this.improvementsView.removeImprovements();
-        this.improvementsView.addImprovement(R.PILLS, "Pills", "100", String.valueOf(basic), ImprovementsView.basicImprovementDesc);
-        this.improvementsView.addImprovement(R.GLASSES, "Glasses", "200", String.valueOf(mid), ImprovementsView.midImprovementDesc);
-        this.improvementsView.addImprovement(R.CARLOS, "Carlos", "300", String.valueOf(high), ImprovementsView.highImprovementDesc);
+    public void updateImprovementsView(int[] quantities) {
+        improvementsView.updateTable(quantities);
     }
 
     public void noGenerators(String improvement) {
         JOptionPane.showMessageDialog(this, "You don't have generators to apply the improvement "+ improvement +" to.", "No Generators Error", JOptionPane.ERROR_MESSAGE);
     }
 
-    public void noEnoughMoney (float currency) {
-        JOptionPane.showMessageDialog(this, "Not enough money, you have -> " + currency, "No Enough Money", JOptionPane.ERROR_MESSAGE);
+    public void noEnoughMoney(int gameCurrency) {
+        JOptionPane.showMessageDialog(this, "You don't have generators enough money for that. You have "+ gameCurrency +".", "No Money Error", JOptionPane.ERROR_MESSAGE);
     }
 }
+
