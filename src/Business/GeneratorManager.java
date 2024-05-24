@@ -275,16 +275,28 @@ public class GeneratorManager {
         int i = 0;
         for (Generator gen : getGenerators(gameId)) {
             productionPerSec[i] = gen.getProductionPerSec();
+            i++;
         }
         return productionPerSec;
     }
 
+    public float getTotalProductionPerSec(int gameId) throws BusinessException{
+        float totalCurrency = 0;
+        for (Generator aux : getGenerators(gameId)) {
+            totalCurrency += aux.getProductionPerSec();
+        }
+        return totalCurrency;
+    }
 
-    public float[] getAllProductionPercentage(int gameId, float totalCurrency) throws BusinessException {
+
+    public float[] getAllProductionPercentage(int gameId) throws BusinessException {
+        float totalCurrency = getTotalProductionPerSec(gameId);
+
         float[] productionPercentage = new float[3];
         int i = 0;
         for (Generator gen : getGenerators(gameId)) {
             productionPercentage[i] = gen.getProductionPercentage(totalCurrency);
+            i++;
         }
         return productionPercentage;
     }

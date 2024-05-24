@@ -117,6 +117,6 @@ public abstract class Generator {
         return 0;
     }
     public float getProductionPercentage(float totalCurrency) {
-        return (n_currencies/totalCurrency) * 100;
+        return (getProductionPerSec()/totalCurrency) * 100;
     }
 }
