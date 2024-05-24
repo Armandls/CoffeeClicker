@@ -2,8 +2,6 @@ package Presentation.Views;
 
 import Presentation.Fonts.MinecraftFont;
 import Presentation.FrameController;
-import Presentation.JHoverPanel;
-import Presentation.R;
 
 import javax.swing.*;
 import javax.swing.border.StrokeBorder;

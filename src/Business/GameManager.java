@@ -5,16 +5,13 @@ import Business.Entities.Generator.Generator;
 import Business.Exception.BusinessException;
 import Business.Exception.GeneratorException.GeneratorAddedException;
 import Business.Exception.GeneratorException.NoGeneratorException;
-import Business.Exception.BusinessException;
 import Persistance.DAO.GameDAO;
 import Persistance.Exception.ConnectionErrorException;
 import Persistance.Exception.NotFoundException;
 import Persistance.Exception.PersistenceException;
 import Persistance.SQL.SQLGameDAO;
 import Presentation.Controllers.ThreadController;
-import Presentation.MainController;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -108,7 +105,7 @@ public class GameManager extends Thread{
      */
     public int getGameCurrency() {return (int) game.getCurrencyCount();}
     public boolean buyGenerator(String type) throws BusinessException {
-        int[] generatorId = new int[2];
+        int[] generatorId;
         if (generatorManager.generatorPurchaseAvailable(game.getCurrencyCount(), game.getIdGame(), type)) {
             generatorId = generatorManager.purchaseNewGenerator(type, game.getIdGame());
             game.addGeneratorToGame(type, generatorId[0], generatorId[1]);

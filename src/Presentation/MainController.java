@@ -40,9 +40,7 @@ public class MainController implements FrameController, ThreadController {
     private ImprovementsView improvementsView;
 
 
-    public MainController(GeneratorManager generatorManager, UserManager userManager) throws IOException, BusinessException {
-        //this.gameManager = gameManager;
-        //this.gameManager.setThreadController(this);
+    public MainController(GeneratorManager generatorManager, UserManager userManager) throws IOException {
         this.generatorManager = generatorManager;
         this.userManager = userManager;
         init();
@@ -261,7 +259,7 @@ public class MainController implements FrameController, ThreadController {
     }
 
     public void resumeGame(int gameId) throws BusinessException {
-        int n_currencies = 0;
+        int n_currencies;
         int[] n_generators = {0,0,0}; //{n_basic, n_mid, n_high}
         int[] boosts_lvl = {0,0,0};   //{lvl_basic, lvl_mid, lvl_high}
         List<String> generator_types;

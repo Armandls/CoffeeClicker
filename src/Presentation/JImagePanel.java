@@ -1,12 +1,8 @@
 package Presentation;
 
 import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
-import javax.imageio.stream.ImageInputStream;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -18,9 +14,7 @@ public class JImagePanel extends JPanel {
 
     private float alpha;
 
-    public static final int DEFAULT_RES = 0;
     public static final int EXTEND_RES_WIDTH = 1;
-    public static final int EXTEND_RES_HEIGHT = 2;
     public JImagePanel() {
         super();
         setOpaque(false);
@@ -37,7 +31,6 @@ public class JImagePanel extends JPanel {
 
     public JImagePanel(String path) throws IOException {
         this.alpha = 1.0f;
-        int currentFrameIndex = 0;
         setOpaque(false);
         this.image = loadImage(path);
     }

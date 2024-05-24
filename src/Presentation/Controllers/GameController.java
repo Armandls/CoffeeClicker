@@ -1,18 +1,11 @@
 package Presentation.Controllers;
-import Business.UserManager;
 import Persistance.Exception.ConnectionErrorException;
 import Persistance.Exception.PersistenceException;
-import Presentation.FrameController;
 import Presentation.MainController;
-import Presentation.Views.GameView;
-import Presentation.Views.LoginView;
-import Presentation.Views.StoresView;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
-import java.util.Timer;
 
 public class GameController implements ActionListener {
     private final MainController mainController;

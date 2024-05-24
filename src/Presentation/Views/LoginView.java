@@ -43,7 +43,7 @@ public class LoginView extends JLayeredPane implements MyView {
             background = createImagePanel(R.MAIN_BACKGROUND, JImagePanel.EXTEND_RES_WIDTH, 0);
             form_background = createImagePanel(R.FORM_BACKGROUND, -1, 1); // -1 indicates no resolution setting
         } catch (IOException e) {
-            e.printStackTrace(); // Handle exception appropriately
+            e.printStackTrace();
         }
 
         setLayer(gridBagPanel, 2);

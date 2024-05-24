@@ -46,12 +46,12 @@ public class SQLGenerator implements GeneratorDAO {
                 generator.getIdGame() + "', '" +
                 generator.getNGens() + "', '" +
                 generator.getGeneratorImage() + "', ";
-        if (generator instanceof BasicGenerator) {
-            generatorQuery += "'Basic'";
-        } else if (generator instanceof MidGenerator) {
-            generatorQuery += "'Mid'";
-        } else if (generator instanceof HighGenerator) {
-            generatorQuery += "'High'";
+        switch (generator) {
+            case BasicGenerator basicGenerator -> generatorQuery += "'Basic'";
+            case MidGenerator midGenerator -> generatorQuery += "'Mid'";
+            case HighGenerator highGenerator -> generatorQuery += "'High'";
+            case null, default -> {
+            }
         }
         generatorQuery += ", '" +
         idAddedImprovement +

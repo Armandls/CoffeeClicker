@@ -2,14 +2,12 @@ package Presentation.Views;
 
 import Presentation.Fonts.MinecraftFont;
 import Presentation.FrameController;
-import Presentation.JHoverPanel;
 
 import javax.swing.*;
 import javax.swing.border.StrokeBorder;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
