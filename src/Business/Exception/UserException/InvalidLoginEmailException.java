@@ -1,8 +1,15 @@
 package Business.Exception.UserException;
 
 /**
- * S'utilitza per avisar si el format del email introduit no es correcte. Es diferent de l'exepcio que avisa si no troba l'usuari.
+ * Se utiliza para indicar que el formato del correo electrónico introducido no es correcto. Es diferente de la excepción que avisa si no se encuentra el usuario.
  */
 public class InvalidLoginEmailException extends UserException {
-    public InvalidLoginEmailException(String message){super(message);}
+
+    /**
+     * Constructor de la clase InvalidLoginEmailException.
+     * @param message Mensaje de error asociado a la excepción.
+     */
+    public InvalidLoginEmailException(String message) {
+        super(message);
+    }
 }
