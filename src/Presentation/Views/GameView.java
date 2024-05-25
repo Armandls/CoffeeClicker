@@ -296,6 +296,7 @@ public class GameView extends JPanel implements MyView {
     @Override
     public void clear() {
         this.storesView.setVisible(false);
+        this.configView.setVisible(false);
     }
 
 
