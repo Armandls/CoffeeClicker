@@ -69,6 +69,7 @@ public class RegisterController implements ActionListener {
             if (!isPasswordValid(password)) return;
 
             mainController.registerUser(username, email, password, confirmPassword);
+            mainController.createNewGame();
             finishSignUp(true);
         } catch (InvalidLoginEmailException e) {
             mainController.adviceMessage(e.getMessage(), "Wrong Email Format", "register");

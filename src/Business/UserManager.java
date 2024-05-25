@@ -208,6 +208,7 @@ public class UserManager {
                 throw new InvalidPasswordException("The password introduced for user with email <" + userMail + "> does not match.");
             } else {
                 addUser(new User(username, userMail, userPassword));
+                this.user = new User(username, userMail, userPassword);
             }
         }
     }

@@ -97,4 +97,9 @@ public interface RegisterControllerI {
      * @return True if the password contains at least one number, false otherwise.
      */
     boolean checkMinOneNumber(String password);
+
+    /**
+     * Creates new game.
+     */
+    void createNewGame();
 }
