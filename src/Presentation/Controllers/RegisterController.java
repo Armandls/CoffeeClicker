@@ -7,19 +7,31 @@ import Business.Exception.UserException.UserAlreadyExistsException;
 import Business.Exception.UserException.UserException;
 import Persistance.Exception.ConnectionErrorException;
 import Presentation.Interfaces.RegisterControllerI;
-import Presentation.MainController;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Controller class for managing user registration actions and interactions.
+ */
 public class RegisterController implements ActionListener {
 
     private final RegisterControllerI mainController;
 
+    /**
+     * Constructor for RegisterController.
+     *
+     * @param mainController The main controller interface.
+     */
     public RegisterController(RegisterControllerI mainController) {
         this.mainController = mainController;
     }
 
+    /**
+     * Handles action events triggered by GUI components.
+     *
+     * @param e The action event.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
@@ -38,14 +50,12 @@ public class RegisterController implements ActionListener {
                 break;
         }
     }
-    private void finishSignUp(boolean wasSuccessful) {
-        if (wasSuccessful) {
-            mainController.swapPanel("game");
-        } else {
-            mainController.clearForm("register");
-        }
-    }
 
+    /**
+     * Handles the user registration process.
+     *
+     * @throws ConnectionErrorException if a connection error occurs.
+     */
     public void signUp() throws ConnectionErrorException {
         String[] info = mainController.getRegisterInfo();
         String username = info[0];
@@ -77,6 +87,13 @@ public class RegisterController implements ActionListener {
         }
     }
 
+    /**
+     * Checks if the username is valid.
+     *
+     * @param username The username to check.
+     * @return true if the username is valid, false otherwise.
+     * @throws ConnectionErrorException if a connection error occurs.
+     */
     private boolean isUsernameValid(String username) throws ConnectionErrorException {
         if (!mainController.checkValidUsername(username)) {
             mainController.registerEnterValid("username");
@@ -86,6 +103,12 @@ public class RegisterController implements ActionListener {
         return true;
     }
 
+    /**
+     * Checks if the email is valid.
+     *
+     * @param email The email to check.
+     * @return true if the email is valid, false otherwise.
+     */
     private boolean isEmailValid(String email) {
         if (email.isEmpty()) {
             mainController.registerEnterValid("email");
@@ -100,6 +123,12 @@ public class RegisterController implements ActionListener {
         return true;
     }
 
+    /**
+     * Checks if the password is valid.
+     *
+     * @param password The password to check.
+     * @return true if the password is valid, false otherwise.
+     */
     private boolean isPasswordValid(String password) {
         if (password.length() < 8) {
             mainController.registerEnterValid("lengthPassword");
@@ -122,6 +151,19 @@ public class RegisterController implements ActionListener {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Handles the completion of the sign-up process.
+     *
+     * @param wasSuccessful Indicates whether the sign-up process was successful or not.
+     */
+    private void finishSignUp(boolean wasSuccessful) {
+        if (wasSuccessful) {
+            mainController.swapPanel("game");
+        } else {
+            mainController.clearForm("register");
+        }
     }
 
 }
