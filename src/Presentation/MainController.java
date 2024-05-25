@@ -358,10 +358,15 @@ public class MainController implements FrameController, ThreadController, GameCo
 
     @Override
     public void logout() {
+        exit();
+        swapPanel("login");
+    }
+
+    @Override
+    public void exit() {
         int[] values = {0, 0, 0};
         float[] values2 = {0, 0, 0};
         ((GameView)this.views.get("game")).updateTable(values, values2, values2, values, values);
-        swapPanel("login");
     }
 
     public void saveGame(boolean finished) throws PersistenceException {

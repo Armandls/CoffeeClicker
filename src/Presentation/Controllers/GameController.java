@@ -58,6 +58,7 @@ public class GameController implements ActionListener {
                 break;
             case "exit":
                 try {
+                    mainController.exit();
                     finish(JOptionPane.showConfirmDialog(null, "Do you want to finish the game?", "Game", JOptionPane.OK_OPTION, JOptionPane.NO_OPTION));
                 } catch (PersistenceException ex) {
                     throw new RuntimeException(ex);

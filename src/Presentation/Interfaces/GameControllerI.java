@@ -18,5 +18,6 @@ public interface GameControllerI {
     void saveGame(boolean b) throws PersistenceException;
     void fetchGames();
     void logout();
+    void exit();
     void restartGame();
 }
