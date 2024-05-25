@@ -64,7 +64,7 @@ public class LoginController implements ActionListener {
                 //Dades introduides usuari.
                 String userLoginMail = info[0].split(":")[1].trim();
                 String userLoginPass = info[1].split(":")[1].trim().replaceAll(" ", "").replaceAll(",","").replace("[", "").replace("]","");
-                String userLoginRem =  info[2].split(":")[1].trim();
+                //String userLoginRem =  info[2].split(":")[1].trim();
                     try {
                         mainController.loginUser(userLoginMail, userLoginPass);
                         finishSignUp(true);

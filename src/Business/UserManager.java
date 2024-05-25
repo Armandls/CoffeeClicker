@@ -11,57 +11,34 @@ import Persistance.Exception.NotFoundException;
 import Persistance.Exception.PersistenceException;
 import Persistance.SQL.SQLUserDAO;
 
-/*Class to manage the different entities regarding the Game
- *  @User
- */
+/* Class to manage the different entities regarding the User */
 public class UserManager {
 
     private final UserDAO userDAO;
     private User user;
 
+    /**
+     * Constructs a new UserManager with the specified UserDAO.
+     * @param userDAO The UserDAO to be used.
+     */
     public UserManager(UserDAO userDAO) {
         this.userDAO = userDAO;
     }
-    public UserManager() {
-        this.userDAO = new SQLUserDAO();
-    }
-
-    /*
-    /**
-     * Funció que retorna la informació del usuari que es vol buscar amb email a la base de dades separada en els seus camps
-     * en un array de String.
-     * @param email es el valor que utilitzem per cercar l'usuari a al base de dades.
-     * @return String[3]:   pos0 -> nickname.
-     *                      pos1 -> email.
-     *                      pos2 -> password
-     *          En el cas de que no trobi l'usuari retornara un null. Aquesta gestió es canviara amb la implementació de les excepcions.
-
-    public String[] getUserInfo(String email) {
-        String[] info = new String[3];
-        User user = userDAO.getUser(email);
-        if (user != null) {
-            info[0] = user.getNickname();
-            info[1] = user.getEmail();
-            info[2] = user.getPassword();
-            return info;
-        }
-        return null;
-    }*/
-
 
     /**
-     * Funció que afegeix un usuari a la base de dades.
-     * @param user és l'usuari que es vol afegir a la base de dades.
+     * Adds a user to the database.
+     * @param user The user to be added.
+     * @throws ConnectionErrorException If there is an error connecting to the database.
      */
     public void addUser(User user) throws ConnectionErrorException {
         userDAO.addUser(user);
     }
 
-
     /**
-     * Funció que retorna l'usuari que es vol buscar a la base de dades.
-     * @param email és el valor que utilitzem per cercar l'usuari a la base de dades.
-     * @return User: l'usuari que es vol buscar.
+     * Retrieves the user with the specified email from the database.
+     * @param email The email of the user to retrieve.
+     * @return The user.
+     * @throws BusinessException If an error occurs during the retrieval process.
      */
     public User getUser(String email) throws BusinessException{
         try {
@@ -73,59 +50,68 @@ public class UserManager {
         catch (PersistenceException e) {
             throw new BusinessException(e.getMessage());
         }
-
     }
 
     /**
-     * Funció que retorna l'usuari amb la sessió iniciada.
-     * @return User: l'usuari que actualment té la sessió iniciada.
+     * Retrieves the currently logged-in user.
+     * @return The currently logged-in user.
      */
     public User getCurrentUser() {
         return user;
     }
 
-
-
-
     /**
-     * Funció que elimina un usuari de la base de dades.
-     * @throws ConnectionErrorException si hi ha un error de connexió amb la base de dades.
+     * Deletes the currently logged-in user from the database.
+     * @throws ConnectionErrorException If there is an error connecting to the database.
      */
     public void deleteUser() throws ConnectionErrorException {
         userDAO.deleteUser(user.getEmail());
         restartValuesUser();
     }
 
+    /**
+     * Resets the user values.
+     */
     public void restartValuesUser() {
-
         user.setNickname("null");
         user.setEmail("null");
         user.setPassword("null");
     }
 
-
     /**
-     * Funció que actualitza un usuari de la base de dades.
-     * @param user és l'usuari que es vol actualitzar a la base de dades.
+     * Updates the specified user in the database.
+     * @param user The user to be updated.
+     * @throws ConnectionErrorException If there is an error connecting to the database.
      */
     public void updateUser(User user) throws ConnectionErrorException {
         userDAO.updateUser(user);
     }
 
     /**
-     * Funció que comprova si la contrasenya introduida per l'usuari en el login form és correcta.
-     * @param checkedPassword és la contrasenya que l'usuari ha introduit.
-     * @param user és l'usuari que s'ha loguejat.
-     * @return boolean: true si la contrasenya és correcta, false en cas contrari.
+     * Checks if the password entered by the user in the login form is correct.
+     * @param checkedPassword The password entered by the user.
+     * @param user The user who logged in.
+     * @return True if the password is correct, false otherwise.
      */
     private boolean checkPassword(String checkedPassword, User user) {
         return user.getPassword().equals(checkedPassword);
     }
 
+    /**
+     * Checks if the repeated password matches the original password.
+     * @param checkedPassword The repeated password.
+     * @param userPassword The original password.
+     * @return True if the repeated password matches the original password, false otherwise.
+     */
     private boolean checkRepeatPassword(String checkedPassword, String userPassword) {
         return userPassword.equals(checkedPassword);
     }
 
+    /**
+     * Checks if the password contains at least one lowercase character.
+     * @param password The password to check.
+     * @return True if the password contains at least one lowercase character, false otherwise.
+     */
     public boolean checkLowerCaseCaracter(String password) {
         for (char c : password.toCharArray()) {
             if (Character.isLowerCase(c)) {
@@ -135,6 +121,11 @@ public class UserManager {
         return false;
     }
 
+    /**
+     * Checks if the password contains at least one uppercase character.
+     * @param password The password to check.
+     * @return True if the password contains at least one uppercase character, false otherwise.
+     */
     public boolean checkUpperCaseCaracter(String password) {
         for (char c : password.toCharArray()) {
             if (Character.isUpperCase(c)) {
@@ -144,6 +135,11 @@ public class UserManager {
         return false;
     }
 
+    /**
+     * Checks if the password contains at least one digit.
+     * @param password The password to check.
+     * @return True if the password contains at least one digit, false otherwise.
+     */
     public boolean checkMinOneNumber(String password) {
         for (char c : password.toCharArray()) {
             if (Character.isDigit(c)) {
@@ -153,14 +149,31 @@ public class UserManager {
         return false;
     }
 
+    /**
+     * Checks if the username is available.
+     * @param username The username to check.
+     * @return True if the username is available, false otherwise.
+     * @throws ConnectionErrorException If there is an error connecting to the database.
+     */
     public boolean checkValidUsername(String username) throws ConnectionErrorException {
         return userDAO.isUsernameAvailable(username);
     }
 
+    /**
+     * Checks if the email is in a valid format.
+     * @param email The email to check.
+     * @return True if the email is in a valid format, false otherwise.
+     */
     public boolean checkValidEmail(String email) {
         return email.contains("@gmail.com");
     }
 
+    /**
+     * Logs in a user with the specified email and password.
+     * @param userLoginMail The email of the user.
+     * @param userLoginPassword The password of the user.
+     * @throws UserException If an error occurs during the login process.
+     */
     public void loginUser(String userLoginMail, String userLoginPassword) throws UserException {
 
         if (!userLoginMail.contains("@gmail.com")) {
@@ -185,8 +198,6 @@ public class UserManager {
     }
 
     public void registerUser(String username, String userMail, String userPassword, String repeatPassword) throws BusinessException, ConnectionErrorException {
-
-
         try {
             User user = userDAO.getUser(userMail);
             throw new UserAlreadyExistsException("User with email <" + userMail + "> already exists in the database.");
