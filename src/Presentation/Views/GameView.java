@@ -26,8 +26,6 @@ public class GameView extends JPanel implements MyView {
     private JTexturedButton deleteAccount;
     private final StoresView storesView;
     private JPanel overPanel;
-    private JPanel hoversPanel;
-
     public GameView(ActionListener listener, StoresView storesView, int num) throws IOException {
         this.listener = listener;
         this.num = num;
@@ -38,18 +36,11 @@ public class GameView extends JPanel implements MyView {
     }
 
     private void init() {
-        initHoversPanel();
         initButtons();
         initOverPanel();
         initCounter();
         initProfileAndConfigViews();
         start();
-    }
-
-    private void initHoversPanel() {
-        hoversPanel = new JPanel(null);
-        hoversPanel.setOpaque(false);
-        hoversPanel.setVisible(true);
     }
 
     private void initButtons() {
@@ -129,14 +120,12 @@ public class GameView extends JPanel implements MyView {
         layeredPane.setLayer(overPanel, 2);
         layeredPane.setLayer(configProfilePanel, 3);
         layeredPane.setLayer(storesView, 4);
-        layeredPane.setLayer(hoversPanel, 5);
 
         layeredPane.add(background);
         layeredPane.add(mainPanel);
         layeredPane.add(overPanel);
         layeredPane.add(configProfilePanel);
         layeredPane.add(storesView);
-        layeredPane.add(hoversPanel);
 
         add(layeredPane, BorderLayout.CENTER);
     }
