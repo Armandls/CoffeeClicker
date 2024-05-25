@@ -1,7 +1,6 @@
 package Presentation.Views;
 
 import Presentation.Fonts.MinecraftFont;
-import Presentation.FrameController;
 import Presentation.JImagePanel;
 import Presentation.JTexturedButton;
 import Presentation.R;

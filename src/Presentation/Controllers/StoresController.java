@@ -1,8 +1,6 @@
 package Presentation.Controllers;
-import Presentation.FrameController;
-import Presentation.Interfaces.StatisticsControllerI;
 import Presentation.Interfaces.StoresControllerI;
-import Presentation.MainController;
+
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;

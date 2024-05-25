@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * Class to manage the interactions between the user interface (UI, the View) and the Manager classes
  */
-public class MainController implements FrameController, ThreadController, GameControllerI, HomeControllerI, LoginControllerI, RegisterControllerI, StatisticsControllerI, StoresControllerI {
+public class MainController implements ThreadController, GameControllerI, HomeControllerI, LoginControllerI, RegisterControllerI, StatisticsControllerI, StoresControllerI {
 
     private GameManager gameManager;
     private final GeneratorManager generatorManager;
@@ -48,14 +48,12 @@ public class MainController implements FrameController, ThreadController, GameCo
         init();
     }
 
-    @Override
     public void swapPanel(String panelName) {
         mainFrame.showPanel(panelName);
         currentView.clear();
         currentView = views.get(panelName);
     }
 
-    @Override
     public void initializeGame(int currency, int basicGenerator, int midGenerator, int highGenerator, int lvlBasicImp, int lvlMidImp, int lvlHighImp) {
         gameView.initialize(currency, basicGenerator, midGenerator, highGenerator, lvlBasicImp, lvlMidImp, lvlHighImp);
     }
