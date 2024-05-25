@@ -12,10 +12,8 @@ import Persistance.Exception.ConnectionErrorException;
 import Persistance.Exception.NotFoundException;
 import Persistance.Exception.PersistenceException;
 import Presentation.Controllers.*;
-import Presentation.Interfaces.HomeControllerI;
-import Presentation.Interfaces.LoginControllerI;
+import Presentation.Interfaces.*;
 import Presentation.Views.*;
-import Presentation.Interfaces.GameControllerI;
 
 import java.awt.*;
 import java.io.IOException;
@@ -26,7 +24,7 @@ import java.util.Map;
 /**
  * Class to manage the interactions between the user interface (UI, the View) and the Manager classes
  */
-public class MainController implements FrameController, ThreadController, GameControllerI, HomeControllerI, LoginControllerI {
+public class MainController implements FrameController, ThreadController, GameControllerI, HomeControllerI, LoginControllerI, RegisterControllerI, StatisticsControllerI, StoresControllerI {
 
     private GameManager gameManager;
     private final GeneratorManager generatorManager;

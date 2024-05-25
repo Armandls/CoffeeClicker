@@ -6,6 +6,7 @@ import Business.Exception.UserException.InvalidPasswordException;
 import Business.Exception.UserException.UserAlreadyExistsException;
 import Business.Exception.UserException.UserException;
 import Persistance.Exception.ConnectionErrorException;
+import Presentation.Interfaces.RegisterControllerI;
 import Presentation.MainController;
 
 import java.awt.event.ActionEvent;
@@ -13,9 +14,9 @@ import java.awt.event.ActionListener;
 
 public class RegisterController implements ActionListener {
 
-    private final MainController mainController;
+    private final RegisterControllerI mainController;
 
-    public RegisterController(MainController mainController) {
+    public RegisterController(RegisterControllerI mainController) {
         this.mainController = mainController;
     }
 

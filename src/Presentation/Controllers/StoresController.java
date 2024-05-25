@@ -1,5 +1,7 @@
 package Presentation.Controllers;
 import Presentation.FrameController;
+import Presentation.Interfaces.StatisticsControllerI;
+import Presentation.Interfaces.StoresControllerI;
 import Presentation.MainController;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -8,11 +10,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class StoresController implements ActionListener, ListSelectionListener {
-    private final FrameController mainController;
+    private final StoresControllerI mainController;
 
     private boolean store;
 
-    public StoresController (FrameController mainController) {
+    public StoresController (StoresControllerI mainController) {
         this.mainController = mainController;
         store = true;
     }

@@ -18,7 +18,6 @@ import java.util.ArrayList;
 public class StatisticsView extends JLayeredPane implements MyView {
 
     private final ActionListener listener;
-    private FrameController controller;
     private JTexturedButton back;
     private JTexturedButton logout;
     private JTexturedButton deleteAccount;
@@ -89,7 +88,8 @@ public class StatisticsView extends JLayeredPane implements MyView {
     private void initializeGamesPanel() {
         games = new JPanel();
         games.setPreferredSize(new Dimension(200, 600));
-        games.setOpaque(false);
+        games.setOpaque(true);
+        games.setBackground(new Color(143, 47, 19));
         scrollPane = new JScrollPane(games);
         scrollPane.setOpaque(false);
         scrollPane.getViewport().setOpaque(false);

@@ -1,15 +1,14 @@
 package Presentation.Controllers;
-
-import Presentation.FrameController;
+import Presentation.Interfaces.StatisticsControllerI;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class StatisticsController implements ActionListener {
 
-    private final FrameController mainController;
+    private final StatisticsControllerI mainController;
 
-    public StatisticsController(FrameController mainController) {
+    public StatisticsController(StatisticsControllerI mainController) {
         this.mainController = mainController;
     }
     @Override
