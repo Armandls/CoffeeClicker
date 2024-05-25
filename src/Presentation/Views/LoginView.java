@@ -18,9 +18,7 @@ public class LoginView extends JLayeredPane implements MyView {
     private final ActionListener listener;
     private JTextField usernameField;
     private JPasswordField passwordField;
-    private JButton forgotPassword;
     private JTexturedButton loginButton;
-    private JRadioButton rememberMe;
     private JTexturedButton registerButton;
     private JImagePanel background;
     private JImagePanel form_background;
@@ -79,7 +77,10 @@ public class LoginView extends JLayeredPane implements MyView {
         mainPanel.add(createFieldPanel(usernameField, new EmptyBorder(0, 0, 20, 0)));
         mainPanel.add(createLabelPanel("Password:", FlowLayout.LEFT));
         mainPanel.add(createFieldPanel(passwordField, new EmptyBorder(0, 0, 20, 0)));
-        mainPanel.add(createRememberMePanel());
+        JPanel emptyPanel = new JPanel();
+        emptyPanel.setPreferredSize(new Dimension(300, 50));
+        emptyPanel.setOpaque(false);
+        mainPanel.add(emptyPanel);
         mainPanel.add(createButtonPanel(loginButton, new EmptyBorder(10, 0, 50, 0)));
         mainPanel.add(createRegisterPanel());
 
@@ -111,16 +112,6 @@ public class LoginView extends JLayeredPane implements MyView {
         fieldPanel.add(field);
         fieldPanel.setBorder(border);
         return fieldPanel;
-    }
-
-    private JPanel createRememberMePanel() {
-        JPanel panel = new JPanel();
-        panel.setOpaque(false);
-        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-        panel.add(rememberMe);
-        panel.add(forgotPassword);
-        panel.setBorder(new EmptyBorder(10, 0, 10, 0));
-        return panel;
     }
 
     private JPanel createButtonPanel(JButton button, EmptyBorder border) {
@@ -163,19 +154,9 @@ public class LoginView extends JLayeredPane implements MyView {
         passwordField = new JPasswordField();
         passwordField.setPreferredSize(new Dimension(250, 20));
 
-        forgotPassword = new JButton("Forgot password?");
-        forgotPassword.setOpaque(false);
-        forgotPassword.setContentAreaFilled(false);
-        forgotPassword.setBorderPainted(false);
-        forgotPassword.setFont(MinecraftFont.getFont());
-
         loginButton = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
         loginButton.setText("Login");
         loginButton.setFont(MinecraftFont.getFont());
-
-        rememberMe = new JRadioButton("Remember me");
-        rememberMe.setFont(MinecraftFont.getFont());
-        rememberMe.setOpaque(false);
 
         registerButton = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
         registerButton.setText("Register");
@@ -185,8 +166,6 @@ public class LoginView extends JLayeredPane implements MyView {
 
     @Override
     public void start() {
-        forgotPassword.addActionListener(listener);
-        forgotPassword.setActionCommand("forgotPassword");
 
         loginButton.addActionListener(listener);
         loginButton.setActionCommand("login");
@@ -197,7 +176,6 @@ public class LoginView extends JLayeredPane implements MyView {
 
     @Override
     public void stop() {
-        forgotPassword.removeActionListener(listener);
         loginButton.removeActionListener(listener);
         registerButton.removeActionListener(listener);
     }
@@ -211,7 +189,6 @@ public class LoginView extends JLayeredPane implements MyView {
         return new String[] {
                 "username:"+usernameField.getText(),
                 "password:"+ Arrays.toString(passwordField.getPassword()),
-                "rememberMe:"+rememberMe.isSelected()
         };
     }
     public void enterValidEmail() {
