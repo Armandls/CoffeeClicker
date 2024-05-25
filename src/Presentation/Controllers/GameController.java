@@ -1,6 +1,8 @@
 package Presentation.Controllers;
 import Persistance.Exception.ConnectionErrorException;
 import Persistance.Exception.PersistenceException;
+import Presentation.FrameController;
+import Presentation.Interfaces.GameControllerI;
 import Presentation.MainController;
 
 import javax.swing.*;
@@ -8,9 +10,9 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class GameController implements ActionListener {
-    private final MainController mainController;
+    private final GameControllerI mainController;
 
-    public GameController(MainController mainController) {
+    public GameController(GameControllerI mainController) {
         this.mainController = mainController;
     }
 
@@ -52,7 +54,7 @@ public class GameController implements ActionListener {
 
             case "logout":
                 logout();
-                mainController.swapPanel("login");
+                mainController.logout();
                 break;
             case "exit":
                 try {

@@ -48,6 +48,12 @@ public class ImprovementsView extends JPanel {
         improvementsTable.setRowHeight(30);
         improvementsTable.setDefaultRenderer(Object.class, new JTableRender());
         improvementsTable.getSelectionModel().addListSelectionListener(this.listSelectionListener);
+        improvementsTable.setDefaultEditor(Object.class, new DefaultCellEditor(new JTextField()) {
+            @Override
+            public boolean isCellEditable(java.util.EventObject e) {
+                return false;
+            }
+        });
 
         JTableHeader tableHeader = improvementsTable.getTableHeader();
         tableHeader.setFont(MinecraftFont.getFont());

@@ -12,7 +12,10 @@ import Persistance.Exception.ConnectionErrorException;
 import Persistance.Exception.NotFoundException;
 import Persistance.Exception.PersistenceException;
 import Presentation.Controllers.*;
+import Presentation.Interfaces.HomeControllerI;
+import Presentation.Interfaces.LoginControllerI;
 import Presentation.Views.*;
+import Presentation.Interfaces.GameControllerI;
 
 import java.awt.*;
 import java.io.IOException;
@@ -23,7 +26,7 @@ import java.util.Map;
 /**
  * Class to manage the interactions between the user interface (UI, the View) and the Manager classes
  */
-public class MainController implements FrameController, ThreadController {
+public class MainController implements FrameController, ThreadController, GameControllerI, HomeControllerI, LoginControllerI {
 
     private GameManager gameManager;
     private final GeneratorManager generatorManager;
@@ -140,7 +143,8 @@ public class MainController implements FrameController, ThreadController {
         return userManager.getCurrentUser().getEmail();
     }
 
-    public void createNewGame() throws PersistenceException {
+
+    public void createNewGame() {
         try {
             String email = getEmail_id();
             this.gameManager = new GameManager(generatorManager);
@@ -161,6 +165,8 @@ public class MainController implements FrameController, ThreadController {
         userManager.restartValuesUser();
         gameManager.setRunningGame(false);
     }
+
+    @Override
     public void deleteUser () throws ConnectionErrorException {
         userManager.deleteUser();
     }
@@ -350,6 +356,14 @@ public class MainController implements FrameController, ThreadController {
     @Override
     public void updateStoreCurrency(float amount) {
         gameView.updateCurrency(gameManager.getGameCurrency());
+    }
+
+    @Override
+    public void logout() {
+        int[] values = {0, 0, 0};
+        float[] values2 = {0, 0, 0};
+        ((GameView)this.views.get("game")).updateTable(values, values2, values2, values, values);
+        swapPanel("login");
     }
 
     public void saveGame(boolean finished) throws PersistenceException {

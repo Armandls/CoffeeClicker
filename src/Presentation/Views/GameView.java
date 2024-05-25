@@ -207,9 +207,6 @@ public class GameView extends JPanel implements MyView {
         bottomPanel.setOpaque(false);
 
         JLayeredPane phonePanel = createPhonePanel();
-        //JPanel phoneAux = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        //phoneAux.setOpaque(false);
-        //phoneAux.add(phonePanel);
 
         bottomPanel.add(phonePanel);
         return bottomPanel;
@@ -260,10 +257,6 @@ public class GameView extends JPanel implements MyView {
         return panel;
     }
 
-    private void addComponentsToLayeredPane(JLayeredPane layeredPane, JPanel mainPanel, JPanel configProfilePanel) throws IOException {
-
-    }
-
     public void showProfile() {
         profileView.setVisible(true);
     }
@@ -302,7 +295,7 @@ public class GameView extends JPanel implements MyView {
 
     @Override
     public void clear() {
-
+        this.storesView.setVisible(false);
     }
 
 

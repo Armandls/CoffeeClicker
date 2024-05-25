@@ -60,7 +60,7 @@ public class StoresView extends JPanel implements MyView {
 
     }
 
-    private void mount() throws IOException {
+    private void mount() {
 
         JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setLayout(new OverlayLayout(layeredPane));

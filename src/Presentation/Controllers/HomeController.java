@@ -2,6 +2,8 @@ package Presentation.Controllers;
 
 import Business.Exception.BusinessException;
 import Persistance.Exception.PersistenceException;
+import Presentation.FrameController;
+import Presentation.Interfaces.HomeControllerI;
 import Presentation.MainController;
 
 import javax.swing.*;
@@ -9,9 +11,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class HomeController implements ActionListener{
-    private final MainController mainController;
+    private final HomeControllerI mainController;
 
-    public HomeController(MainController mainController) {
+    public HomeController(HomeControllerI mainController) {
         this.mainController = mainController;
     }
 

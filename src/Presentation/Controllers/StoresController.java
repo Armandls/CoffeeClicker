@@ -14,6 +14,7 @@ public class StoresController implements ActionListener, ListSelectionListener {
 
     public StoresController (FrameController mainController) {
         this.mainController = mainController;
+        store = true;
     }
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -58,5 +59,6 @@ public class StoresController implements ActionListener, ListSelectionListener {
                 mainController.updateImprovement("Carlos");
             }
         }
+        ((DefaultListSelectionModel)e.getSource()).clearSelection();
     }
 }

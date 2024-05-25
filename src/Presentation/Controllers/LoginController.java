@@ -4,16 +4,15 @@ import Business.Exception.UserException.InvalidLoginEmailException;
 import Business.Exception.UserException.InvalidPasswordException;
 import Business.Exception.UserException.UserException;
 import Business.Exception.UserException.UserNotFoundException;
-import Presentation.MainController;
-import Presentation.Views.LoginView;
+import Presentation.Interfaces.LoginControllerI;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class LoginController implements ActionListener {
-    private final MainController mainController;
+    private final LoginControllerI mainController;
 
-    public LoginController(MainController mainController) {
+    public LoginController(LoginControllerI mainController) {
         this.mainController = mainController;
     }
 
@@ -80,7 +79,6 @@ public class LoginController implements ActionListener {
                     } catch (UserException e) {
                         mainController.adviceMessage(e.getMessage(), "Database Error", "login");
                     }
-
             }
         }
     }

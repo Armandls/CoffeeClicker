@@ -48,6 +48,12 @@ public class GeneratorsView extends JPanel {
         generatorsTable.setRowHeight(30);
         generatorsTable.setDefaultRenderer(Object.class, new JTableRender());
         generatorsTable.getSelectionModel().addListSelectionListener(this.listSelectionListener);
+        generatorsTable.setDefaultEditor(Object.class, new DefaultCellEditor(new JTextField()) {
+            @Override
+            public boolean isCellEditable(java.util.EventObject e) {
+                return false;
+            }
+        });
 
         JTableHeader tableHeader = generatorsTable.getTableHeader();
         tableHeader.setFont(MinecraftFont.getFont());
