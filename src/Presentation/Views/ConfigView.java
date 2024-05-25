@@ -72,4 +72,9 @@ public class ConfigView extends JPanel implements MyView {
         close.removeActionListener(listener);
     }
 
+    @Override
+    public void clear() {
+
+    }
+
 }

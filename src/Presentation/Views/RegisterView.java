@@ -186,6 +186,11 @@ public class RegisterView extends JLayeredPane implements MyView {
         singUpButton.removeActionListener(listener);
     }
 
+    @Override
+    public void clear() {
+
+    }
+
     public String[] getInfo() {
         String username = usernameField.getText().trim();
         String email = emailField.getText().trim();

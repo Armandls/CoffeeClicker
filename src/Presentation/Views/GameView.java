@@ -113,15 +113,31 @@ public class GameView extends JPanel implements MyView {
 
         JPanel mainPanel = createMainPanel();
         JPanel topPanel = createTopPanel();
-        mainPanel.add(topPanel, BorderLayout.NORTH);
-
         JPanel bottomPanel = createBottomPanel();
+
+        mainPanel.add(topPanel, BorderLayout.NORTH);
         mainPanel.add(bottomPanel, BorderLayout.SOUTH);
         mainPanel.add(clickButton, BorderLayout.CENTER);
 
         JPanel configProfilePanel = createConfigProfilePanel();
 
-        addComponentsToLayeredPane(layeredPane, mainPanel, configProfilePanel);
+        JImagePanel background = new JImagePanel(R.GAME_BACKGROUND);
+        background.setResolution(JImagePanel.EXTEND_RES_WIDTH);
+
+        layeredPane.setLayer(background, 0);
+        layeredPane.setLayer(mainPanel, 1);
+        layeredPane.setLayer(overPanel, 2);
+        layeredPane.setLayer(configProfilePanel, 3);
+        layeredPane.setLayer(storesView, 4);
+        layeredPane.setLayer(hoversPanel, 5);
+
+        layeredPane.add(background);
+        layeredPane.add(mainPanel);
+        layeredPane.add(overPanel);
+        layeredPane.add(configProfilePanel);
+        layeredPane.add(storesView);
+        layeredPane.add(hoversPanel);
+
         add(layeredPane, BorderLayout.CENTER);
     }
 
@@ -191,11 +207,11 @@ public class GameView extends JPanel implements MyView {
         bottomPanel.setOpaque(false);
 
         JLayeredPane phonePanel = createPhonePanel();
-        JPanel phoneAux = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        phoneAux.setOpaque(false);
-        phoneAux.add(phonePanel);
+        //JPanel phoneAux = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        //phoneAux.setOpaque(false);
+        //phoneAux.add(phonePanel);
 
-        bottomPanel.add(phoneAux);
+        bottomPanel.add(phonePanel);
         return bottomPanel;
     }
 
@@ -207,6 +223,7 @@ public class GameView extends JPanel implements MyView {
 
         JImagePanel phone = new JImagePanel(R.STORES_BACKGROUND);
         phone.setResolution(JImagePanel.EXTEND_RES_WIDTH);
+        phone.setOpaque(false);
 
         JPanel phoneButtonPanel = new JPanel(new BorderLayout());
         phoneButtonPanel.setOpaque(false);
@@ -244,22 +261,7 @@ public class GameView extends JPanel implements MyView {
     }
 
     private void addComponentsToLayeredPane(JLayeredPane layeredPane, JPanel mainPanel, JPanel configProfilePanel) throws IOException {
-        JImagePanel background = new JImagePanel(R.GAME_BACKGROUND);
-        background.setResolution(JImagePanel.EXTEND_RES_WIDTH);
 
-        layeredPane.setLayer(background, 0);
-        layeredPane.setLayer(mainPanel, 1);
-        layeredPane.setLayer(overPanel, 2);
-        layeredPane.setLayer(configProfilePanel, 3);
-        layeredPane.setLayer(storesView, 4);
-        layeredPane.setLayer(hoversPanel, 5);
-
-        layeredPane.add(background);
-        layeredPane.add(mainPanel);
-        layeredPane.add(overPanel);
-        layeredPane.add(configProfilePanel);
-        layeredPane.add(storesView);
-        layeredPane.add(hoversPanel);
     }
 
     public void showProfile() {
@@ -297,6 +299,12 @@ public class GameView extends JPanel implements MyView {
         phoneButton.removeActionListener(listener);
         clickButton.removeActionListener(listener);
     }
+
+    @Override
+    public void clear() {
+
+    }
+
 
     public void startRedPanelAnimation(Point mousePosition) {
         // Create red panel

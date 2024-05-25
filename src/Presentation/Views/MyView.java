@@ -8,4 +8,6 @@ public interface MyView {
 
     void stop();
 
+    void clear();
+
 }

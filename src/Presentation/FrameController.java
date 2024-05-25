@@ -12,4 +12,6 @@ public interface FrameController {
     void updateImprovement (String improvement);
 
     void buyGenerator(String generator);
+
+    void displayGameStats(String gameId);
 }

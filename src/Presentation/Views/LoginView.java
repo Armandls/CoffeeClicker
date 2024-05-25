@@ -202,6 +202,11 @@ public class LoginView extends JLayeredPane implements MyView {
         registerButton.removeActionListener(listener);
     }
 
+    @Override
+    public void clear() {
+
+    }
+
     public String[] getInfo() {
         return new String[] {
                 "username:"+usernameField.getText(),

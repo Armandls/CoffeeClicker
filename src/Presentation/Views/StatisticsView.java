@@ -13,6 +13,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class StatisticsView extends JLayeredPane implements MyView {
 
@@ -26,9 +27,11 @@ public class StatisticsView extends JLayeredPane implements MyView {
     private JPanel games;
     private JImagePanel background;
     private String chartTitle;
+    private ArrayList<JTexturedButton> gameButtons;
 
     public StatisticsView(ActionListener listener) {
         this.listener = listener;
+        gameButtons = new ArrayList<>();
         setLayout(new OverlayLayout(this));
         init();
         mount();
@@ -183,6 +186,7 @@ public class StatisticsView extends JLayeredPane implements MyView {
         button.setText(gameID + " - " + n_currencies);
         button.setActionCommand(gameID);
         button.addActionListener(listener);
+        gameButtons.add(button);
         this.games.add(button);
         this.games.revalidate();
         this.scrollPane.revalidate();
@@ -209,5 +213,12 @@ public class StatisticsView extends JLayeredPane implements MyView {
     @Override
     public void stop() {
 
+    }
+
+    @Override
+    public void clear() {
+        for (JTexturedButton gameButton : gameButtons) {
+            this.games.remove(gameButton);
+        }
     }
 }

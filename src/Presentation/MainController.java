@@ -49,6 +49,7 @@ public class MainController implements FrameController, ThreadController {
     @Override
     public void swapPanel(String panelName) {
         mainFrame.showPanel(panelName);
+        currentView.clear();
         currentView = views.get(panelName);
     }
 

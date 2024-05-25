@@ -132,6 +132,11 @@ public class HomeView extends JPanel implements MyView {
     public void stop() {
     }
 
+    @Override
+    public void clear() {
+
+    }
+
 }
 
 

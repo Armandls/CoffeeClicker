@@ -70,4 +70,9 @@ public class ProfileView extends JPanel implements MyView {
         logout.removeActionListener(listener);
         close.removeActionListener(listener);
     }
+
+    @Override
+    public void clear() {
+
+    }
 }
