@@ -297,6 +297,9 @@ public class GameView extends JPanel implements MyView {
     public void clear() {
         this.storesView.setVisible(false);
         this.configView.setVisible(false);
+        if (configButton.getActionListeners().length <= 0) {
+            start();
+        }
     }
 
 
