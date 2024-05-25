@@ -17,8 +17,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/*Class to manage the different entities regarding the Game
- *  @Currency, @ImprovementStore, @Game
+/**
+ * Class to manage the different entities regarding the Game.
+ * @Currency, @ImprovementStore, @Game
  */
 public class GameManager extends Thread{
     private final GeneratorManager generatorManager;
@@ -29,29 +30,51 @@ public class GameManager extends Thread{
     private int threadCount;
     private int min;
 
-    public GameManager (GameDAO gameDAO, GeneratorManager generatorManager) {
+    /**
+     * Constructor for GameManager.
+     * @param gameDAO The GameDAO instance to use for database operations.
+     * @param generatorManager The GeneratorManager instance to manage generators.
+     */
+    public GameManager(GameDAO gameDAO, GeneratorManager generatorManager) {
         this.gameDAO = gameDAO;
         this.generatorManager = generatorManager;
         threadCount = 0;
         min = 0;
-        //this.game = new Game();
     }
+
+    /**
+     * Alternative constructor for GameManager.
+     * Uses default SQLGameDAO for database operations.
+     * @param generatorManager The GeneratorManager instance to manage generators.
+     */
     public GameManager(GeneratorManager generatorManager) {
         this.gameDAO = new SQLGameDAO();
         this.generatorManager = generatorManager;
         threadCount = 0;
         min = 0;
-        //this.game = new Game();
     }
 
+
+    /**
+     * Sets the ThreadController for this GameManager.
+     * @param tc The ThreadController instance.
+     */
     public void setThreadController(ThreadController tc) {
         this.threadController = tc;
     }
 
+    /**
+     * Sets the running state of the game.
+     * @param value The running state.
+     */
     public void setRunningGame(boolean value) {
         this.runningGame = value;
     }
 
+    /**
+     * Overrides the run method of Thread.
+     * Manages the game loop and updates generators' production.
+     */
     @Override
     public void run() {
         while (runningGame){
@@ -72,20 +95,28 @@ public class GameManager extends Thread{
             }
             threadController.updateStoreCurrency(getGameCurrency());
 
-            //Mirem de fer l'actualitzacio de les estadistiques de cada minut.
+            // Update game statistics every minute.
             threadCount++;
             if (threadCount >= 60) {
                 try {
                     gameDAO.addStatistic(game.getIdGame(), min, (int)game.getCurrencyCount());
                 } catch (ConnectionErrorException e) {
-                    // Gestionar excepció
+                    // Handle exception
                 }
                 threadCount = 0;
                 min++;
             }
         }
     }
-    public void initGame(int gameId, int n_currencies, String user) throws BusinessException{
+
+    /**
+     * Initializes the game with the provided parameters.
+     * @param gameId The ID of the game.
+     * @param n_currencies The initial currency count.
+     * @param user The user associated with the game.
+     * @throws BusinessException If no generators are found for the game.
+     */
+    public void initGame(int gameId, int n_currencies, String user) throws BusinessException {
         List<Generator> generators;
         this.game = new Game(gameId, n_currencies, false, user);
         try {
@@ -94,18 +125,34 @@ public class GameManager extends Thread{
                 game.initGenerator(g);
             }
         } catch (BusinessException e) {
-            throw new NoGeneratorException("No generators were found for game with id ->" + "gameId");
+            throw new NoGeneratorException("No generators were found for game with id ->" + gameId);
         }
     }
+
+    // Additional methods and functionalities...
+
+    /**
+     * Retrieves the ID of the current game.
+     * @return The ID of the game.
+     */
     public int getGameId() {
         return game.getIdGame();
     }
 
     /**
-     * Get del valor de currency que es te en temps real de la partida, no consulta la base de dades.
-     * @return
+     * Retrieves the current currency count of the game in real-time, without querying the database.
+     * @return The current currency count.
      */
-    public int getGameCurrency() {return (int) game.getCurrencyCount();}
+    public int getGameCurrency() {
+        return (int) game.getCurrencyCount();
+    }
+
+    /**
+     * Buys a generator of the specified type for the current game.
+     * @param type The type of generator to buy.
+     * @return True if the purchase is successful, false otherwise.
+     * @throws BusinessException If an error occurs during the purchase process.
+     */
     public boolean buyGenerator(String type) throws BusinessException {
         int[] generatorId;
         if (generatorManager.generatorPurchaseAvailable(game.getCurrencyCount(), game.getIdGame(), type)) {
@@ -120,6 +167,12 @@ public class GameManager extends Thread{
         }
         return false;
     }
+
+    /**
+     * Creates a new game for the specified user.
+     * @param mail The email of the user.
+     * @throws BusinessException If an error occurs during game creation.
+     */
     public void createNewGame(String mail) throws BusinessException{
         this.game = new Game(0, 0, false, mail);
         try {
@@ -130,6 +183,14 @@ public class GameManager extends Thread{
         }
     }
 
+    /**
+     * Adds a game with the specified details to the database.
+     * @param id The ID of the game.
+     * @param currency_count The currency count of the game.
+     * @param finished The finished state of the game.
+     * @param mail_user The email of the user associated with the game.
+     * @throws PersistenceException If an error occurs during database interaction.
+     */
     public void addGame(int id, int currency_count, boolean finished, String mail_user) throws PersistenceException {
         try {
             int idGame = gameDAO.addGame(new Game(id, currency_count, finished, mail_user));
@@ -137,15 +198,21 @@ public class GameManager extends Thread{
         }catch (PersistenceException exception) {
             throw new PersistenceException("ERROR: Couldn't add game to the database.");
         }
-
     }
-    public Map<Integer, Integer> getUnfinishedGames (String mail_user) throws PersistenceException {
+
+    /**
+     * Retrieves a map of IDs and currency counts for all unfinished games of the specified user.
+     * @param mail_user The email of the user.
+     * @return A map containing game IDs as keys and currency counts as values.
+     * @throws PersistenceException If an error occurs during database interaction.
+     */
+    public Map<Integer, Integer> getUnfinishedGames(String mail_user) throws PersistenceException {
         List<Game> games;
         Map<Integer, Integer> creditsAndIds = new HashMap<>();
         try {
             games = gameDAO.getUnfinishedGamesFromUser(mail_user);
-        }catch (PersistenceException exception) {
-            throw new PersistenceException("ERROR: Couldn't get the users' unfinished games from the database.");
+        } catch (PersistenceException exception) {
+            throw new PersistenceException("ERROR: Couldn't get the user's unfinished games from the database.");
         }
         for (Game game : games) {
             creditsAndIds.put(game.getIdGame(), Math.round(game.getCurrencyCount()));
@@ -153,14 +220,19 @@ public class GameManager extends Thread{
         return creditsAndIds;
     }
 
-
-    public Map<Integer, Integer> getFinishedGames (String mail_user) throws PersistenceException {
+    /**
+     * Retrieves a map of IDs and currency counts for all finished games of the specified user.
+     * @param mail_user The email of the user.
+     * @return A map containing game IDs as keys and currency counts as values.
+     * @throws PersistenceException If an error occurs during database interaction.
+     */
+    public Map<Integer, Integer> getFinishedGames(String mail_user) throws PersistenceException {
         List<Game> games;
         Map<Integer, Integer> creditsAndIds = new HashMap<>();
         try {
             games = gameDAO.getFinishedGamesFromUser(mail_user);
-        }catch (PersistenceException exception) {
-            throw new PersistenceException("ERROR: Couldn't get the users' unfinished games from the database.");
+        } catch (PersistenceException exception) {
+            throw new PersistenceException("ERROR: Couldn't get the user's finished games from the database.");
         }
         for (Game game : games) {
             creditsAndIds.put(game.getIdGame(), Math.round(game.getCurrencyCount()));
@@ -168,21 +240,34 @@ public class GameManager extends Thread{
         return creditsAndIds;
     }
 
-    public int getGameCurrencies(int gameId) throws NotFoundException{
+    /**
+     * Retrieves the currency count for the game with the specified ID.
+     * @param gameId The ID of the game.
+     * @return The currency count of the game.
+     * @throws NotFoundException If the game with the specified ID is not found.
+     */
+    public int getGameCurrencies(int gameId) throws NotFoundException {
         Game game2;
-        try{
+        try {
             game2 = gameDAO.getGame(gameId);
-        }
-        catch(PersistenceException e) {
-            throw new NotFoundException("ERROR: Couldn't get the solicited game.");
+        } catch (PersistenceException e) {
+            throw new NotFoundException("ERROR: Couldn't get the requested game.");
         }
         return Math.round(game2.getCurrencyCount());
     }
 
+    /**
+     * Increases the currency count of the current game.
+     */
     public void increaseCurrency() {
         game.increaseCurrency();
     }
 
+    /**
+     * Updates the currency count of the current game to the specified value.
+     * @param nCurrencies The new currency count.
+     * @throws BusinessException If an error occurs during the update process.
+     */
     public void updateCurrency(int nCurrencies) throws BusinessException {
         game.updateCurrency(nCurrencies);
         try {
@@ -191,6 +276,12 @@ public class GameManager extends Thread{
             throw new BusinessException(e.getMessage());
         }
     }
+
+    /**
+     * Retrieves the currency count of the current game from the database.
+     * @return The currency count of the game.
+     * @throws BusinessException If an error occurs during the retrieval process.
+     */
 
     public void updateImprovement(String improvement) throws GeneratorAddedException, NotEnoughCurrencyException {
         if (improvement.equals("Pills")) {
@@ -246,11 +337,22 @@ public class GameManager extends Thread{
         }
     }
 
+    /**
+     * Retrieves the currency count of the current game from the database.
+     * @return The currency count of the game.
+     * @throws BusinessException If an error occurs during the retrieval process.
+     */
 
     public void saveGame(boolean finished) throws PersistenceException {
         game.setFinished(finished);
         gameDAO.updateGame(game);
     }
+
+    /**
+     * Retrieves the currency count of the current game from the database.
+     * @return The currency count of the game.
+     * @throws BusinessException If an error occurs during the retrieval process.
+     */
 
     public List<Integer> getStatsFromGame(String id) throws BusinessException {
         try {
@@ -260,6 +362,11 @@ public class GameManager extends Thread{
         }
     }
 
+    /**
+     * Retrieves the currency count of the current game from the database.
+     * @return The currency count of the game.
+     * @throws BusinessException If an error occurs during the retrieval process.
+     */
     public void restartGame() {
         // remove from list
         game.getGameGenerators().clear();
