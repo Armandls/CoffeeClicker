@@ -58,6 +58,10 @@ public class MainController implements ThreadController, GameControllerI, HomeCo
         gameView.initialize(currency, basicGenerator, midGenerator, highGenerator, lvlBasicImp, lvlMidImp, lvlHighImp);
     }
 
+    /**
+     * Initializes the MainController by creating the necessary views and controllers.
+     * @throws IOException if an I/O error occurs while initializing the views.
+     */
     void init() throws IOException {
         mainFrame = new MainFrame();
         views = new Hashtable<>();
@@ -99,6 +103,10 @@ public class MainController implements ThreadController, GameControllerI, HomeCo
         initializeGame(0, 0, 0, 0, 0, 0, 0);
     }
 
+    /**
+     * Resumes the game by loading the unfinished games and displaying them.
+     * @throws PersistenceException if an error occurs during persistence operations.
+     */
     public void resumeGameButton() throws PersistenceException {
         this.gameManager = new GameManager(generatorManager);
         this.gameManager.setThreadController(this);
@@ -106,6 +114,11 @@ public class MainController implements ThreadController, GameControllerI, HomeCo
         homeView.displayGames(games);
     }
 
+
+    /**
+     * Handles the purchase of a generator.
+     * @param type the type of generator to purchase.
+     */
     public void buyGenerator(String type) {
         boolean validPurchase;
         switch (type) {
@@ -135,11 +148,19 @@ public class MainController implements ThreadController, GameControllerI, HomeCo
     }
 
 
+    /**
+     * Retrieves the email ID of the current user.
+     * @return the email ID of the current user.
+     */
     public String getEmail_id() {
         return userManager.getCurrentUser().getEmail();
     }
 
 
+
+    /**
+     * Creates a new game for the current user.
+     */
     public void createNewGame() {
         try {
             String email = getEmail_id();
@@ -154,24 +175,61 @@ public class MainController implements ThreadController, GameControllerI, HomeCo
         }
     }
 
+    /**
+     * Registers a new user with the provided information.
+     * @param username the username of the new user.
+     * @param email the email address of the new user.
+     * @param password the password of the new user.
+     * @param confirmPassword the confirmed password of the new user.
+     * @throws BusinessException if an error occurs during user registration.
+     * @throws ConnectionErrorException if there is an error with the connection.
+     */
     public void registerUser(String username, String email, String password, String confirmPassword) throws BusinessException, ConnectionErrorException {
         userManager.registerUser(username, email, password, confirmPassword);
     }
+
+
+    /**
+     * Restarts the values of the current user and sets the running game to false.
+     */
     public void restartValuesUser () {
         userManager.restartValuesUser();
         gameManager.setRunningGame(false);
     }
 
+
+    /**
+     * Deletes the current user.
+     * @throws ConnectionErrorException if there is an error with the connection.
+     */
     @Override
     public void deleteUser () throws ConnectionErrorException {
         userManager.deleteUser();
     }
+
+    /**
+     * Retrieves the unfinished games for the current user.
+     * @return a map containing the unfinished games with their respective IDs and currencies.
+     * @throws PersistenceException if an error occurs during persistence operations.
+     */
     public Map<Integer, Integer> getUnfinishedGames () throws PersistenceException {
         return gameManager.getUnfinishedGames(getEmail_id());
     }
+
+    /**
+     * Logs in the user with the provided email and password.
+     * @param userLoginMail the email of the user to log in.
+     * @param userLoginPass the password of the user to log in.
+     * @throws UserException if there is an error with the user login.
+     */
     public void loginUser (String userLoginMail, String userLoginPass) throws UserException {
         userManager.loginUser(userLoginMail, userLoginPass);
     }
+
+    /**
+     * Displays a message to prompt the user to enter valid information during registration.
+     * @param what the type of information that needs to be valid.
+     */
     public void registerEnterValid (String what){
 
         if (what.equals("username")) {
@@ -199,6 +257,11 @@ public class MainController implements ThreadController, GameControllerI, HomeCo
             }
         }
     }
+
+    /**
+     * Displays a message to prompt the user to enter valid information during login.
+     * @param what the type of information that needs to be valid.
+     */
     public void loginEnterValid (String what){
         if (what.equals("email")) {
             loginView.enterValidEmail();
@@ -206,9 +269,19 @@ public class MainController implements ThreadController, GameControllerI, HomeCo
             loginView.enterValidPassword();
         }
     }
+    /**
+     * Retrieves the login information entered by the user.
+     * @return an array containing the login information.
+     */
     public String[] getLoginInfo () {
         return loginView.getInfo();
     }
+
+
+    /**
+     * Clears the form based on the specified type.
+     * @param what the type of form to clear.
+     */
     public void clearForm (String what){
         switch (what) {
             case "login":
@@ -220,6 +293,12 @@ public class MainController implements ThreadController, GameControllerI, HomeCo
         }
     }
 
+    /**
+     * Displays an advice message to the user during registration or login.
+     * @param error the error message to display.
+     * @param databaseError the database error message to display.
+     * @param what the type of action (registration or login).
+     */
     public void adviceMessage (String error, String databaseError, String what){
         if (what.equals("login")) {
             loginView.adviceMessage(error, databaseError);
@@ -228,41 +307,72 @@ public class MainController implements ThreadController, GameControllerI, HomeCo
         }
     }
 
+    /**
+     * Displays the user profile.
+     */
     public void showProfile () {
         gameView.stop();
         gameView.showProfile();
     }
 
+
+    /**
+     * Displays the configuration settings.
+     */
     public void showConfig () {
         gameView.stop();
         gameView.showConfig();
     }
 
+
+    /**
+     * Toggles the store view.
+     */
     public void toggleStore () {
         updateStoresGeneratorsView();
         gameView.toggleStore();
     }
 
+    /**
+     * Starts the red panel animation at the specified location.
+     * @param location the location where the animation should start.
+     */
     public void startRedPanelAnimation (Point location){
         gameManager.increaseCurrency();
         gameView.updateCurrency(gameManager.getGameCurrency());
         gameView.startRedPanelAnimation(location);
     }
 
+    /**
+     * Hides the user profile.
+     */
     public void hideProfile () {
         gameView.start();
         gameView.hideProfile();
     }
 
+    /**
+     * Hides the configuration settings.
+     */
     public void hideConfig () {
         gameView.start();
         gameView.hideConfig();
     }
 
+
+    /**
+     * Retrieves the registration information entered by the user.
+     * @return an array containing the registration information.
+     */
     public String[] getRegisterInfo () {
         return registerView.getInfo();
     }
 
+    /**
+     * Resumes a game with the specified game ID.
+     * @param gameId the ID of the game to resume.
+     * @throws BusinessException if an error occurs during game resumption.
+     */
     public void resumeGame(int gameId) throws BusinessException {
         int n_currencies;
         int[] n_generators = {0,0,0}; //{n_basic, n_mid, n_high}
@@ -302,6 +412,9 @@ public class MainController implements ThreadController, GameControllerI, HomeCo
         gameManager.start();
     }
 
+    /**
+     * Updates the view of the store and generators.
+     */
     public void updateStoresGeneratorsView() {
         /*try {
             //Pillar info dels generadors per passar.
@@ -312,6 +425,10 @@ public class MainController implements ThreadController, GameControllerI, HomeCo
         }*/
     }
 
+    /**
+     * Updates the improvement with the specified name.
+     * @param improvement the name of the improvement to update.
+     */
     public void updateImprovement (String improvement) {
         try {
             gameManager.updateImprovement(improvement);
@@ -324,42 +441,82 @@ public class MainController implements ThreadController, GameControllerI, HomeCo
         }
     }
 
+    /**
+     * Checks if the password contains at least one lowercase character.
+     * @param password the password to check.
+     * @return true if the password contains at least one lowercase character, otherwise false.
+     */
     public boolean checkLowerCaseCaracter(String password) {
         return userManager.checkLowerCaseCaracter(password);
     }
 
+    /**
+     * Checks if the password contains at least one uppercase character.
+     * @param password the password to check.
+     * @return true if the password contains at least one uppercase character, otherwise false.
+     */
     public boolean checkUpperCaseCaracter(String password) {
         return userManager.checkUpperCaseCaracter(password);
     }
 
+    /**
+     * Checks if the password contains at least one number.
+     * @param password the password to check.
+     * @return true if the password contains at least one number, otherwise false.
+     */
     public boolean checkMinOneNumber(String password) {
         return userManager.checkMinOneNumber(password);
     }
 
+    /**
+     * Checks if the email is valid.
+     * @param email the email to check.
+     * @return true if the email is valid, otherwise false.
+     */
     public boolean checkValidEmail(String email) {
         return userManager.checkValidEmail(email);
     }
 
+    /**
+     * Checks if the username is valid.
+     * @param username the username to check.
+     * @return true if the username is valid, otherwise false.
+     * @throws ConnectionErrorException if there is an error with the connection.
+     */
     public boolean checkValidUsername(String username) throws ConnectionErrorException {
         return userManager.checkValidUsername(username);
     }
 
+    /**
+     * Swaps the panel in the store view.
+     * @param panelName the name of the panel to swap.
+     */
     @Override
     public void swapStore(String panelName) {
         ((StoresView)views.get("stores")).swapPanel(panelName);
     }
 
+    /**
+     * Updates the currency in the store view.
+     * @param amount the amount of currency to update.
+     */
     @Override
     public void updateStoreCurrency(float amount) {
         gameView.updateCurrency(gameManager.getGameCurrency());
     }
 
+    /**
+     * Logs out the user from the application.
+     */
     @Override
     public void logout() {
         exit();
         swapPanel("login");
     }
 
+    /**
+     * Exits the application.
+     */
     @Override
     public void exit() {
         int[] values = {0, 0, 0};
@@ -367,10 +524,19 @@ public class MainController implements ThreadController, GameControllerI, HomeCo
         ((GameView)this.views.get("game")).updateTable(values, values2, values2, values, values);
     }
 
+    /**
+     * Saves the current game state.
+     * @param finished indicates whether the game is finished or not.
+     * @throws PersistenceException if an error occurs during persistence operations.
+     */
     public void saveGame(boolean finished) throws PersistenceException {
         gameManager.saveGame(finished);
         gameManager.setRunningGame(false);
     }
+
+    /**
+     * Fetches the finished games for the current user and updates the statistics view.
+     */
     public void fetchGames() {
         try {
             Map<Integer, Integer> games = gameManager.getFinishedGames(userManager.getCurrentUser().getEmail());
@@ -384,6 +550,11 @@ public class MainController implements ThreadController, GameControllerI, HomeCo
         }
     }
 
+
+    /**
+     * Displays the statistics of the game with the specified ID.
+     * @param gameId the ID of the game to display statistics for.
+     */
     public void displayGameStats(String gameId) {
         try {
             List<Integer> l = gameManager.getStatsFromGame(gameId);
@@ -398,6 +569,9 @@ public class MainController implements ThreadController, GameControllerI, HomeCo
         }
     }
 
+    /**
+     * Restarts the current game.
+     */
     public void restartGame() {
         gameManager.restartGame();
     }

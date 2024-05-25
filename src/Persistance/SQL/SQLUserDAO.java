@@ -9,8 +9,17 @@ import Persistance.Exception.PersistenceException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Implementation of the UserDAO interface for SQL databases.
+ */
 public class SQLUserDAO implements UserDAO {
 
+    /**
+     * Adds a new user to the database.
+     *
+     * @param user The user to add.
+     * @throws ConnectionErrorException If there is an error connecting to the database.
+     */
     @Override
     public void addUser(User user) throws ConnectionErrorException {
         try {
@@ -24,6 +33,14 @@ public class SQLUserDAO implements UserDAO {
         }
     }
 
+    /**
+     * Retrieves a user from the database based on email.
+     *
+     * @param email The email of the user to retrieve.
+     * @return The retrieved user.
+     * @throws NotFoundException      If the user with the specified email is not found in the database.
+     * @throws ConnectionErrorException If there is an error connecting to the database.
+     */
     @Override
     public User getUser(String email) throws PersistenceException {
         String query = "SELECT u.nickname, u.mail, u.password FROM User AS u WHERE u.mail = \"" + email + "\" ;";
@@ -43,6 +60,12 @@ public class SQLUserDAO implements UserDAO {
         }
     }
 
+    /**
+     * Deletes a user from the database based on email.
+     *
+     * @param email The email of the user to delete.
+     * @throws ConnectionErrorException If there is an error connecting to the database.
+     */
     @Override
     public void deleteUser(String email) throws ConnectionErrorException {
         String query = "DELETE FROM User WHERE mail = '" + email + "';";
@@ -53,6 +76,12 @@ public class SQLUserDAO implements UserDAO {
         }
     }
 
+    /**
+     * Updates a user's information in the database.
+     *
+     * @param user The user with updated information.
+     * @throws ConnectionErrorException If there is an error connecting to the database.
+     */
     @Override
     public void updateUser(User user) throws ConnectionErrorException{
         String query = "UPDATE User SET " +
@@ -67,6 +96,13 @@ public class SQLUserDAO implements UserDAO {
         }
     }
 
+    /**
+     * Checks if a username is available in the database.
+     *
+     * @param username The username to check.
+     * @return True if the username is available, false otherwise.
+     * @throws ConnectionErrorException If there is an error connecting to the database.
+     */
     public boolean isUsernameAvailable(String username) throws ConnectionErrorException {
         String query = "SELECT u.nickname FROM User AS u WHERE u.nickname = \"" + username + "\" ;";
         ResultSet result = SQLConnector.getInstance().selectQuery(query);

@@ -7,10 +7,17 @@ import com.google.gson.JsonParser;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Connection;
 
+/**
+ * Class responsible for reading the configuration from a JSON file.
+ */
 public class ConfigJSON {
 
+    /**
+     * Reads the configuration from the JSON file.
+     * @return The configuration object.
+     * @throws ConnectionErrorException If an error occurs while reading the configuration.
+     */
     public static Config readConfigFile() throws ConnectionErrorException {
         try (FileReader reader = new FileReader("files/config.json")) {
             JsonObject jsonObject = JsonParser.parseReader(reader).getAsJsonObject();

@@ -16,22 +16,35 @@ import Persistance.SQL.SQLGenerator;
 import java.util.ArrayList;
 import java.util.List;
 
-/*Class to manage the different entities regarding the Generators
- *  @Generator package
+/**
+ * Class to manage the different entities regarding the Generators.
  */
 public class GeneratorManager {
+
+    /**
+     * The data access object for managing generators.
+     */
     final GeneratorDAO generatorDAO;
 
+    /**
+     * Array containing the types of generators.
+     */
     final String[] genTypes = {"Basic", "Mid", "High"};
-    final String[] generatorNames = {"REDBULL", "NOTES", "CEUS"};
 
+    //
     public GeneratorManager(GeneratorDAO generatorDAO) {
         this.generatorDAO = generatorDAO;
     }
     public GeneratorManager(){
-     this.generatorDAO = new SQLGenerator();
+        this.generatorDAO = new SQLGenerator();
     }
 
+    /**
+     * Retrieves the generators associated with the specified game.
+     * @param gameId The ID of the game.
+     * @return The list of generators.
+     * @throws BusinessException If an error occurs during the retrieval process.
+     */
     public List<Generator> getGenerators(int gameId) throws BusinessException {
         List<Generator> generators;
         try {
@@ -44,9 +57,21 @@ public class GeneratorManager {
         return generators;
     }
 
+    /**
+     * Updates the specified generator.
+     * @param generator The generator to be updated.
+     * @throws ConnectionErrorException If there is an error connecting to the data source.
+     */
     public void updateGenerator(Generator generator) throws ConnectionErrorException {
         generatorDAO.updateGenerator(generator);
     }
+
+    /**
+     * Retrieves the types of generators associated with the specified game.
+     * @param gameId The ID of the game.
+     * @return The list of generator types.
+     * @throws BusinessException If an error occurs during the retrieval process.
+     */
     public List<String> getGeneratorsTypes(int gameId) throws BusinessException {
         List<Generator> generators = new ArrayList<>();
         List<String> generator_types = new ArrayList<>();
@@ -65,6 +90,14 @@ public class GeneratorManager {
         return generator_types;
     }
 
+    /**
+     * Determines if a generator purchase is available based on the provided currency, game ID, and generator type.
+     * @param currency The available currency.
+     * @param gameId The ID of the game.
+     * @param type The type of generator.
+     * @return True if the purchase is available, otherwise false.
+     * @throws BusinessException If an error occurs during the process.
+     */
     public boolean generatorPurchaseAvailable(float currency, int gameId, String type) throws BusinessException{
         try {
             Generator auxGen = getGeneratorFromGame(gameId, type);
@@ -83,6 +116,12 @@ public class GeneratorManager {
         return false;
     }
 
+    /**
+     * Retrieves the ID of the specified generator from the game.
+     * @param type The type of generator.
+     * @param gameId The ID of the game.
+     * @return An array containing the generator ID and improvement ID.
+     */
     public int[] getGeneratorIdFromGame(String type, int gameId){
         Generator auxGen = null;
         int[] outputVal = new int[2];
@@ -96,6 +135,13 @@ public class GeneratorManager {
         return outputVal;
     }
 
+    /**
+     * Purchases a new generator of the specified type for the specified game.
+     * @param type The type of generator.
+     * @param gameId The ID of the game.
+     * @return An array containing the generator ID and improvement ID.
+     * @throws BusinessException If an error occurs during the process.
+     */
     public int[] purchaseNewGenerator(String type, int gameId) throws BusinessException{
         int[] generatorId = new int[2];
         generatorId[0] = -1;
@@ -129,6 +175,11 @@ public class GeneratorManager {
         return generatorId;
     }
 
+    /**
+     * Retrieves an empty generator of the specified type.
+     * @param type The type of generator.
+     * @return An empty generator.
+     */
     public Generator getEmptyGenerator(String type) {
         switch (type) {
             case "Basic":
@@ -141,6 +192,12 @@ public class GeneratorManager {
         return null;
     }
 
+    /**
+     * Retrieves the prices of generators available in the shop for the specified game.
+     * @param gameId The ID of the game.
+     * @return An array containing the prices of the generators.
+     * @throws BusinessException If an error occurs during the process.
+     */
     public int[] getShopPrices(int gameId) throws BusinessException{
         int[] outputArr = new int[genTypes.length];
         for(int i = 0; i < genTypes.length; i++) {
@@ -157,6 +214,13 @@ public class GeneratorManager {
     }
 
 
+    /**
+     * Retrieves a generator of the specified type from the game.
+     * @param gameId The ID of the game.
+     * @param type The type of generator.
+     * @return The generator.
+     * @throws BusinessException If an error occurs during the process.
+     */
     public Generator getGeneratorFromGame(int gameId, String type) throws BusinessException{
         try {
             List<Generator> gens = getGenerators(gameId);
@@ -174,9 +238,10 @@ public class GeneratorManager {
     }
 
     /**
-     * Returns number of instances of specified generator type given a game id
-     * @param type, gameId
-     * @return number of generators
+     * Retrieves the number of instances of the specified generator type given a game ID.
+     * @param gameId The ID of the game.
+     * @param type The generator type.
+     * @return The number of generators.
      */
     public int getNumberOfGenerators(int gameId, String type) {
         List<Generator> generators = new ArrayList<>();
@@ -188,11 +253,17 @@ public class GeneratorManager {
         }
         for(Generator g: generators) {
             if (g.getClass().getSimpleName().contains(type)) { //simpleName: BasicGenerator, MidGenerator, HighGenerator
-                 n_gens = g.getNGens();
+                n_gens = g.getNGens();
             }
         }
         return n_gens;
     }
+
+    /**
+     * Retrieves the number of instances of all generator types given a game ID.
+     * @param gameId The ID of the game.
+     * @return An array containing the number of generators for each type.
+     */
     public int[] getAllNumberOfGenerators(int gameId) {
         List<Generator> generators;
         int[] n_gens = new int[3];
@@ -210,10 +281,10 @@ public class GeneratorManager {
     }
 
     /**
-     * Return boost level of a specified generator in a given game
-     * @param gameId game identification
-     * @param type generator's type
-     * @return boost level
+     * Retrieves the boost level of a specified generator in a given game.
+     * @param gameId The ID of the game.
+     * @param type The generator type.
+     * @return The boost level.
      */
     public int getLevelOfGenerator(int gameId, String type) {
         List<Generator> generators = new ArrayList<>();
@@ -231,6 +302,12 @@ public class GeneratorManager {
         return gen_lvl;
     }
 
+    /**
+     * Retrieves the production per second of all generators in a given game.
+     * @param gameId The ID of the game.
+     * @return An array containing the production per second of each generator type.
+     * @throws BusinessException If an error occurs during the process.
+     */
     public float[] getAllProductionPerSec(int gameId) throws BusinessException {
         float[] productionPerSec = new float[3];
         int i = 0;
@@ -241,6 +318,12 @@ public class GeneratorManager {
         return productionPerSec;
     }
 
+    /**
+     * Retrieves the total production per second of all generators in a given game.
+     * @param gameId The ID of the game.
+     * @return The total production per second.
+     * @throws BusinessException If an error occurs during the process.
+     */
     public float getTotalProductionPerSec(int gameId) throws BusinessException{
         float totalCurrency = 0;
         for (Generator aux : getGenerators(gameId)) {
@@ -249,7 +332,12 @@ public class GeneratorManager {
         return totalCurrency;
     }
 
-
+    /**
+     * Retrieves the production percentage of all generators in a given game.
+     * @param gameId The ID of the game.
+     * @return An array containing the production percentage of each generator type.
+     * @throws BusinessException If an error occurs during the process.
+     */
     public float[] getAllProductionPercentage(int gameId) throws BusinessException {
         float totalCurrency = getTotalProductionPerSec(gameId);
 
@@ -262,6 +350,11 @@ public class GeneratorManager {
         return productionPercentage;
     }
 
+    /**
+     * Retrieves the improvement levels of all generators in a given game.
+     * @param gameId The ID of the game.
+     * @return An array containing the improvement levels of each generator type.
+     */
     public int[] getImprovementLevels(int gameId) {
         List<Generator> generators = new ArrayList<>();
         int[] gen_lvl = new int[3];

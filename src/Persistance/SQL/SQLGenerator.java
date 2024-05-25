@@ -17,7 +17,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementation of the GeneratorDAO interface for SQL databases.
+ */
 public class SQLGenerator implements GeneratorDAO {
+
+    /**
+     * Adds a new generator to the database.
+     *
+     * @param generator The generator to add.
+     * @throws ConnectionErrorException If there is an error connecting to the database.
+     */
     @Override
     public void addGenerator(Generator generator) throws ConnectionErrorException {
         int idAddedImprovement = 0;
@@ -61,6 +71,13 @@ public class SQLGenerator implements GeneratorDAO {
 
         SQLConnector.getInstance().insertQuery(generatorQuery);
     }
+
+    /**
+     * Updates an existing generator in the database.
+     *
+     * @param generator The generator to update.
+     * @throws ConnectionErrorException If there is an error connecting to the database.
+     */
     @Override
     public void updateGenerator(Generator generator) throws ConnectionErrorException {
         // Actualitzem valors millora
@@ -89,6 +106,14 @@ public class SQLGenerator implements GeneratorDAO {
             throw new ConnectionErrorException("Error updating generator with id <" + generator.getIdGenerator() + ">. " + e.getMessage());
         }
     }
+
+    /**
+     * Retrieves all generators associated with a specific game from the database.
+     *
+     * @param id_game The ID of the game to retrieve generators for.
+     * @return A list of generators associated with the game.
+     * @throws PersistenceException If there is an error accessing the database.
+     */
     @Override
     public List<Generator> getGeneratorsFromGame(int id_game) throws PersistenceException {
         List<Generator> generators = new ArrayList<>();
@@ -111,6 +136,14 @@ public class SQLGenerator implements GeneratorDAO {
         return generators;
     }
 
+    /**
+     * Helper method to create a Generator object from a ResultSet.
+     *
+     * @param result  The ResultSet containing generator data.
+     * @param id_game The ID of the game associated with the generators.
+     * @return A Generator object created from the ResultSet.
+     * @throws SQLException If there is an error accessing the ResultSet.
+     */
     private Generator createGeneratorFromResult(ResultSet result, int id_game) throws SQLException {
         int id_generator = result.getInt("id_generator");
         String type = result.getString("generator_type");
@@ -134,6 +167,13 @@ public class SQLGenerator implements GeneratorDAO {
         return generator;
     }
 
+    /**
+     * Helper method to create an Improvement object from a ResultSet.
+     *
+     * @param result The ResultSet containing improvement data.
+     * @return An Improvement object created from the ResultSet.
+     * @throws SQLException If there is an error accessing the ResultSet.
+     */
     private Improvement createImprovementFromResult(ResultSet result) throws SQLException {
         int id_improvement = result.getInt("improvement");
         int improvement_level = result.getInt("improvement_level");

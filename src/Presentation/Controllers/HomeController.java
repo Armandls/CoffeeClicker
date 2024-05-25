@@ -8,13 +8,26 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class HomeController implements ActionListener{
+/**
+ * Controller class for managing home-related actions and interactions.
+ */
+public class HomeController implements ActionListener {
     private final HomeControllerI mainController;
 
+    /**
+     * Constructor for HomeController.
+     *
+     * @param mainController The main controller interface.
+     */
     public HomeController(HomeControllerI mainController) {
         this.mainController = mainController;
     }
 
+    /**
+     * Handles action events triggered by GUI components.
+     *
+     * @param e The action event.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();

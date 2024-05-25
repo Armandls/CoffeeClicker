@@ -6,25 +6,28 @@ import Presentation.JTexturedButton;
 import Presentation.R;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import javax.swing.JOptionPane;
-import javax.swing.border.EmptyBorder;
 
-
+/**
+ * View for user registration.
+ */
 public class RegisterView extends JLayeredPane implements MyView {
 
     private final ActionListener listener;
     private JTextField usernameField;
-
     private JTextField emailField;
     private JPasswordField passwordField;
-
     private JPasswordField confirmPasswordField;
     private JTexturedButton singUpButton;
     private JTexturedButton loginButton;
 
+    /**
+     * Constructs a new RegisterView.
+     * @param listener The ActionListener for handling events.
+     */
     public RegisterView(ActionListener listener) {
         setLayout(new OverlayLayout(this));
         this.listener = listener;
@@ -50,12 +53,20 @@ public class RegisterView extends JLayeredPane implements MyView {
         add(gridBagPanel);
     }
 
+    /**
+     * Creates a JPanel with GridBagLayout.
+     * @return JPanel with GridBagLayout.
+     */
     private JPanel createGridBagPanel() {
         JPanel gridBagPanel = new JPanel(new GridBagLayout());
         gridBagPanel.setOpaque(false);
         return gridBagPanel;
     }
 
+    /**
+     * Creates GridBagConstraints for layout positioning.
+     * @return GridBagConstraints object.
+     */
     private GridBagConstraints createGridBagConstraints() {
         GridBagConstraints c = new GridBagConstraints();
         c.gridy = 0;
@@ -66,6 +77,10 @@ public class RegisterView extends JLayeredPane implements MyView {
         return c;
     }
 
+    /**
+     * Creates the main panel containing registration components.
+     * @return JPanel with registration components.
+     */
     private JPanel createMainPanel() {
         JPanel mainPanel = new JPanel();
         mainPanel.setOpaque(false);
@@ -83,6 +98,14 @@ public class RegisterView extends JLayeredPane implements MyView {
         return mainPanel;
     }
 
+    /**
+     * Creates a JPanel with a label.
+     * @param text The text of the label.
+     * @param fontSize The font size of the label.
+     * @param alignment The alignment of the label.
+     * @param border The border of the panel.
+     * @return JPanel with a label.
+     */
     private JPanel createLabelPanel(String text, int fontSize, int alignment, EmptyBorder border) {
         JPanel labelPanel = new JPanel(new FlowLayout(alignment));
         labelPanel.setOpaque(false);
@@ -93,6 +116,12 @@ public class RegisterView extends JLayeredPane implements MyView {
         return labelPanel;
     }
 
+    /**
+     * Creates a JPanel containing a label and a field.
+     * @param labelText The text of the label.
+     * @param field The text field component.
+     * @return JPanel containing the label and field.
+     */
     private JPanel createFieldPanel(String labelText, JComponent field) {
         JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         labelPanel.setOpaque(false);
@@ -113,6 +142,12 @@ public class RegisterView extends JLayeredPane implements MyView {
         return panel;
     }
 
+    /**
+     * Creates a JPanel containing a button.
+     * @param button The button component.
+     * @param border The border of the panel.
+     * @return JPanel containing the button.
+     */
     private JPanel createButtonPanel(JButton button, EmptyBorder border) {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.setOpaque(false);
@@ -121,6 +156,10 @@ public class RegisterView extends JLayeredPane implements MyView {
         return buttonPanel;
     }
 
+    /**
+     * Creates a JPanel containing the registration link.
+     * @return JPanel containing the registration link.
+     */
     private JPanel createRegisterPanel() {
         JPanel registerPanel = new JPanel();
         registerPanel.setOpaque(false);
@@ -133,6 +172,14 @@ public class RegisterView extends JLayeredPane implements MyView {
         return registerPanel;
     }
 
+    /**
+     * Creates a JImagePanel from the given resource path.
+     * @param resourcePath The resource path of the image.
+     * @param resolution The resolution of the image.
+     * @param layer The layer of the panel.
+     * @return JImagePanel with the specified properties.
+     * @throws IOException If an I/O error occurs.
+     */
     private JImagePanel createImagePanel(String resourcePath, int resolution, int layer) throws IOException {
         JImagePanel imagePanel = new JImagePanel(resourcePath);
         if (resolution != -1) {
@@ -142,7 +189,9 @@ public class RegisterView extends JLayeredPane implements MyView {
         return imagePanel;
     }
 
-
+    /**
+     * Initializes the components of the view.
+     */
     void init() {
         usernameField = new JTextField();
         usernameField.setPreferredSize(new Dimension(200, 20));
@@ -171,6 +220,9 @@ public class RegisterView extends JLayeredPane implements MyView {
         start();
     }
 
+    /**
+     * Starts the view by adding action listeners to buttons.
+     */
     @Override
     public void start() {
         loginButton.addActionListener(listener);
@@ -180,17 +232,27 @@ public class RegisterView extends JLayeredPane implements MyView {
         singUpButton.setActionCommand("singUp");
     }
 
+    /**
+     * Stops the view by removing action listeners from buttons.
+     */
     @Override
     public void stop() {
         loginButton.removeActionListener(listener);
         singUpButton.removeActionListener(listener);
     }
 
+    /**
+     * Clears the view.
+     */
     @Override
     public void clear() {
 
     }
 
+    /**
+     * Retrieves the registration information entered by the user.
+     * @return Array containing username, email, password, and confirm password.
+     */
     public String[] getInfo() {
         String username = usernameField.getText().trim();
         String email = emailField.getText().trim();
@@ -204,34 +266,61 @@ public class RegisterView extends JLayeredPane implements MyView {
                 confirmPassword
         };
     }
+
+    /**
+     * Displays an advice message.
+     * @param message The message to be displayed.
+     * @param title The title of the message dialog.
+     */
     public void adviceMessage(String message, String title) {
         JOptionPane.showMessageDialog(this, message, title, JOptionPane.ERROR_MESSAGE);
     }
 
+    /**
+     * Displays an error message for invalid email.
+     */
     public void enterValidEmail() {
         JOptionPane.showMessageDialog(this, "Please enter a valid email address. Email address must contain '@gmail.com'.", "Mail Error", JOptionPane.ERROR_MESSAGE);
     }
 
+    /**
+     * Displays an error message for invalid password length.
+     */
     public void enterValidPassword8C() {
         JOptionPane.showMessageDialog(this, "Please enter a valid password. Password must contain at least 8 characters.", "Password Error", JOptionPane.ERROR_MESSAGE);
     }
 
+    /**
+     * Displays an error message for missing lowercase letters in the password.
+     */
     public void enterValidPasswordLowerCase() {
         JOptionPane.showMessageDialog(this, "Please enter a valid password. Password must contain at least one lowercase letter", "Password Error", JOptionPane.ERROR_MESSAGE);
     }
 
+    /**
+     * Displays an error message for missing uppercase letters in the password.
+     */
     public void enterValidPasswordUpperCase() {
         JOptionPane.showMessageDialog(this, "Please enter a valid password. Password must contain at least one uppercase letter", "Password Error", JOptionPane.ERROR_MESSAGE);
     }
 
+    /**
+     * Displays an error message for missing numbers in the password.
+     */
     public void enterValidPasswordOneNumber() {
         JOptionPane.showMessageDialog(this, "Please enter a valid password. Password must contain at least one number", "Password Error", JOptionPane.ERROR_MESSAGE);
     }
 
+    /**
+     * Displays an error message for invalid username.
+     */
     public void enterValidUsername() {
         JOptionPane.showMessageDialog(this, "Please enter a valid username. Username must be unique.", "Username Error", JOptionPane.ERROR_MESSAGE);
     }
 
+    /**
+     * Clears the registration form fields.
+     */
     public void clearForm() {
         usernameField.setText("");
         emailField.setText("");
