@@ -220,5 +220,6 @@ public class StatisticsView extends JLayeredPane implements MyView {
         for (JTexturedButton gameButton : gameButtons) {
             this.games.remove(gameButton);
         }
+        this.gameButtons.clear();
     }
 }
