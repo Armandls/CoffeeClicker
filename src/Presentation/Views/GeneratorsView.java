@@ -9,7 +9,11 @@ import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
+/**
+ * View class for displaying generators.
+ */
 public class GeneratorsView extends JPanel {
+
     public static final String basicGenDesc = "Aquest generador t'omple de cafeïna i et\npermet estudiar més temps.\n\nRedBull et dóna ales!";
     public static final String midGenDesc = "Els teus companys són molt bones persones\ni et donen els seus apunts per tal que\npuguis entendre les assignatures.\n\nSpoiler: no ho entendràs igualment.";
     public static final String highGenDesc = "En vistes de que res funciona i no tens\ntemps per estudiar, has decidit fer un\npacte amb el diable i apuntar-te a la CEUS.\n\nBenvingut a la foscor.";
@@ -21,6 +25,12 @@ public class GeneratorsView extends JPanel {
     private JPanel mainPanel;
     private JPanel tablePanel;
 
+    /**
+     * Constructor for GeneratorsView.
+     *
+     * @param listener            ActionListener for handling button clicks.
+     * @param listSelectionListener ListSelectionListener for handling row selections in the table.
+     */
     public GeneratorsView(ActionListener listener, ListSelectionListener listSelectionListener) {
         this.actionListener = listener;
         this.listSelectionListener = listSelectionListener;
@@ -84,6 +94,15 @@ public class GeneratorsView extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
     }
 
+    /**
+     * Adds a generator to the view.
+     *
+     * @param picture     The picture of the generator.
+     * @param name        The name of the generator.
+     * @param price       The price of the generator.
+     * @param amount      The amount of the generator.
+     * @param description The description of the generator.
+     */
     public void addGenerator(String picture, String name, String price, String amount, String description) {
         JLayeredPane generatorPanel = createGeneratorPanel();
 
@@ -102,6 +121,12 @@ public class GeneratorsView extends JPanel {
         JPanel descriptionPanel = createDescriptionPanel(description);
     }
 
+
+    /**
+     * Creates a layered pane for displaying generators.
+     *
+     * @return The created JLayeredPane for generators.
+     */
     private JLayeredPane createGeneratorPanel() {
         JLayeredPane generatorPanel = new JLayeredPane();
         generatorPanel.setLayout(new OverlayLayout(generatorPanel));
@@ -109,6 +134,15 @@ public class GeneratorsView extends JPanel {
         return generatorPanel;
     }
 
+    /**
+     * Creates a panel containing information about a generator.
+     *
+     * @param picture The path to the image of the generator.
+     * @param name The name of the generator.
+     * @param price The price of the generator.
+     * @param amount The amount of the generator.
+     * @return The JPanel containing generator information.
+     */
     private JPanel createInfoPanel(String picture, String name, String price, String amount) {
         JPanel panel = new JPanel(new GridLayout(1, 4));
         panel.setBackground(Color.BLACK);
@@ -129,6 +163,12 @@ public class GeneratorsView extends JPanel {
         return panel;
     }
 
+    /**
+     * Loads an image from the specified path and scales it to fit within a 50x50 area.
+     *
+     * @param picture The path to the image file.
+     * @return The scaled ImageIcon.
+     */
     private ImageIcon loadImage(String picture) {
         ImageIcon image = new ImageIcon(System.getProperty("user.dir") + picture);
         int value = image.getIconWidth() - image.getIconHeight();
@@ -140,6 +180,13 @@ public class GeneratorsView extends JPanel {
         return image;
     }
 
+    /**
+     * Creates a JLabel with the specified text and color.
+     *
+     * @param text The text to display on the label.
+     * @param color The color of the text.
+     * @return The created JLabel.
+     */
     private JLabel createLabel(String text, Color color) {
         JLabel label = new JLabel(text);
         label.setFont(MinecraftFont.getFont());
@@ -147,6 +194,12 @@ public class GeneratorsView extends JPanel {
         return label;
     }
 
+    /**
+     * Creates a panel containing a button for buying a generator.
+     *
+     * @param name The name of the generator.
+     * @return The JPanel containing the button.
+     */
     private JPanel createButtonPanel(String name) {
         JPanel buttonPanel = new JPanel(new BorderLayout());
         buttonPanel.setOpaque(false);
@@ -162,6 +215,12 @@ public class GeneratorsView extends JPanel {
         return buttonPanel;
     }
 
+    /**
+     * Creates a panel containing a description of a generator.
+     *
+     * @param description The description of the generator.
+     * @return The JPanel containing the description.
+     */
     private JPanel createDescriptionPanel(String description) {
         JPanel descriptionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         descriptionPanel.setOpaque(true);
@@ -179,6 +238,9 @@ public class GeneratorsView extends JPanel {
         return descriptionPanel;
     }
 
+    /**
+     * Removes all generators from the view.
+     */
     public void removeGenerators() {
         this.mainPanel.removeAll();
         JPanel generatorsPanel = new JPanel(new GridLayout(1, 4));
@@ -194,6 +256,14 @@ public class GeneratorsView extends JPanel {
         scrollPane.revalidate();
     }
 
+    /**
+     * Updates the table with new data.
+     *
+     * @param quantities                 The quantities of each generator.
+     * @param totalCreditsPerSecond      The total credits per second of each generator.
+     * @param globalProductionPercentages The global production percentages of each generator.
+     * @param prices                     The prices of each generator.
+     */
     public void updateTable(int[] quantities, float[] totalCreditsPerSecond, float[] globalProductionPercentages, int[] prices) {
         for (int i = 0; i < quantities.length; i++) {
             generatorsTable.setValueAt(quantities[i], i, 1);

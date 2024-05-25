@@ -8,6 +8,9 @@ import javax.swing.border.StrokeBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
+/**
+ * ConfigView represents the configuration view in the user interface.
+ */
 public class ConfigView extends JPanel implements MyView {
 
     private final ActionListener listener;
@@ -15,6 +18,11 @@ public class ConfigView extends JPanel implements MyView {
     private JTexturedButton options;
     private JTexturedButton close;
 
+    /**
+     * Constructs a new ConfigView with the specified ActionListener.
+     *
+     * @param listener The ActionListener to handle events in the view.
+     */
     public ConfigView(ActionListener listener) {
         this.listener = listener;
         setLayout(new GridLayout(2, 1));
@@ -25,6 +33,9 @@ public class ConfigView extends JPanel implements MyView {
         mount();
     }
 
+    /**
+     * Initializes the components of the view.
+     */
     private void init() {
         exit = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
         exit.setText("Exit");
@@ -39,6 +50,9 @@ public class ConfigView extends JPanel implements MyView {
         close.setActionCommand("configClose");
     }
 
+    /**
+     * Mounts the components in the view.
+     */
     private void mount() {
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         topPanel.setBackground(Color.darkGray);
@@ -58,6 +72,9 @@ public class ConfigView extends JPanel implements MyView {
         start();
     }
 
+    /**
+     * Starts the view by adding ActionListeners to the buttons.
+     */
     @Override
     public void start() {
         exit.addActionListener(listener);
@@ -65,6 +82,9 @@ public class ConfigView extends JPanel implements MyView {
         close.addActionListener(listener);
     }
 
+    /**
+     * Stops the view by removing ActionListeners from the buttons.
+     */
     @Override
     public void stop() {
         exit.removeActionListener(listener);
@@ -72,9 +92,10 @@ public class ConfigView extends JPanel implements MyView {
         close.removeActionListener(listener);
     }
 
+    /**
+     * Clears the view.
+     */
     @Override
     public void clear() {
-
     }
-
 }

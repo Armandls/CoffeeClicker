@@ -9,6 +9,9 @@ import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
+/**
+ * The view for managing improvements in the game.
+ */
 public class ImprovementsView extends JPanel {
 
     public static final String basicImprovementDesc = "Aquestes pastilles combinades amb el teu RedBull\nson una bomba d'hiperactivitat que et permet\nestudiar a nivells inimaginables.\n\nNo et preocupis, no et faran mal.";
@@ -21,6 +24,12 @@ public class ImprovementsView extends JPanel {
     private JPanel tablePanel;
     private final ListSelectionListener listSelectionListener;
 
+    /**
+     * Constructs a new ImprovementsView with the specified ActionListener and ListSelectionListener.
+     *
+     * @param listener             The ActionListener for handling events.
+     * @param listSelectionListener The ListSelectionListener for handling table selection events.
+     */
     public ImprovementsView(ActionListener listener, ListSelectionListener listSelectionListener) {
         this.actionListener = listener;
         this.listSelectionListener = listSelectionListener;
@@ -29,6 +38,9 @@ public class ImprovementsView extends JPanel {
         setVisible(true);
     }
 
+    /**
+     * Initializes the UI components.
+     */
     private void init() {
         setLayout(new BorderLayout());
         this.mainPanel = new JPanel();
@@ -70,6 +82,9 @@ public class ImprovementsView extends JPanel {
         tablePanel.setPreferredSize(new Dimension(400, 100));
     }
 
+    /**
+     * Mounts the UI components.
+     */
     private void mount() {
         JPanel improvementsPanel = new JPanel(new GridLayout(1, 4));
         improvementsPanel.setBackground(Color.BLACK);
@@ -84,6 +99,15 @@ public class ImprovementsView extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
     }
 
+    /**
+     * Adds an improvement to the view.
+     *
+     * @param picture     The picture of the improvement.
+     * @param name        The name of the improvement.
+     * @param price       The price of the improvement.
+     * @param amount      The amount of the improvement.
+     * @param description The description of the improvement.
+     */
     public void addImprovement(String picture, String name, String price, String amount, String description) {
         JLayeredPane improvementPanel = createImprovementPanel();
 
@@ -102,6 +126,11 @@ public class ImprovementsView extends JPanel {
         JPanel descriptionPanel = createDescriptionPanel(description);
     }
 
+    /**
+     * Creates a layered pane for an improvement panel.
+     *
+     * @return The created layered pane.
+     */
     private JLayeredPane createImprovementPanel() {
         JLayeredPane improvementPanel = new JLayeredPane();
         improvementPanel.setLayout(new OverlayLayout(improvementPanel));
@@ -109,6 +138,15 @@ public class ImprovementsView extends JPanel {
         return improvementPanel;
     }
 
+    /**
+     * Creates the panel for displaying improvement information.
+     *
+     * @param picture The picture of the improvement.
+     * @param name    The name of the improvement.
+     * @param price   The price of the improvement.
+     * @param amount  The amount of the improvement.
+     * @return The created panel.
+     */
     private JPanel createInfoPanel(String picture, String name, String price, String amount) {
         JPanel panel = new JPanel(new GridLayout(1, 4));
         panel.setBackground(Color.BLACK);
@@ -129,6 +167,12 @@ public class ImprovementsView extends JPanel {
         return panel;
     }
 
+    /**
+     * Loads an image.
+     *
+     * @param picture The path to the image file.
+     * @return The loaded image.
+     */
     private ImageIcon loadImage(String picture) {
         ImageIcon image = new ImageIcon(System.getProperty("user.dir") + picture);
         int value = image.getIconWidth() - image.getIconHeight();
@@ -140,6 +184,13 @@ public class ImprovementsView extends JPanel {
         return image;
     }
 
+    /**
+     * Creates a JLabel with the specified text and color.
+     *
+     * @param text  The text of the label.
+     * @param color The color of the label.
+     * @return The created label.
+     */
     private JLabel createLabel(String text, Color color) {
         JLabel label = new JLabel(text);
         label.setFont(MinecraftFont.getFont());
@@ -147,6 +198,13 @@ public class ImprovementsView extends JPanel {
         return label;
     }
 
+    /**
+     * Creates a panel for a button with the specified name and action prefix.
+     *
+     * @param name         The name of the button.
+     * @param actionPrefix The action prefix for the button's action command.
+     * @return The created button panel.
+     */
     private JPanel createButtonPanel(String name, String actionPrefix) {
         JPanel buttonPanel = new JPanel(new BorderLayout());
         buttonPanel.setOpaque(false);
@@ -162,6 +220,12 @@ public class ImprovementsView extends JPanel {
         return buttonPanel;
     }
 
+    /**
+     * Creates a panel for displaying a description with the specified text.
+     *
+     * @param description The description text.
+     * @return The created description panel.
+     */
     private JPanel createDescriptionPanel(String description) {
         JPanel descriptionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         descriptionPanel.setOpaque(true);
@@ -179,6 +243,9 @@ public class ImprovementsView extends JPanel {
         return descriptionPanel;
     }
 
+    /**
+     * Removes all improvements from the view.
+     */
     public void removeImprovements() {
         this.mainPanel.removeAll();
 
@@ -195,6 +262,11 @@ public class ImprovementsView extends JPanel {
         scrollPane.revalidate();
     }
 
+    /**
+     * Updates the table with the specified quantities.
+     *
+     * @param quantities The quantities to update the table with.
+     */
     public void updateTable(int[] quantities) {
         for (int i = 0; i < quantities.length; i++) {
             improvementsTable.setValueAt(quantities[i], i, 1);
