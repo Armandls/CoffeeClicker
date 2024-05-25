@@ -8,6 +8,9 @@ import javax.swing.border.StrokeBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
+/**
+ * View for displaying the user's profile.
+ */
 public class ProfileView extends JPanel implements MyView {
 
     private final ActionListener listener;
@@ -15,6 +18,10 @@ public class ProfileView extends JPanel implements MyView {
     private JTexturedButton deleteAccount;
     private JTexturedButton close;
 
+    /**
+     * Constructs a new ProfileView.
+     * @param listener The ActionListener for handling events.
+     */
     public ProfileView(ActionListener listener) {
         this.listener = listener;
         setLayout(new GridLayout(2, 1));
@@ -25,6 +32,9 @@ public class ProfileView extends JPanel implements MyView {
         mount();
     }
 
+    /**
+     * Initializes the components of the view.
+     */
     private void init() {
         logout = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
         logout.setText("Logout");
@@ -41,6 +51,9 @@ public class ProfileView extends JPanel implements MyView {
         start();
     }
 
+    /**
+     * Mounts the components onto the view.
+     */
     private void mount() {
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         topPanel.setBackground(Color.darkGray);
@@ -57,6 +70,10 @@ public class ProfileView extends JPanel implements MyView {
         add(topPanel);
         add(bottomPanel);
     }
+
+    /**
+     * Starts the view.
+     */
     @Override
     public void start() {
         deleteAccount.addActionListener(listener);
@@ -64,6 +81,9 @@ public class ProfileView extends JPanel implements MyView {
         close.addActionListener(listener);
     }
 
+    /**
+     * Stops the view.
+     */
     @Override
     public void stop() {
         deleteAccount.removeActionListener(listener);
@@ -71,8 +91,11 @@ public class ProfileView extends JPanel implements MyView {
         close.removeActionListener(listener);
     }
 
+    /**
+     * Clears the view.
+     */
     @Override
     public void clear() {
-
+        // This method could be implemented to clear any data or state in the view.
     }
 }

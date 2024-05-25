@@ -1,3 +1,7 @@
+/**
+ * The StatisticsView class represents the graphical user interface for displaying statistics.
+ * It extends JLayeredPane and implements the MyView interface.
+ */
 package Presentation.Views;
 
 import Presentation.Fonts.MinecraftFont;
@@ -28,6 +32,11 @@ public class StatisticsView extends JLayeredPane implements MyView {
     private String chartTitle;
     private ArrayList<JTexturedButton> gameButtons;
 
+    /**
+     * Constructs a StatisticsView object with the given ActionListener.
+     *
+     * @param listener The ActionListener to handle user actions.
+     */
     public StatisticsView(ActionListener listener) {
         this.listener = listener;
         gameButtons = new ArrayList<>();
@@ -36,6 +45,9 @@ public class StatisticsView extends JLayeredPane implements MyView {
         mount();
     }
 
+    /**
+     * Initializes the components of the StatisticsView.
+     */
     private void init() {
         chartTitle = "Game: ID";
         initializeBackground();
@@ -44,6 +56,9 @@ public class StatisticsView extends JLayeredPane implements MyView {
         initializeGamesPanel();
     }
 
+    /**
+     * Initializes the background image panel.
+     */
     private void initializeBackground() {
         try {
             background = new JImagePanel(R.GAME_BACKGROUND);
@@ -53,12 +68,22 @@ public class StatisticsView extends JLayeredPane implements MyView {
         }
     }
 
+    /**
+     * Initializes the buttons used in the view.
+     */
     private void initializeButtons() {
         back = createButton("Back", "back");
         logout = createButton("Logout", "logout");
         deleteAccount = createButton("Delete Account", "deleteAccount");
     }
 
+    /**
+     * Creates a JButton with the given text and action command.
+     *
+     * @param text          The text to display on the button.
+     * @param actionCommand The action command associated with the button.
+     * @return The created JButton.
+     */
     private JTexturedButton createButton(String text, String actionCommand) {
         JTexturedButton button = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
         button.setText(text);
@@ -67,6 +92,9 @@ public class StatisticsView extends JLayeredPane implements MyView {
         return button;
     }
 
+    /**
+     * Initializes the chart panel used to display statistics.
+     */
     private void initializeChartPanel() {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         String xAxisLabel = "Minute";
@@ -79,12 +107,20 @@ public class StatisticsView extends JLayeredPane implements MyView {
         setChartFonts(chartPanel);
     }
 
+    /**
+     * Sets the fonts used in the chart panel.
+     *
+     * @param chartPanel The chart panel whose fonts are to be set.
+     */
     private void setChartFonts(ChartPanel chartPanel) {
         chartPanel.getChart().getTitle().setFont(MinecraftFont.getFont());
         chartPanel.getChart().getCategoryPlot().getDomainAxis().setLabelFont(MinecraftFont.getFont());
         chartPanel.getChart().getCategoryPlot().getRangeAxis().setLabelFont(MinecraftFont.getFont());
     }
 
+    /**
+     * Initializes the panel used to display the list of games.
+     */
     private void initializeGamesPanel() {
         games = new JPanel();
         games.setPreferredSize(new Dimension(200, 600));
@@ -97,6 +133,9 @@ public class StatisticsView extends JLayeredPane implements MyView {
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
     }
 
+    /**
+     * Mounts the components onto the StatisticsView.
+     */
     private void mount() {
         JPanel panel = createMainPanel();
         JPanel topPanel = createTopPanel();
@@ -114,11 +153,22 @@ public class StatisticsView extends JLayeredPane implements MyView {
         add(panel);
     }
 
+    /**
+     * Creates the main panel of the view.
+     *
+     * @return The main panel.
+     */
     private JPanel createMainPanel() {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setOpaque(false);
         return panel;
     }
+
+    /**
+     * Creates the top panel of the view.
+     *
+     * @return The top panel.
+     */
 
     private JPanel createTopPanel() {
         JPanel topPanel = new JPanel(new BorderLayout());
@@ -133,6 +183,11 @@ public class StatisticsView extends JLayeredPane implements MyView {
         return topPanel;
     }
 
+    /**
+     * Creates the left portion of the top panel.
+     *
+     * @return The left portion of the top panel.
+     */
     private JPanel createTopPanelLeft() {
         JPanel topPanelLeft = new JPanel(new FlowLayout(FlowLayout.LEFT));
         topPanelLeft.setOpaque(false);
@@ -140,6 +195,11 @@ public class StatisticsView extends JLayeredPane implements MyView {
         return topPanelLeft;
     }
 
+    /**
+     * Creates the right portion of the top panel.
+     *
+     * @return The right portion of the top panel.
+     */
     private JPanel createTopPanelRight() {
         JPanel topPanelRight = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         topPanelRight.setOpaque(false);
@@ -148,6 +208,11 @@ public class StatisticsView extends JLayeredPane implements MyView {
         return topPanelRight;
     }
 
+    /**
+     * Creates the panel for the chart component.
+     *
+     * @return The panel for the chart component.
+     */
     private JPanel createChartAuxPanel() {
         JPanel chartAux = new JPanel();
         chartAux.setLayout(new BoxLayout(chartAux, BoxLayout.Y_AXIS));
@@ -157,6 +222,11 @@ public class StatisticsView extends JLayeredPane implements MyView {
         return chartAux;
     }
 
+    /**
+     * Creates the panel for the scroll pane component.
+     *
+     * @return The panel for the scroll pane component.
+     */
     private JPanel createScrollPaneAuxPanel() {
         JPanel scrollPaneAux = new JPanel(new BorderLayout());
         scrollPaneAux.setOpaque(false);
@@ -168,6 +238,11 @@ public class StatisticsView extends JLayeredPane implements MyView {
         return scrollPaneAux;
     }
 
+    /**
+     * Creates the top portion of the scroll pane panel.
+     *
+     * @return The top portion of the scroll pane panel.
+     */
     private JPanel createScrollPanelAuxTop() {
         JPanel scrollPanelAuxTop = new JPanel(new FlowLayout(FlowLayout.CENTER));
         scrollPanelAuxTop.setBackground(Color.darkGray);
@@ -178,7 +253,12 @@ public class StatisticsView extends JLayeredPane implements MyView {
         return scrollPanelAuxTop;
     }
 
-
+    /**
+     * Adds a game to the list of games displayed.
+     *
+     * @param gameID        The ID of the game.
+     * @param n_currencies  The number of currencies associated with the game.
+     */
     public void addGame(String gameID, String n_currencies) {
         chartTitle = "Game: " + gameID;
         JTexturedButton button = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
@@ -192,6 +272,11 @@ public class StatisticsView extends JLayeredPane implements MyView {
         this.scrollPane.revalidate();
     }
 
+    /**
+     * Updates the graphic representation of the statistics based on the provided data.
+     *
+     * @param data The data to update the statistics.
+     */
     public void updateGraphic(String[][] data) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (String[] datum : data) {
@@ -205,16 +290,25 @@ public class StatisticsView extends JLayeredPane implements MyView {
         chartPanel.getChart().getCategoryPlot().getRangeAxis().setTickLabelFont(MinecraftFont.getFont());
     }
 
+    /**
+     * Starts the view.
+     */
     @Override
     public void start() {
 
     }
 
+    /**
+     * Stops the view.
+     */
     @Override
     public void stop() {
 
     }
 
+    /**
+     * Clears the view.
+     */
     @Override
     public void clear() {
         for (JTexturedButton gameButton : gameButtons) {

@@ -13,6 +13,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
 
+/**
+ * Represents the view for user login.
+ */
 public class LoginView extends JLayeredPane implements MyView {
 
     private final ActionListener listener;
@@ -23,14 +26,21 @@ public class LoginView extends JLayeredPane implements MyView {
     private JImagePanel background;
     private JImagePanel form_background;
 
+    /**
+     * Constructs a new instance of LoginView with the given ActionListener.
+     *
+     * @param listener The ActionListener to handle actions in the view.
+     */
     public LoginView(ActionListener listener) {
-
         setLayout(new OverlayLayout(this));
         this.listener = listener;
         init();
         mount();
     }
 
+    /**
+     * Mounts the components onto the layered pane.
+     */
     void mount() {
         JPanel gridBagPanel = createGridBagPanel();
         JPanel mainPanel = createMainPanel();
@@ -50,12 +60,22 @@ public class LoginView extends JLayeredPane implements MyView {
         add(gridBagPanel);
     }
 
+    /**
+     * Creates a JPanel with GridBagLayout.
+     *
+     * @return The JPanel with GridBagLayout.
+     */
     private JPanel createGridBagPanel() {
         JPanel gridBagPanel = new JPanel(new GridBagLayout());
         gridBagPanel.setOpaque(false);
         return gridBagPanel;
     }
 
+    /**
+     * Creates GridBagConstraints for the layout.
+     *
+     * @return The created GridBagConstraints.
+     */
     private GridBagConstraints createGridBagConstraints() {
         GridBagConstraints c = new GridBagConstraints();
         c.gridy = 0;
@@ -66,6 +86,11 @@ public class LoginView extends JLayeredPane implements MyView {
         return c;
     }
 
+    /**
+     * Creates the main panel containing login components.
+     *
+     * @return The created main panel.
+     */
     private JPanel createMainPanel() {
         JPanel mainPanel = new JPanel();
         mainPanel.setOpaque(false);
@@ -87,6 +112,11 @@ public class LoginView extends JLayeredPane implements MyView {
         return mainPanel;
     }
 
+    /**
+     * Creates the login label panel.
+     *
+     * @return The created login label panel.
+     */
     private JPanel createLoginLabelPanel() {
         JPanel loginLabel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         loginLabel.setOpaque(false);
@@ -97,6 +127,13 @@ public class LoginView extends JLayeredPane implements MyView {
         return loginLabel;
     }
 
+    /**
+     * Creates a label panel with the given text and alignment.
+     *
+     * @param text      The text of the label.
+     * @param alignment The alignment of the label.
+     * @return The created label panel.
+     */
     private JPanel createLabelPanel(String text, int alignment) {
         JPanel labelPanel = new JPanel(new FlowLayout(alignment));
         labelPanel.setOpaque(false);
@@ -106,6 +143,13 @@ public class LoginView extends JLayeredPane implements MyView {
         return labelPanel;
     }
 
+    /**
+     * Creates a panel containing the given field with the specified border.
+     *
+     * @param field  The field to be added to the panel.
+     * @param border The border of the panel.
+     * @return The created field panel.
+     */
     private JPanel createFieldPanel(JComponent field, EmptyBorder border) {
         JPanel fieldPanel = new JPanel();
         fieldPanel.setOpaque(false);
@@ -114,6 +158,13 @@ public class LoginView extends JLayeredPane implements MyView {
         return fieldPanel;
     }
 
+    /**
+     * Creates a panel containing the given button with the specified border.
+     *
+     * @param button The button to be added to the panel.
+     * @param border The border of the panel.
+     * @return The created button panel.
+     */
     private JPanel createButtonPanel(JButton button, EmptyBorder border) {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.setOpaque(false);
@@ -122,6 +173,11 @@ public class LoginView extends JLayeredPane implements MyView {
         return buttonPanel;
     }
 
+    /**
+     * Creates the register panel.
+     *
+     * @return The created register panel.
+     */
     private JPanel createRegisterPanel() {
         JPanel registerPanel = new JPanel();
         registerPanel.setOpaque(false);
@@ -134,6 +190,15 @@ public class LoginView extends JLayeredPane implements MyView {
         return registerPanel;
     }
 
+    /**
+     * Creates an image panel with the specified resource path, resolution, and layer.
+     *
+     * @param resourcePath The path to the image resource.
+     * @param resolution   The resolution setting for the image panel.
+     * @param layer        The layer index for the layered pane.
+     * @return The created image panel.
+     * @throws IOException If an IO error occurs while loading the image.
+     */
     private JImagePanel createImagePanel(String resourcePath, int resolution, int layer) throws IOException {
         JImagePanel imagePanel = new JImagePanel(resourcePath);
         if (resolution != -1) {
@@ -143,6 +208,9 @@ public class LoginView extends JLayeredPane implements MyView {
         return imagePanel;
     }
 
+    /**
+     * Initializes the components of the view.
+     */
     void init() {
         background = new JImagePanel();
         form_background = new JImagePanel();
@@ -161,12 +229,15 @@ public class LoginView extends JLayeredPane implements MyView {
         registerButton = new JTexturedButton(R.BUTTON_DEFAULT, R.BUTTON_PRESSED);
         registerButton.setText("Register");
         registerButton.setFont(MinecraftFont.getFont());
+
         start();
     }
 
+    /**
+     * Starts the view.
+     */
     @Override
     public void start() {
-
         loginButton.addActionListener(listener);
         loginButton.setActionCommand("login");
 
@@ -174,38 +245,65 @@ public class LoginView extends JLayeredPane implements MyView {
         registerButton.setActionCommand("register");
     }
 
+    /**
+     * Stops the view.
+     */
     @Override
     public void stop() {
         loginButton.removeActionListener(listener);
         registerButton.removeActionListener(listener);
     }
 
+    /**
+     * Clears the view.
+     */
     @Override
     public void clear() {
-
+        usernameField.setText("");
+        passwordField.setText("");
     }
 
+    /**
+     * Retrieves the information entered by the user.
+     *
+     * @return An array containing the username and password.
+     */
     public String[] getInfo() {
         return new String[] {
                 "username:"+usernameField.getText(),
                 "password:"+ Arrays.toString(passwordField.getPassword()),
         };
     }
+
+    /**
+     * Displays an error message for an invalid email.
+     */
     public void enterValidEmail() {
         JOptionPane.showMessageDialog(this, "Please enter a valid email address. Email address must contain '@gmail.com'.", "Mail Error", JOptionPane.ERROR_MESSAGE);
     }
 
+    /**
+     * Displays an error message for an invalid password.
+     */
     public void enterValidPassword() {
         JOptionPane.showMessageDialog(this, "Please enter a valid password. Password must contain at least 7 characters.", "Password Error", JOptionPane.ERROR_MESSAGE);
     }
+
+    /**
+     * Displays an advice message.
+     *
+     * @param message The message to display.
+     * @param title   The title of the message dialog.
+     */
     public void adviceMessage(String message, String title) {
         JOptionPane.showMessageDialog(this, message, title, JOptionPane.ERROR_MESSAGE);
     }
 
+    /**
+     * Clears the login form.
+     */
     public void clearForm() {
         usernameField.setText("");
         passwordField.setText("");
     }
-
-
 }
