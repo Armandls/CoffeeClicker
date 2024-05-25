@@ -127,7 +127,7 @@ public class StoresView extends JPanel implements MyView {
     }
 
     public void noGenerators(String improvement) {
-        JOptionPane.showMessageDialog(this, "You don't have generators to apply the improvement "+ improvement +" to.", "No Generators Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, "You don't have generators to apply the improvement "+ improvement +" too.", "No Generators Error", JOptionPane.ERROR_MESSAGE);
     }
 
     public void noEnoughMoney(int gameCurrency) {

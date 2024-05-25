@@ -27,6 +27,7 @@ public class GameManager extends Thread{
     private Game game;
     private int threadCount;
     private int min;
+
     public GameManager (GameDAO gameDAO, GeneratorManager generatorManager) {
         this.gameDAO = gameDAO;
         this.generatorManager = generatorManager;
@@ -192,7 +193,7 @@ public class GameManager extends Thread{
 
     public void updateImprovement(String improvement) throws GeneratorAddedException {
         if (improvement.equals("Pills")) {
-            if (game.getGameGenerators().size() > 0 && game.getGameGenerators().get(0).getNGens() > 0) {
+            if (game.getGameGenerators().size() > 0 && game.getGameGenerators().get(0) != null && game.getGameGenerators().get(0).getNGens() > 0) {
                 if (game.getCurrencyCount() >= 100) {
                     game.substractCurrency(100);
                     game.getGameGenerators().get(0).incrementImprovementLevel();
@@ -208,7 +209,7 @@ public class GameManager extends Thread{
                 throw new GeneratorAddedException("No generators of type 'Pills' found.");
             }
         } else if (improvement.equals("Glasses")) {
-            if (game.getGameGenerators().size() > 1 && game.getGameGenerators().get(1).getNGens() > 0) {
+            if (game.getGameGenerators().size() > 1 && game.getGameGenerators().get(1) != null && game.getGameGenerators().get(1).getNGens() > 0) {
                 if (game.getCurrencyCount() >= 250) {
                     game.substractCurrency(250);
                     game.getGameGenerators().get(1).incrementImprovementLevel();
@@ -224,7 +225,7 @@ public class GameManager extends Thread{
                 throw new GeneratorAddedException("No generators of type 'Glasses' found.");
             }
         } else if (improvement.equals("Carlos")) {
-            if (game.getGameGenerators().size() > 2 && game.getGameGenerators().get(2).getNGens() > 0) {
+            if (game.getGameGenerators().size() > 2 && game.getGameGenerators().get(2) != null && game.getGameGenerators().get(2).getNGens() > 0) {
                 if (game.getCurrencyCount() >= 500) {
                     game.substractCurrency(500);
                     game.getGameGenerators().get(2).incrementImprovementLevel();
