@@ -90,7 +90,11 @@ public class Game {
 
     public void generatorsProduction() {
         for (Generator aux : gameGenerators) {
-            currency_count += aux.generateCurrency();
+            if(aux.getImprovement().getLevel() == 0) {
+                currency_count += (aux.generateCurrency());
+            } else {
+                currency_count += (float) (aux.generateCurrency()*aux.getImprovement().getLevel()*aux.getImprovement().getMultiplier());
+            }
         }
     }
 

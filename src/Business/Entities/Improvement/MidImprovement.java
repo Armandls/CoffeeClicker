@@ -3,9 +3,13 @@ package Business.Entities.Improvement;
 @Improvement, @MidGenerator
 */
 public class MidImprovement extends Improvement{
+    private final double multiplier = 1.5;
     public MidImprovement(int idImprovement, int level, String imageUrl) {
         super(idImprovement, level, imageUrl);
     }
     public MidImprovement() {super(0, "path_basic_image");}
 
+    public double getMultiplier() {
+        return multiplier;
+    }
 }

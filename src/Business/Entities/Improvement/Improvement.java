@@ -11,7 +11,7 @@ public abstract class Improvement {
         this.imageUrl = imageUrl;
     }
 
-    public Improvement(int level, String imageUrl){
+    public Improvement(int level, String imageUrl) {
         this.level = level;
         this.imageUrl = imageUrl;
     }
@@ -41,7 +41,11 @@ public abstract class Improvement {
         this.imageUrl = imageUrl;
     }
 
-    public void incrementImprovementLevel(){
+    public void incrementImprovementLevel() {
         level++;
+    }
+
+    public double getMultiplier() {
+        return 0;
     }
 }
