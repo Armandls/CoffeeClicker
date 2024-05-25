@@ -3,6 +3,7 @@ package Presentation;
 import Business.Exception.BusinessException;
 import Business.Exception.GeneratorException.GeneratorAddedException;
 import Business.Exception.GeneratorException.NoGeneratorException;
+import Business.Exception.GeneratorException.NotEnoughCurrencyException;
 import Business.Exception.UserException.UserException;
 import Business.GameManager;
 import Business.GeneratorManager;
@@ -138,6 +139,7 @@ public class MainController implements FrameController, ThreadController {
     public String getEmail_id() {
         return userManager.getCurrentUser().getEmail();
     }
+
     public void createNewGame() throws PersistenceException {
         try {
             String email = getEmail_id();
@@ -312,8 +314,11 @@ public class MainController implements FrameController, ThreadController {
         try {
             gameManager.updateImprovement(improvement);
             storesView.updateImprovementsView(generatorManager.getImprovementLevels(gameManager.getGameId()));
-        } catch (GeneratorAddedException e) {
-            storesView.noGenerators(improvement);
+        } catch (GeneratorAddedException | NotEnoughCurrencyException e) {
+            if (e instanceof GeneratorAddedException)
+                storesView.noGenerators(improvement);
+            else
+                storesView.noEnoughMoney(gameManager.getGameCurrency());
         }
     }
 
@@ -376,5 +381,9 @@ public class MainController implements FrameController, ThreadController {
         } catch (BusinessException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void restartGame() {
+        gameManager.restartGame();
     }
 }
