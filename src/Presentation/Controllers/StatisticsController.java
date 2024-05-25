@@ -30,14 +30,11 @@ public class StatisticsController implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
             case "back":
-                System.out.println("back");
                 mainController.swapPanel("game");
                 break;
             case "logout":
-                System.out.println("logout");
                 break;
             case "deleteAccount":
-                System.out.println("deleteAccount");
                 break;
             default:
                 String gameId = e.getActionCommand();

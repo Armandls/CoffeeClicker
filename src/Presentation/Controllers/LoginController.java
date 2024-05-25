@@ -33,17 +33,14 @@ public class LoginController implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
             case "login":
-                System.out.println("Login");
                 login();
                 break;
 
             case "register":
-                System.out.println("Register");
                 mainController.swapPanel("register");
                 break;
 
             case "forgotPassword":
-                System.out.println("Forgot Password");
                 break;
 
             default:
