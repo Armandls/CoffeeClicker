@@ -6,11 +6,9 @@ package Presentation.Views;
 import Business.Entities.Generator.BasicGenerator;
 import Presentation.Controllers.StoresController;
 import Presentation.Fonts.MinecraftFont;
-import Presentation.FrameController;
 import Presentation.JImagePanel;
 import Presentation.JTexturedButton;
 import Presentation.R;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionListener;

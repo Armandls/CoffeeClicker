@@ -137,7 +137,7 @@ public class Game {
      * Incrementa la cantidad de moneda del juego.
      */
     public void increaseCurrency() {
-        currency_count += 100;
+        currency_count += 1;
     }
 
     /**
