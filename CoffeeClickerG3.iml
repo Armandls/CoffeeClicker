@@ -28,5 +28,14 @@
     </orderEntry>
     <orderEntry type="library" name="google.oauth.client" level="project" />
     <orderEntry type="library" name="jfree.jfreechart" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/jfreechart-1.5.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
