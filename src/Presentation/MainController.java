@@ -205,6 +205,7 @@ public class MainController implements ThreadController, GameControllerI, HomeCo
     @Override
     public void deleteUser () throws ConnectionErrorException {
         userManager.deleteUser();
+        gameManager.setRunningGame(false);
     }
 
     /**
@@ -511,6 +512,7 @@ public class MainController implements ThreadController, GameControllerI, HomeCo
     @Override
     public void logout() {
         exit();
+        gameManager.setRunningGame(false);
         swapPanel("login");
     }
 
