@@ -26,12 +26,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="google.api.client" level="project" />
-    <orderEntry type="library" name="sun.mail.javax" level="project" />
-    <orderEntry type="library" name="google.apis.api.services.admin.directory" level="project" />
-    <orderEntry type="library" name="google.apis.api.services.gmail" level="project" />
     <orderEntry type="library" name="google.oauth.client" level="project" />
-    <orderEntry type="library" name="google.oauth.client.java6" level="project" />
-    <orderEntry type="library" name="guicedee.services.jfreechart" level="project" />
+    <orderEntry type="library" name="jfree.jfreechart" level="project" />
   </component>
 </module>
